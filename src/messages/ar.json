@@ -1,0 +1,240 @@
+{
+
+    "Welcome":{
+        "buyerheader":"التسجيل كمشتري",
+        "sellerheader":"التسجيل كبائع",
+        "buyerdesc": "انشر المشاريع وابحث عن مزودي الخدمات المناسبين لاحتياجاتك",
+        "buyercontinue": "متابعة كمشتري",
+        "sellerdesc": "قدم عروضك على المشاريع واستعرض خبرة شركتك",
+        "sellercontinue": "متابعة كبائع"
+
+    },
+    "Login": {
+    "HeaderGreeting": "مرحبًا بعودتك",
+    "LoginHeader": "تسجيل الدخول إلى حسابك",
+    "LoginButton": "تسجيل الدخول",
+    "LoginLoading": "جارٍ تسجيل الدخول...",
+    "SignUpGreeting": "جديد هنا؟",
+    "SignUpHeader": "سجّل الآن واكتشف مجموعة كبيرة من الفرص الجديدة",
+    "SignUpButton": "إنشاء حساب",
+    "ForgotPass": "هل نسيت كلمة المرور؟",
+    "RememberMe": "تذكرني",
+    "EmailORPhone": "البريد الإلكتروني / رقم الهاتف",
+    "Password": "كلمة المرور"
+
+  },
+  "ForgotPage": {
+  "Header1": "هل نسيت كلمة المرور؟",
+  "Header2": "إعادة تعيين كلمة المرور",
+  "Content": "أدخل بريدك الإلكتروني لاستلام رمز التحقق (OTP)",
+  "FieldLabel": "عنوان البريد الإلكتروني",
+  "FieldPlaceholder": "أدخل بريدك الإلكتروني",
+  "SendOTPButton": "إرسال رمز التحقق",
+  "OTPHeader": "تحقق من رمز التحقق",
+  "OTPContent": "أدخل رمز التحقق المكوّن من 4 أرقام الذي تم إرساله إلى بريدك الإلكتروني",
+  "NewPassHeader": "تعيين كلمة مرور جديدة",
+  "NewPassContent": "أدخل كلمة المرور الجديدة أدناه",
+  "NewPasswordLabel": "كلمة المرور الجديدة",
+  "ResetPasswordButton": "إعادة تعيين كلمة المرور",
+  "OTPConfirmButton": "تأكيد رمز التحقق"
+},
+    "BuyerDashboard": {
+  "Stats_Actives_Projects": "المشاريع النشطة",
+  "Stats_Pending_Bids": "العطاءات المعلّقة",
+  "Stats_Completed": "المكتملة",
+  "Stats_Total_Spent": "إجمالي المبلغ المنفق",
+  "PostProjectHeader": "إنشاء مشروع جديد",
+  "PostProjectContent": ".أنشئ وانشر مشروعًا جديدًا لتلقي عروض من البائعين",
+  "PostProjectButton": "إنشاء مشروع",
+  "MyProjectHeader": "مشاريعي",
+  "MyProjectContent": "عرض وإدارة جميع مشاريعك النشطة والمكتملة.",
+  "MyProjectButton": "عرض المشاريع",
+  "ProfileSettingHeader": "إعدادات الملف الشخصي",
+  "ProfileSettingsContent": "قم بتحديث معلومات حسابك وتفضيلاتك.",
+  "ProfileSettingsButton1": "تعديل الملف الشخصي",
+  "ProfileSettingsButton2": "تغيير كلمة المرور",
+  "RecentActivity": "النشاطات الأخيرة"
+},
+"CreateProject": {
+  "BackButton": "العودة إلى لوحة المعلومات",
+  "Header1": "إنشاء مشروع جديد",
+  "Header2": "تفاصيل المشروع",
+  "Content": "يرجى تعبئة التفاصيل أدناه لنشر مشروعك واستقبال العروض.",
+  "TitleFieldLabel": "عنوان المشروع",
+  "TitleFieldPlaceholder": "اكتب عنوان المشروع",
+  "OutlineLabel": "نبذة عن المشروع",
+  "OutlinePlaceholder": "قدّم وصفاً موجزاً وواضحاً عن مشروعك...",
+  "RequirementsLabel": "المتطلبات التفصيلية",
+  "RequirementsPlaceholder": "اذكر الخصائص أو الوظائف أو التقنيات المطلوبة...",
+  "BudgetLabel": "تحديد الميزانية",
+  "SkillsRequired": "المهارات المطلوبة",
+  "SkillAtleastSelection": "يرجى اختيار مهارة واحدة على الأقل",
+  "DocCheck": "يُقبل فقط ملفات PDF أو DOC أو JPG أو PNG، بحد أقصى 10 ميغابايت لكل ملف",
+  "CancelButton": "إلغاء",
+  "DraftButton": "حفظ كمسودة",
+  "PublishButton": "نشر المشروع",
+  "Timeline": "المدة الزمنية",
+  "Duration": "أدخل المدة",
+  "UploadButtonLabel": "تحميل",
+"ChooseFile": "اختر ملفًا"
+
+},
+"ManageProject": {
+    "BackButton": "العودة إلى لوحة التحكم",
+    "Status1": "مسودة",
+    "Status2": "منشور",
+    "Status3": "قيد التنفيذ",
+    "Status4": "مكتمل",
+    "Header1": "إدارة المشروع",
+    "Header2": "مشاريعي",
+    "Content": "عرض وتعديل وإدارة جميع مشاريعك",
+    "NotFound": "لا توجد مشاريع لهذا التصنيف.",
+    "Loading": "...جارٍ تحميل المشاريع"
+
+},
+
+"ProfileManagement": {
+    "BackButton": "العودة إلى لوحة التحكم",
+    "Header1": "إدارة الملف الشخصي",
+    "Header2": "عرض الملف الشخصي",
+    "AccountInfoHeader": "معلومات الحساب",
+    "AccountEmail": "عنوان البريد الإلكتروني",
+    "AccountEmailCheck": "لا يمكن تغيير البريد الإلكتروني",
+    "AccountRole": "دور المستخدم",
+    "AccountRoleCheck": "لا يمكن تغيير الدور",
+    "PersonalInfoHeader": "المعلومات الشخصية",
+    "PersonalInfoFirstName": "الاسم الأول",
+    "PersonalInfoMiddleName": "الاسم الأوسط",
+    "PersonalInfoLastName": "اسم العائلة",
+    "PersonalInfoPhoneCode": "رمز الهاتف",
+    "PersonalInfoPhoneNumber": "رقم الهاتف",
+    "AddressHeader": "العنوان",
+    "AddressSurfaceAdd": "العنوان التفصيلي",
+    "AddressCity": "المدينة",
+    "AddressCountry": "الدولة",
+    "BusinessInfoHeader": "معلومات العمل",
+    "BusinessInfoCategory": "فئة النشاط التجاري",
+    "BusinessInfoExp": "الخبرة بالسنوات",
+    "BusinessInfoCompanyName": "اسم الشركة",
+    "BusinessInfoCompanyURL": "رابط موقع الشركة",
+    "EditProfileButton": "تعديل الملف الشخصي"
+
+},
+"UpdatePassword": {
+    "Header": "إعدادات الأمان",
+    "Header2": "تغيير كلمة المرور",
+    "Content": "حافظ على أمان حسابك باستخدام كلمة مرور قوية",
+    "CurrentPassLabel": "كلمة المرور الحالية",
+    "CurrentPassPlaceholder": "أدخل كلمة المرور الحالية",
+    "NewPasswordLabel": "كلمة المرور الجديدة",
+    "NewPasswordPlaceholder": "أدخل كلمة المرور الجديدة",
+    "ConfirmNewPasswordLabel": "تأكيد كلمة المرور الجديدة",
+    "ConfirmNewPasswordPlaceholder": "أدخل تأكيد كلمة المرور الجديدة",
+    "PasswordRequirementsHeader": "متطلبات كلمة المرور",
+    "firstrequirement": "ثمانية أحرف على الأقل",
+    "secondrequirement": "حرف كبير واحد على الأقل (A-Z)",
+    "thirdrequirement": "حرف صغير واحد على الأقل (a-z)",
+    "fourthrequirement": "رقم واحد على الأقل (0-9)",
+    "fifthrequirement": "رمز خاص واحد على الأقل (!@#$%^&*)",
+    "updatebutton": "تحديث كلمة المرور",
+    "cancelbutton": "إلغاء"
+},
+"SellerDashboard": {
+  "Stats_Actives_Bids": "العطاءات النشطة",
+  "Stats_Projects_Won": "المشاريع التي تم الفوز بها",
+  "Stats_Completed": "المكتملة",
+  "Stats_Total_Earnings": "إجمالي الأرباح",
+  "BrowseProjectHeader": "تصفح المشاريع",
+  "BrowseProjectContent": "ابحث عن مشاريع جديدة تتوافق مع خبراتك وقدّم عروضك.",
+  "BrowseProjectButton": "تصفح المشاريع",
+  "MyBidsHeader": "عروضي",
+  "MyBidsContent": "تابع جميع عروضك المقدمة وحالتها الحالية.",
+  "MyBidsButton": "عرض العروض",
+  "ProfileSettingHeader": "ملف الشركة",
+  "ProfileSettingsContent": "قم بتحديث معلومات شركتك ومحفظتك.",
+  "ProfileSettingsButton1": "تعديل الملف الشخصي",
+  "ProfileSettingsButton2": "تغيير كلمة المرور",
+  "AvailableProjects": "المشاريع المتاحة"
+},
+"BrowseProjects": {
+    "BackDashboard": "العودة إلى لوحة التحكم",
+    "Header": "ابحث عن الفرص",
+    "Header2": "تصفح المشاريع",
+    "Content": "المشاريع المتاحة",
+    "NotFound": "لا توجد مشاريع تطابق بحثك أو الفلاتر المحددة."
+},
+"BidManagement": {
+    "BackDashboard": "العودة إلى لوحة التحكم",
+    "Header1": "إدارة العروض",
+    "Header2": "عروضي المقدمة",
+    "Content": "تتبع حالة جميع عروضك",
+    "Status1": "قيد الانتظار",
+    "Status2": "مقبول",
+    "Status3": "مرفوض",
+    "Status4": "تم السحب",
+    "No": "لا",
+    "BidsFound": "عروض تم العثور عليها."
+},
+"BuyerRegister": {
+  "BackButton": "العودة إلى صفحة الترحيب",
+  "Header": "انضم إلينا كمشتري",
+  "Header2": "إنشاء حسابك",
+  "PersonalInfoHeader": "المعلومات الشخصية",
+  "PersonalInfoFirstName": "الاسم الأول",
+  "PersonalInfoMiddleName": "الاسم الأوسط",
+  "PersonalInfoLastName": "اسم العائلة",
+  "PersonalInfoPhoneCode": "رمز الهاتف",
+  "PersonalInfoPhoneNumber": "رقم الهاتف",
+  "PersonalInfoEmail": "عنوان البريد الإلكتروني",
+  "PersonalInfoCity": "المدينة",
+  "PersonalInfoCountry": "البلد",
+  "SecurityHeader": "الأمان",
+  "SecurityPassword": "كلمة المرور",
+  "SecurityConfirmPassword": "تأكيد كلمة المرور",
+  "CompanyInfoHeader": "معلومات الشركة (اختياري)",
+  "CompanyName": "اسم الشركة",
+  "CompanyWebsite": "رابط موقع الشركة",
+  "TermsAcceptance": "أوافق على الشروط والأحكام",
+  "RegisterButton": "تسجيل / إنشاء حساب",
+  "CancelButton": "إلغاء"
+},
+"SellerRegister": {
+  "BackButton": "العودة إلى صفحة الترحيب",
+  "Header": "انضم إلينا كبائع",
+  "Header2": "إنشاء حسابك",
+  "CompanyInfoHeader": "معلومات الشركة",
+  "CompanyInfoName": "اسم الشركة",
+  "CompanyInfoCRNO": "السجل التجاري للشركة",
+  "Experience": "الخبرة بالسنوات",
+  "Logo": "شعار الشركة",
+  "FileCheck": "JPG أو PNG، بحد أقصى 2 ميجابايت",
+  "CompanyURL": "رابط نطاق الشركة",
+  "CompanySurfaceAddress": "العنوان الفعلي للشركة",
+  "CompanyInfoPhoneCode": "رمز الهاتف",
+  "CompanyInfoPhoneNumber": "رقم الهاتف",
+  "CompanyInfoEmail": "عنوان البريد الإلكتروني",
+  "CompanyInfoCity": "المدينة",
+  "CompanyInfoCountry": "البلد",
+  "SecurityHeader": "الأمان",
+  "SecurityPassword": "كلمة المرور",
+  "SecurityConfirmPassword": "تأكيد كلمة المرور",
+  "RequiredDocHeader": "المستندات المطلوبة",
+  "BusinessLicense": "تحميل الرخصة التجارية",
+  "Portfolio": "تحميل ملف الأعمال (اختياري)",
+  "ChooseFile": "اختيار ملف",
+  "TermsAcceptance": "أوافق على الشروط والأحكام",
+  "RegisterButton": "تسجيل / إنشاء حساب",
+  "CancelButton": "إلغاء"
+}
+
+
+
+
+
+
+
+
+ 
+
+
+}

@@ -1,0 +1,12 @@
+// // next-intl.config.ts
+// import { getRequestConfig } from 'next-intl/server';
+
+// export default getRequestConfig(async ({ locale }) => {
+//   const supportedLocales = ['en', 'ar'];
+//   const finalLocale = supportedLocales.includes(locale) ? locale : 'en';
+
+//   return {
+//     locale: finalLocale,
+//     messages: (await import(`./src/messages/${finalLocale}.json`)).default
+//   };
+// });
