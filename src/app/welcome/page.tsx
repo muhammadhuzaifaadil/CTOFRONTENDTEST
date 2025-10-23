@@ -171,7 +171,7 @@ const Welcome: React.FC = () => {
               width: 60,
               height: 60,
               mx: "auto",
-             
+             mb:2
             }}
           >
             <CorporateFareOutlinedIcon sx={{ color: "#fff", fontSize: 30 }} />
