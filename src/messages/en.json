@@ -6,7 +6,9 @@
         "buyerdesc": "Post projects and find the right service providers for your needs",
         "buyercontinue": "Continue as Buyer",
         "sellerdesc": "Bid on projects and showcase your company’s expertise",
-        "sellercontinue": "Continue as Seller"
+        "sellercontinue": "Continue as Seller",
+        "already":"Already have an account?",
+        "login":"Login"
 
     },
     "Login":{

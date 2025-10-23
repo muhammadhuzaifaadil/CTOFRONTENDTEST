@@ -45,10 +45,10 @@ const Welcome: React.FC = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        // minHeight: "100vh",
         width: "100%",
         backgroundColor: "#fff",
-        gap: 4,
+        // gap: 2,
         px: 2,
       }}
     >
@@ -70,7 +70,7 @@ const Welcome: React.FC = () => {
         <img
           src="/cto/Logo - Original.png"
           alt="CTO Logo"
-          style={{ height: "300px" }}
+          style={{ height: "250px" }} //300 before change
         />
         
       </Box>
@@ -171,7 +171,7 @@ const Welcome: React.FC = () => {
               width: 60,
               height: 60,
               mx: "auto",
-              mb: 2,
+             
             }}
           >
             <CorporateFareOutlinedIcon sx={{ color: "#fff", fontSize: 30 }} />
@@ -206,18 +206,18 @@ const Welcome: React.FC = () => {
         </Container>
       </Box>
 
-      {/* ---------- Bottom Sign-In Section ----------
+      {/* ---------- Bottom Sign-In Section ---------- */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           gap: 1,
-          mt: 3,
+          
         }}
       >
         <Typography variant="body1" sx={{ color: "#333" }}>
-          Already have an account?
+          {t("already")}
         </Typography>
         <Button
           variant="contained"
@@ -230,9 +230,9 @@ const Welcome: React.FC = () => {
           }}
           onClick={() => router.push("/login")}
         >
-          Sign In
+          {t("login")}
         </Button>
-      </Box> */}
+      </Box>
     </Box>
   );
 };

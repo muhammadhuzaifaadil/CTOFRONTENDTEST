@@ -22,6 +22,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   isAuthenticated: boolean;
   refreshAccessToken: () => Promise<string | null>;
+  updateUser: (updatedFields: Partial<User>) => void; //for profile updation
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -32,6 +33,7 @@ export const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   isAuthenticated: false,
   refreshAccessToken: async () => null,
+  updateUser:async ()=>{}
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -124,6 +126,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   //     return null;
   //   }
   // };
+
+  const updateUser = (updatedFields: Partial<User>) => {
+  setUser((prev) => {
+    if (!prev) return prev; // if no user yet
+    const updatedUser = { ...prev, ...updatedFields };
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    return updatedUser;
+  });
+};
+
 const refreshAccessToken = async () => {
   const storedUser = localStorage.getItem("user");
   const parsedUser = storedUser ? JSON.parse(storedUser) : null;
@@ -162,6 +174,7 @@ const refreshAccessToken = async () => {
         logout,
         isAuthenticated,
         refreshAccessToken,
+        updateUser, 
       }}
     >
       {children}

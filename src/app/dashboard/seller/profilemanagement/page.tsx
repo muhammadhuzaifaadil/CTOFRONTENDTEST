@@ -517,7 +517,7 @@ import { useTranslations } from 'next-intl';
 const ProfileManagement:React.FC = ()=>{
     const theme = useTheme()
     const router = useRouter()
-    const { user, isAuthenticated, logout } = useAuth();
+    const { user, isAuthenticated, logout,updateUser } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState("");
     const {isArabic,locale} = useContext(LanguageContext)
     const t = useTranslations("ProfileManagement")
@@ -603,7 +603,14 @@ const handleSubmit = async (e: React.FormEvent) => {
     const res = await apiClient.put(`/users/${user?.id}`, payload);
 
     if (res.data?.Success) {
+      updateUser({
+    firstName: formData.firstName,
+    // middleName: formData.middleName,
+    lastName: formData.lastName,
+    companyName: formData.companyName,
+  });
       alert("✅ Profile updated successfully!");
+      router.push("/dashboard/seller");
     } else {
       alert("⚠️ Failed to update profile. Please try again.");
     }

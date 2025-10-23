@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import PersonIcon from '@mui/icons-material/Person';
 import DashBoardLayout from "@/app/layouts/DashboardLayout";
-import ProtectedRoute from "@/app/components/ProtectedRoute";
+// import ProtectedRoute from "@/app/components/ProtectedRoute";
 import apiClient from "@/api/apiClient";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
@@ -113,7 +113,7 @@ const BuyerDashboard: React.FC = () => {
  
   console.log(user);
   return (
-    <ProtectedRoute allowedRoles={["buyer"]}>    
+    // <ProtectedRoute allowedRoles={["buyer"]}>    
       <DashBoardLayout>
       
     <Box
@@ -211,6 +211,7 @@ const BuyerDashboard: React.FC = () => {
               gap:2
             }}
           >
+          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
             <Box
   sx={{
     borderRadius: "24px",
@@ -220,11 +221,12 @@ const BuyerDashboard: React.FC = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    ml:isArabic?43:0
+    
   }}
 >
             <AddIcon sx={{ fontSize: 26, color: "white", display:'flex', justifyContent:`${isArabic?"flex-end":"flex-start"}` }} />
             
+ </Box>
  </Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("PostProjectHeader")}
@@ -261,6 +263,8 @@ const BuyerDashboard: React.FC = () => {
               gap:2
             }}
           >
+      <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+
 <Box
   sx={{
     borderRadius: "24px",
@@ -270,10 +274,11 @@ const BuyerDashboard: React.FC = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-     ml:isArabic?43:0
+    //  ml:isArabic?43:0
   }}
 >
   <FolderOpenIcon sx={{ fontSize: 26, color: "white" }} />
+</Box>
 </Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("MyProjectHeader")}
@@ -304,6 +309,7 @@ const BuyerDashboard: React.FC = () => {
               gap:2
             }}
           >
+          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
             <Box
   sx={{
     borderRadius: "24px",
@@ -313,10 +319,11 @@ const BuyerDashboard: React.FC = () => {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-     ml:isArabic?43:0
+    //  ml:isArabic?43:0
   }}
 >
             <PersonIcon sx={{ fontSize: 26, color: "white" }}/>
+           </Box>
            </Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("ProfileSettingHeader")}
@@ -495,7 +502,7 @@ const BuyerDashboard: React.FC = () => {
       </Box>
     </Box>
     </DashBoardLayout>
-    </ProtectedRoute>
+    // </ProtectedRoute>
 
   );
 };

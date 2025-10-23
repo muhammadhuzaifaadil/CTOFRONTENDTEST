@@ -36,9 +36,11 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=10");
+      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
-
+      console.log(res);
+      console.log(bids);
+      console.log(recentProjects);
       if (res.data?.Success && Array.isArray(bids)) {
         setRecentProjects(bids);
       } else {
@@ -189,6 +191,7 @@ useEffect(() => {
               gap:2
             }}
           >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
             <Box
               sx={{
                 borderRadius: "24px",
@@ -198,10 +201,11 @@ useEffect(() => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ml:isArabic?43:0
+                // ml:isArabic?43:0
               }}
             >
                         <SearchIcon sx={{ fontSize: 26, color: "white" }}/>
+             </Box>
              </Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("BrowseProjectHeader")}
@@ -237,6 +241,7 @@ useEffect(() => {
               gap:2
             }}
           >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
             <Box
               sx={{
                 borderRadius: "24px",
@@ -246,10 +251,11 @@ useEffect(() => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ml:isArabic?43:0
+                // ml:isArabic?43:0
               }}
             >
               <WorkIcon sx={{ fontSize: 26, color: "white" }} />
+            </Box>
             </Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("MyBidsHeader")}
@@ -280,6 +286,7 @@ useEffect(() => {
               gap:2
             }}
           >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
             <Box
               sx={{
                 borderRadius: "24px",
@@ -289,12 +296,12 @@ useEffect(() => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                ml:isArabic?43:0
+                // ml:isArabic?43:0
               }}
             >
                         <PersonIcon sx={{ fontSize: 26, color: "white" }}/>
                        </Box>
-
+</Box>
             <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
               {t("ProfileSettingHeader")}
             </Typography>
@@ -320,8 +327,8 @@ useEffect(() => {
           </Card>
         </Box>
 
-        {/* ===== Recent Activity (large full-width card) ===== */}
-        <Card
+  {/* ===== Recent Activity (large full-width card) ===== */}
+<Card
   sx={{
     borderRadius: 3,
     boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
@@ -336,142 +343,181 @@ useEffect(() => {
   </Typography>
   <Divider sx={{ mb: 3 }} />
 
-{recentProjects.map((bid: any, idx: number) => {
-  const project = bid.projectInfo || {};
-  const coverLetterPreview =
-    bid.proposalText?.length > 430
-      ? bid.proposalText.slice(0, 430) + "..."
-      : bid.proposalText;
-
-  return (
-    <Box
-      key={idx}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        borderRadius: 2,
-        boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-        p: 2,
-        backgroundColor: "white",
-        transition: "0.3s",
-        "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.08)" },
-      }}
-    >
-      {/* ===== Header ===== */}
+  {/* when no project */}
+  {recentProjects.length === 0 ? (
+    <>
       <Box
         sx={{
+          minHeight: 220,
           display: "flex",
-          justifyContent: "space-between",
           alignItems: "center",
-        }}
-      >
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-          {project.title || "No title"}
-        </Typography>
-
-        <Chip
-          label={bid.status || "Unknown"}
-          size="small"
-          sx={{
-            fontWeight: 600,
-            color: "white",
-            backgroundColor:
-              bid.status === "Withdrawn"
-                ? theme.palette.error.main
-                : theme.palette.success.main,
-          }}
-        />
-      </Box>
-
-      <Typography variant="caption" sx={{ color: "gray", mt: 0.5 }}>
-        Budget Range: {project.budgetRange || "N/A"}
-      </Typography>
-
-      {/* ===== Budget & Timeline ===== */}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          justifyContent: "space-between",
-          gap: 2,
-          mt: 2,
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 1,
         }}
       >
         <Box
           sx={{
-            flex: 1,
-            backgroundColor: theme.palette.grey[100],
-            borderRadius: 2,
-            p: 2,
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.background.paper,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <AttachMoneyIcon
-              sx={{
-                fontSize: 18,
-                color: theme.palette.primary.main,
-              }}
-            />
-            <Typography variant="body2" sx={{ fontWeight: 500 }}>
-              Your Bid Amount
-            </Typography>
-          </Box>
-          <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
-            {bid.bidAmount || "N/A"}
-          </Typography>
+          {/* placeholder icon circle */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M3 6h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
         </Box>
-
-        <Box
-          sx={{
-            flex: 1,
-            backgroundColor: theme.palette.grey[100],
-            borderRadius: 2,
-            p: 2,
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <AccessTimeIcon
-              sx={{
-                fontSize: 18,
-                color: theme.palette.primary.main,
-              }}
-            />
-            <Typography variant="body2" sx={{ fontWeight: 500 }}>
-              Timeline
-            </Typography>
-          </Box>
-          <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
-            {bid.timeline || "N/A"}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* ===== Proposal Text ===== */}
-      <Box
-        sx={{
-          mt: 2,
-          backgroundColor: theme.palette.grey[100],
-          borderRadius: 2,
-          p: 2,
-        }}
-      >
-        <Typography variant="body2" fontWeight={500}>
-          Your Proposal:
+        <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
+          No projects yet
         </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ mt: 0.5 }}
-        >
-          {coverLetterPreview || "No proposal provided."}
+        <Typography variant="body2" color="text.secondary">
+          Start by posting your first project
         </Typography>
       </Box>
-    </Box>
-  );
-})}
+    </>
+  ) : (
+    <>
+      {recentProjects.map((bid: any, idx: number) => {
+        const project = bid.projectInfo || {};
+        const coverLetterPreview =
+          bid.proposalText?.length > 430
+            ? bid.proposalText.slice(0, 430) + "..."
+            : bid.proposalText;
 
+        return (
+          <Box
+            key={idx}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              borderRadius: 2,
+              boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+              p: 2,
+              backgroundColor: "white",
+              transition: "0.3s",
+              "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.08)" },
+            }}
+          >
+            {/* ===== Header ===== */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                {project.title || "No title"}
+              </Typography>
+
+              <Chip
+                label={bid.status || "Unknown"}
+                size="small"
+                sx={{
+                  fontWeight: 600,
+                  color: "white",
+                  backgroundColor:
+                    bid.status === "Withdrawn"
+                      ? theme.palette.error.main
+                      : theme.palette.success.main,
+                }}
+              />
+            </Box>
+
+            <Typography variant="caption" sx={{ color: "gray", mt: 0.5 }}>
+              Budget Range: {project.budgetRange || "N/A"}
+            </Typography>
+
+            {/* ===== Budget & Timeline ===== */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "space-between",
+                gap: 2,
+                mt: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 2,
+                  p: 2,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AttachMoneyIcon
+                    sx={{
+                      fontSize: 18,
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    Your Bid Amount
+                  </Typography>
+                </Box>
+                <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
+                  {bid.bidAmount || "N/A"}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  flex: 1,
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 2,
+                  p: 2,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AccessTimeIcon
+                    sx={{
+                      fontSize: 18,
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    Timeline
+                  </Typography>
+                </Box>
+                <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
+                  {bid.timeline || "N/A"}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* ===== Proposal Text ===== */}
+            <Box
+              sx={{
+                mt: 2,
+                backgroundColor: theme.palette.grey[100],
+                borderRadius: 2,
+                p: 2,
+              }}
+            >
+              <Typography variant="body2" fontWeight={500}>
+                Your Proposal:
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                {coverLetterPreview || "No proposal provided."}
+              </Typography>
+            </Box>
+          </Box>
+        );
+      })}
+    </>
+  )}
 </Card>
+
       </Box>
     </Box>
   );

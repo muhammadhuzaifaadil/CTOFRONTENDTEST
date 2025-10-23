@@ -19,6 +19,7 @@ import DashBoardLayout from "../../../layouts/DashboardLayout"; // adjust import
 import apiClient from "@/api/apiClient";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
+import BidsModal from "@/app/components/BidsModal";
 
 const ManageProjects: React.FC = () => {
   const theme = useTheme();
@@ -31,6 +32,13 @@ const ManageProjects: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { isArabic, locale } = useContext(LanguageContext);
     const t = useTranslations("ManageProject");
+    const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = (projectId: number) => {
+    setSelectedProjectId(projectId);
+    setOpenModal(true);
+  };
   // const recentProjects = [
   //   {
   //     Title: "Restaurant Menu and Promotional Materials",
@@ -95,7 +103,7 @@ const ManageProjects: React.FC = () => {
         filterKey: "status",
         filterBy: status,
         page,
-        limit: 2,
+        limit: 12,
       },
     });
 
@@ -468,7 +476,18 @@ const ManageProjects: React.FC = () => {
               {t("Content")}
             </Typography>
           </Box>
-
+<Typography
+              variant="subtitle1"
+              sx={{
+                width: "100%",
+                fontWeight: "bold",
+                // mb: 1.5,
+                borderBottom: `2px solid #f5b400`,
+                // pb: 0.5,
+              }}
+            >
+              {isArabic?selectedStatusArabic: selectedStatus} ({projects.length})
+            </Typography>
           {/* Projects */}
           <Box
             sx={{
@@ -478,24 +497,25 @@ const ManageProjects: React.FC = () => {
               flexDirection: "column",
               alignItems: "center",
               gap: 2,
-              overflowY: "auto",
-              maxHeight: "500px",
-              scrollbarWidth: "none",
-              "&::-webkit-scrollbar": { display: "none" },
+              overflowY: "auto",        // ✅ only vertical scroll
+    maxHeight: "550px",       // ✅ enough for about 2 cards (each 183px + spacing)
+    paddingRight: 1,          // ✅ avoids scrollbar overlay on content
+    scrollbarWidth: "thin",   // ✅ Firefox scroll styling
+              "&::-webkit-scrollbar": {
+      width: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ccc",
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: "#aaa",
+    },
+              // scrollbarWidth: "none",
+              // "&::-webkit-scrollbar": { display: "none" },
             }}
           >
-            <Typography
-              variant="subtitle1"
-              sx={{
-                width: "100%",
-                fontWeight: "bold",
-                mb: 1,
-                borderBottom: `2px solid #f5b400`,
-                pb: 0.5,
-              }}
-            >
-              {isArabic?selectedStatusArabic: selectedStatus} ({projects.length})
-            </Typography>
+            
 
             {loading ? (
               <Typography>Loading projects...</Typography>
@@ -516,17 +536,21 @@ const ManageProjects: React.FC = () => {
                 <Card
                   key={index}
                   sx={{
+                    display:"flex",
                     p: 2,
                     borderRadius: 3,
-                    width: "100%",
+       
+                    width: "1000px",
+                    height:"240px",
+                    flexShrink: 0,
                     boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
                     backgroundColor: "white",
                   }}
                 >
-                  <CardContent>
+                  <CardContent sx={{display:"flex",width:"100%",flexDirection:"column"}}>
                     <Box
                       sx={{
-                        display: "flex",
+                        display:"flex",
                         justifyContent: "space-between",
                         alignItems: "center",
                         mb: 1,
@@ -552,7 +576,10 @@ const ManageProjects: React.FC = () => {
                     </Box>
 
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      {project.outline}
+                      {project.outline
+    ? project.outline.split(" ").slice(0, 50).join(" ") +
+      (project.outline.split(" ").length > 50 ? "..." : "")
+    : "No outline available."}
                     </Typography>
 
                     <Divider sx={{ my: 1 }} />
@@ -580,6 +607,21 @@ const ManageProjects: React.FC = () => {
                           {(project.skillsRequired || []).join(", ") || "0 required"}
                         </span>
                       </Typography>
+                    </Box>
+                    <Box display={"flex"} justifyContent={"center"}>
+                      <Button
+                                        fullWidth
+                                        variant="contained"
+                                        sx={{
+                                          mt: 2,
+                                          borderRadius: "12px",
+                                          textTransform: "none",
+                                          py: 1.2,
+                                        }}
+                                        onClick={() => handleOpenModal(project.id)}
+                                      >
+                                        View Bids
+                                      </Button>
                     </Box>
                   </CardContent>
                 </Card>
@@ -614,6 +656,11 @@ const ManageProjects: React.FC = () => {
               Next
             </Button>
           </Box>
+           <BidsModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        projectId={selectedProjectId}
+      />
         </Container>
       </Box>
     </DashBoardLayout>

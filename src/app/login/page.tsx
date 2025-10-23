@@ -83,14 +83,14 @@ const Login: React.FC = () => {
           />
         
       </Box>
-      {/* arabic english toggle */}
+      {/* arabic english toggle
       <Button
         variant="outlined"
         onClick={toggleLanguage}
         sx={{ position:'fixed', ml:"888px",mt:1 }}
       >
         {locale === "en" ? "عربي" : "English"}
-      </Button>
+      </Button> */}
 
       {/* Center Box - Login Form (Wider) */}
       
@@ -101,9 +101,22 @@ const Login: React.FC = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+           position: "relative", // 👈 key to anchor the toggle
+        minHeight: "100vh", // ensures proper height for positioning
         }}
       >
-        
+         {/* Language Toggle at top-right inside center box */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+        }}
+      >
+        <Button variant="outlined" onClick={toggleLanguage}>
+          {locale === "en" ? "عربي" : "English"}
+        </Button>
+      </Box>
         <Box
           sx={{
             width: "100%",
