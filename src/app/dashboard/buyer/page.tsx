@@ -54,7 +54,7 @@ const BuyerDashboard: React.FC = () => {
   const token = localStorage.getItem("accessToken");
   if (!token) return; // ⛔ Skip if logged out
     try {
-      const res = await apiClient.get("http://localhost:3005/projects");
+      const res = await apiClient.get("https://cto-backend-test.onrender.com/projects");
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
