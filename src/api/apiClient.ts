@@ -15,7 +15,7 @@ import { AuthContext } from "@/app/contexts/AuthContext";
 import React from "react";
 
 const apiClient = axios.create({
-  baseURL: "https://cto-backend-test.onrender.com",
+  baseURL: "http://localhost:3005",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
       if (refreshToken) {
         try {
           const parsedUser = user ? JSON.parse(user) : null;
-          const res = await axios.post("https://cto-backend-test.onrender.com/auth/refresh", {
+          const res = await axios.post("http://localhost:3005/auth/refresh", {
             userId: parsedUser?.id,
             refreshToken,
           });

@@ -136,7 +136,7 @@ useEffect(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      let url = `https://cto-backend-test.onrender.com/projects/paginated/all?page=${page}&limit=5`;
+      let url = `http://localhost:3005/projects/paginated/all?page=${page}&limit=5`;
 
       // ✅ Use backend search (multi-field) when user types
       if (searchTerm.trim()) {

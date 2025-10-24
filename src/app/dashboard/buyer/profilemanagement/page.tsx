@@ -138,12 +138,14 @@ const handleSubmit = async (e: React.FormEvent) => {
     const res = await apiClient.put(`/users/${user?.id}`, payload);
 
     if (res.data?.Success) {
-        updateUser({
-    firstName: formData.firstName,
-    // middleName: formData.middleName,
-    lastName: formData.lastName,
-    companyName: formData.companyName,
-  });
+    const updatedFields: Partial<any> = {}; //replace any with User
+
+if (formData.firstName?.trim()) updatedFields.firstName = formData.firstName;
+if (formData.lastName?.trim()) updatedFields.lastName = formData.lastName;
+if (formData.companyName?.trim()) updatedFields.companyName = formData.companyName;
+
+updateUser(updatedFields);
+
       alert("✅ Profile updated successfully!");
       router.push("/dashboard/buyer");
     } else {

@@ -29,6 +29,19 @@ const [recentProjects, setRecentProjects] = useState<any[]>([]);
 const [loadingProjects, setLoadingProjects] = useState(true);
 const {isArabic,locale} = useContext(LanguageContext);
 const t = useTranslations("SellerDashboard")
+useEffect(() => {
+  const blockBackForward = () => {
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  window.addEventListener("popstate", blockBackForward);
+  blockBackForward(); // push initial state
+
+  return () => {
+    window.removeEventListener("popstate", blockBackForward);
+  };
+}, []);
+
 
 useEffect(() => {
   const fetchBids = async () => {
@@ -36,7 +49,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("https://cto-backend-test.onrender.com/bids/paginated/all?page=1&limit=3");
+      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
       console.log(res);
       console.log(bids);

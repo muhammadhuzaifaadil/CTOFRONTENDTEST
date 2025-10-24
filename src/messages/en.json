@@ -32,7 +32,7 @@
         "FieldPlaceholder":"Enter your email",
         "SendOTPButton":"Send OTP",
         "OTPHeader":"VERIFY OTP",
-        "OTPContent":"Enter the 4-digit OTP sent to your email",
+        "OTPContent":"Enter the 6-digit OTP sent to your email",
         "NewPassHeader":"SET NEW PASSWORD",
         "NewPassContent":"Enter your new password below",
         "NewPasswordLabel":"New Password",
