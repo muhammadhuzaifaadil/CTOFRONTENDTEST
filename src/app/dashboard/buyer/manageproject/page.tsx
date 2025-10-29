@@ -10,6 +10,7 @@ import {
   Stack,
   Button,
   Container,
+  CircularProgress,
 } from "@mui/material";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,11 +21,12 @@ import apiClient from "@/api/apiClient";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import BidsModal from "@/app/components/BidsModal";
+import { useAuth } from "@/hooks/useAuth";
 
 const ManageProjects: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
-
+  const {user} = useAuth();
   const [projects, setProjects] = useState<any[]>([]);
   const [selectedStatus, setSelectedStatus] = useState("In Progress");
   const [selectedStatusArabic,setSelectedStatusArabic]= useState("")
@@ -133,536 +135,274 @@ const ManageProjects: React.FC = () => {
   }, [selectedStatus]);
 
   return (
-    // <DashBoardLayout>
-    //   <Box
-    //     sx={{
-    //       minHeight: "100vh",
-    //       display: "flex",
-    //       flexDirection: "column",
-    //       alignItems: "center",
-    //       justifyContent: "flex-start",
-    //       background: "white",
-    //       mt:3,
-    //       py: { xs: 2, sm: 4, md: 6 },
-    //     }}
-    //   >
-    //     {/* Back Button */}
-    //     <Box
-    //       sx={{
-    //         display: "flex",
-    //         width: "75%", // Wider alignment for main container
-    //         justifyContent: "flex-start",
-    //         mb: 2,
-    //       }}
-    //     >
-    //       <Button
-    //         startIcon={<ArrowBackIcon />}
-    //         onClick={() => router.push("/dashboard/buyer")}
-    //         sx={{
-    //           textTransform: "none",
-    //           fontSize: "16px",
-    //           fontWeight: "600",
-    //           color: "black",
-    //         }}
-    //       >
-    //         Back to Dashboard
-    //       </Button>
-    //     </Box>
-
-    //     {/* Main Content Container */}
-    //     <Container
-    //       maxWidth={false}
-    //       sx={{
-    //         backgroundColor: theme.palette.background.default,
-    //         borderRadius: 3,
-    //         width: "1152px", // Larger width
-    //         height: "886px", // Fixed container height
-    //         p: { xs: 3, sm: 4, md: 5 },
-    //         boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
-    //         display: "flex",
-    //         flexDirection: "column",
-    //         alignItems: "center",
-    //         justifyContent: "flex-start",
-    //         transition: "0.3s ease",
-    //       }}
-    //     >
-    //       {/* Filter Section */}
-    //       <Stack direction="row" spacing={2} sx={{display:"flex" ,width:"100%" ,justifyContent:"flex-start"}} mb={3}>
-    //         {statusFilters.map((status) => (
-    //           <Chip
-    //             key={status.label}
-    //             label={status.label}
-    //             onClick={() => setSelectedStatus(status.label)}
-    //             sx={{
-    //               backgroundColor: theme.palette.grey[200],
-    //                 //  selectedStatus === status.label ? status.color : "#f3f3f3",
-    //               fontWeight: selectedStatus === status.label ? 600 : 400,
-    //               color:
-    //                 selectedStatus === status.label
-    //                   ? status.color
-    //                   : theme.palette.text.secondary,
-    //               cursor: "pointer",
-    //               border:`3 px solid ${status.color}`,
-    //               outline:`3 px solid ${status.color}`,
-    //               px: 1.5,
-    //               py: 1,
-    //               fontSize: "0.9rem",
-    //               borderRadius: 2,
-                  
-    //             }}
-    //           />
-    //         ))}
-    //       </Stack>
-
-    //       {/* Header */}
-    //       <Box
-    //         sx={{
-    //           display: "flex",
-    //           flexDirection: "column",
-    //           alignItems: "center",
-    //           gap: 1,
-    //           mb: 3,
-    //         }}
-    //       >
-    //         <FolderOpenIcon
-    //           sx={{
-    //             borderRadius: "24px",
-    //             height: "50px",
-    //             width: "50px",
-    //             backgroundColor: theme.palette.primary.main,
-    //             color: "white",
-    //             p: 1,
-    //           }}
-    //         />
-    //         <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
-    //           Project Management
-    //         </Typography>
-    //         <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-    //           My Projects
-    //         </Typography>
-    //         <Typography
-    //           variant="body1"
-    //           sx={{ color: "#6c757d", textAlign: "center" }}
-    //         >
-    //           View, Edit, and Manage all your Projects
-    //         </Typography>
-    //       </Box>
-
-    //       {/* Projects Section */}
-    //       <Box
-    //         sx={{
-    //           width: "100%",
-    //           flex: 1,
-    //           display: "flex",
-    //           flexDirection: "column",
-    //           alignItems: "center",
-    //           justifyContent:"flex-start" ,
-    //           gap: 2,
-    //           overflowY: "auto",
-    //           maxHeight: "500px", // Keeps layout height stable
-    //           scrollbarWidth: "none",
-    //           "&::-webkit-scrollbar": { display: "none" },
-    //         }}
-    //       >
-    //         {/* Title */}
-    //         <Typography
-    //           variant="subtitle1"
-    //           sx={{
-    //             display:"flex",
-    //             justifyContent:"flex-start",
-    //             alignItems:"start",
-    //             width:"100%",
-    //             fontWeight: "bold",
-    //             mb: 1,
-    //             borderBottom: `2px solid #f5b400`,
-    //             pb: 0.5,
-    //           }}
-    //         >
-    //           {selectedStatus} ({projects.length})
-    //         </Typography>
-
-    //         {/* Conditional rendering */}
-    //         {projects.length === 0 ? (
-    //           <Typography
-    //             variant="body1"
-    //             sx={{
-    //               color: "#9e9e9e",
-    //               fontWeight: 500,
-    //               textAlign: "center",
-    //               mt: 4,
-    //             }}
-    //           >
-    //             No projects found for this status.
-    //           </Typography>
-    //         ) : (
-    //           projects.map((project, index) => (
-    //             <Card
-    //               key={index}
-    //               sx={{
-    //                 p: 2,
-    //                 borderRadius: 3,
-    //                 width: "100%",
-    //                 boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
-    //                 backgroundColor: "white",
-    //               }}
-    //             >
-    //               <CardContent>
-    //                 <Box
-    //                   sx={{
-    //                     display: "flex",
-    //                     justifyContent: "space-between",
-    //                     alignItems: "center",
-    //                     mb: 1,
-    //                   }}
-    //                 >
-    //                   <Typography
-    //                     variant="subtitle1"
-    //                     sx={{ fontWeight: "bold", color: "#333" }}
-    //                   >
-    //                     {project.Title}
-    //                   </Typography>
-    //                   <Chip
-    //                     label={project.Status}
-    //                     sx={{
-    //                       backgroundColor: project.StatusColor,
-    //                       color: "white",
-    //                       fontWeight: 600,
-    //                     }}
-    //                     size="small"
-    //                   />
-    //                 </Box>
-
-    //                 <Typography
-    //                   variant="body2"
-    //                   color="text.secondary"
-    //                   sx={{ mb: 2 }}
-    //                 >
-    //                   {project.Outline}
-    //                 </Typography>
-
-    //                 <Divider sx={{ my: 1 }} />
-
-    //                 <Box
-    //                   sx={{
-    //                     display: "flex",
-    //                     justifyContent: "space-between",
-    //                     flexWrap: "wrap",
-    //                     gap: 2,
-    //                   }}
-    //                 >
-    //                   <Typography variant="body2">
-    //                     <strong>Budget:</strong> {project.Budget}
-    //                   </Typography>
-    //                   <Typography variant="body2">
-    //                     <strong>Timeline:</strong>{" "}
-    //                     <span style={{ color: theme.palette.primary.main }}>
-    //                       {project.Timeline}
-    //                     </span>
-    //                   </Typography>
-    //                   <Typography variant="body2">
-    //                     <strong>Skills:</strong>{" "}
-    //                     <span style={{ color: theme.palette.primary.main }}>
-    //                       {project.Skills || "0 required"}
-    //                     </span>
-    //                   </Typography>
-    //                 </Box>
-    //               </CardContent>
-    //             </Card>
-    //           ))
-    //         )}
-    //       </Box>
-    //     </Container>
-    //   </Box>
-    // </DashBoardLayout>
+    
    <DashBoardLayout>
+      {!user?(
+            <Box
+              sx={{
+                height: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress size={80} thickness={5} />
+            </Box>
+          ):( 
       <Box
+  sx={{
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    background: "white",
+    mt: {xs:6,md:3},
+    py: { xs: 2, sm: 4, md: 6 },
+  }}
+>
+  {/* Back Button */}
+  <Box
+    sx={{
+      display: "flex",
+      width: { xs: "95%", sm: "75%", md: "75%" },
+      justifyContent: "flex-start",
+      mb: 2,
+    }}
+  >
+    <Button
+      startIcon={<ArrowBackIcon />}
+      onClick={() => router.push("/dashboard/buyer")}
+      sx={{
+        textTransform: "none",
+        fontSize: { xs: "14px", sm: "16px" },
+        fontWeight: 600,
+        color: "black",
+      }}
+    >
+      {t("BackButton")}
+    </Button>
+  </Box>
+
+  <Container
+    maxWidth={false}
+    sx={{
+      backgroundColor: theme.palette.background.default,
+      borderRadius: 3,
+      width: { xs: "100%", sm: "90%", md: "1152px" },
+      height: { xs: "auto", sm: "auto", md: "886px" },
+      p: { xs: 2, sm: 3, md: 5 },
+      boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      transition: "0.3s ease",
+      overflow: "hidden",
+    }}
+  >
+    {/* Filter Chips */}
+    <Stack direction="row" spacing={1} sx={{ width: "100%", overflowX: { xs: "auto", sm: "auto", md: "visible" } }} mb={3}>
+      {statusFilters.map((status) => (
+        <Chip
+          key={status.value}
+          label={status.label}
+          onClick={() => {
+            setSelectedStatus(status.value);
+            setSelectedStatusArabic(status.label);
+          }}
+          sx={{
+            backgroundColor: theme.palette.grey[200],
+            fontWeight: selectedStatus === status.label ? 600 : 400,
+            color:
+              selectedStatus === status.value
+                ? status.color
+                : theme.palette.text.secondary,
+            cursor: "pointer",
+            border: `2px solid ${status.color}`,
+            px: 1.5,
+            py: 1,
+            fontSize: { xs: "0.8rem", sm: "0.9rem", md: "0.9rem" },
+            borderRadius: 2,
+            flexShrink: 0,
+          }}
+        />
+      ))}
+    </Stack>
+
+    {/* Header */}
+    <Box sx={{ textAlign: "center", mb: 3 }}>
+      <FolderOpenIcon
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          background: "white",
-          mt: 3,
-          py: { xs: 2, sm: 4, md: 6 },
+          borderRadius: "24px",
+          height: { xs: 40, sm: 45, md: 50 },
+          width: { xs: 40, sm: 45, md: 50 },
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          p: 1,
         }}
-      >
-        {/* Back Button */}
-        <Box
-          sx={{
-            display: "flex",
-            width: "75%",
-            justifyContent: "flex-start",
-            mb: 2,
-          }}
-        >
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => router.push("/dashboard/buyer")}
-            sx={{
-              textTransform: "none",
-              fontSize: "16px",
-              fontWeight: "600",
-              color: "black",
-            }}
-          >
-            {t("BackButton")}
-          </Button>
-        </Box>
-
-        <Container
-          maxWidth={false}
-          sx={{
-            backgroundColor: theme.palette.background.default,
-            borderRadius: 3,
-            width: "1152px",
-            height: "886px",
-            p: { xs: 3, sm: 4, md: 5 },
-            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "flex-start",
-            transition: "0.3s ease",
-          }}
-        >
-          {/* Filter Chips */}
-          <Stack direction="row" spacing={2} sx={{ width: "100%" }} mb={3}>
-            {statusFilters.map((status) => (
-              <Chip
-                key={status.value}
-                label={status.label}
-                onClick={() => {
-                  setSelectedStatus(status.value);
-                  setSelectedStatusArabic(status.label)
-                }}
-                sx={{
-                  backgroundColor: theme.palette.grey[200],
-                  fontWeight: selectedStatus === status.label ? 600 : 400,
-                  color:
-                    selectedStatus === status.value
-                      ? status.color
-                      : theme.palette.text.secondary,
-                  cursor: "pointer",
-                  border: `2px solid ${status.color}`,
-                  px: 1.5,
-                  py: 1,
-                  fontSize: "0.9rem",
-                  borderRadius: 2,
-                }}
-              />
-            ))}
-          </Stack>
-
-          {/* Header */}
-          <Box sx={{ textAlign: "center", mb: 3 }}>
-            <FolderOpenIcon
-              sx={{
-                borderRadius: "24px",
-                height: "50px",
-                width: "50px",
-                backgroundColor: theme.palette.primary.main,
-                color: "white",
-                p: 1,
-              }}
-            />
-            <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
-              {t("Header1")}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {t("Header2")}
-            </Typography>
-            <Typography variant="body1" sx={{ color: "#6c757d" }}>
-              {t("Content")}
-            </Typography>
-          </Box>
-<Typography
-              variant="subtitle1"
-              sx={{
-                width: "100%",
-                fontWeight: "bold",
-                // mb: 1.5,
-                borderBottom: `2px solid #f5b400`,
-                // pb: 0.5,
-              }}
-            >
-              {isArabic?selectedStatusArabic: selectedStatus} ({projects.length})
-            </Typography>
-          {/* Projects */}
-          <Box
-            sx={{
-              width: "100%",
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 2,
-              overflowY: "auto",        // ✅ only vertical scroll
-    maxHeight: "550px",       // ✅ enough for about 2 cards (each 183px + spacing)
-    paddingRight: 1,          // ✅ avoids scrollbar overlay on content
-    scrollbarWidth: "thin",   // ✅ Firefox scroll styling
-              "&::-webkit-scrollbar": {
-      width: "8px",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "#ccc",
-      borderRadius: "8px",
-    },
-    "&::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: "#aaa",
-    },
-              // scrollbarWidth: "none",
-              // "&::-webkit-scrollbar": { display: "none" },
-            }}
-          >
-            
-
-            {loading ? (
-              <Typography>Loading projects...</Typography>
-            ) : projects.length === 0 ? (
-              <Typography
-                variant="body1"
-                sx={{
-                  color: "#9e9e9e",
-                  fontWeight: 500,
-                  textAlign: "center",
-                  mt: 4,
-                }}
-              >
-                {t("NotFound")}
-              </Typography>
-            ) : (
-              projects.map((project, index) => (
-                <Card
-                  key={index}
-                  sx={{
-                    display:"flex",
-                    p: 2,
-                    borderRadius: 3,
-       
-                    width: "1000px",
-                    height:"240px",
-                    flexShrink: 0,
-                    boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
-                    backgroundColor: "white",
-                  }}
-                >
-                  <CardContent sx={{display:"flex",width:"100%",flexDirection:"column"}}>
-                    <Box
-                      sx={{
-                        display:"flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 1,
-                      }}
-                    >
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ fontWeight: "bold", color: "#333" }}
-                      >
-                        {project.title}
-                      </Typography>
-                      <Chip
-                        label={project.status}
-                        sx={{
-                          backgroundColor:
-                            statusFilters.find((s) => s.value === project.status)?.color ||
-                            "grey",
-                          color: "white",
-                          fontWeight: 600,
-                        }}
-                        size="small"
-                      />
-                    </Box>
-
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      {project.outline
-    ? project.outline.split(" ").slice(0, 50).join(" ") +
-      (project.outline.split(" ").length > 50 ? "..." : "")
-    : "No outline available."}
-                    </Typography>
-
-                    <Divider sx={{ my: 1 }} />
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flexWrap: "wrap",
-                        gap: 2,
-                      }}
-                    >
-                      <Typography variant="body2">
-                        <strong>Budget:</strong> {project.budgetRange || "Not Specified"}
-                      </Typography>
-                      <Typography variant="body2">
-                        <strong>Timeline:</strong>{" "}
-                        <span style={{ color: theme.palette.primary.main }}>
-                          {project.timeline}
-                        </span>
-                      </Typography>
-                      <Typography variant="body2">
-                        <strong>Skills:</strong>{" "}
-                        <span style={{ color: theme.palette.primary.main }}>
-                          {(project.skillsRequired || []).join(", ") || "0 required"}
-                        </span>
-                      </Typography>
-                    </Box>
-                    <Box display={"flex"} justifyContent={"center"}>
-                      <Button
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{
-                                          mt: 2,
-                                          borderRadius: "12px",
-                                          textTransform: "none",
-                                          py: 1.2,
-                                        }}
-                                        onClick={() => handleOpenModal(project.id)}
-                                      >
-                                        View Bids
-                                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))
-            )}
-          </Box>
-
-          {/* Pagination */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              mt: 2,
-              gap: 1,
-            }}
-          >
-            <Button
-              variant="outlined"
-              disabled={pagination.page <= 1}
-              onClick={() => fetchProjects(selectedStatus, pagination.page - 1)}
-            >
-              Prev
-            </Button>
-            <Typography>
-              Page {pagination.page} of {pagination.totalPages}
-            </Typography>
-            <Button
-              variant="outlined"
-              disabled={pagination.page >= pagination.totalPages}
-              onClick={() => fetchProjects(selectedStatus, pagination.page + 1)}
-            >
-              Next
-            </Button>
-          </Box>
-           <BidsModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-        projectId={selectedProjectId}
       />
-        </Container>
-      </Box>
+      <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
+        {t("Header1")}
+      </Typography>
+      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+        {t("Header2")}
+      </Typography>
+      <Typography variant="body1" sx={{ color: "#6c757d" }}>
+        {t("Content")}
+      </Typography>
+    </Box>
+
+    {/* Status Header */}
+    <Typography
+      variant="subtitle1"
+      sx={{
+        width: "100%",
+        fontWeight: "bold",
+        borderBottom: `2px solid #f5b400`,
+        mb: 2,
+      }}
+    >
+      {isArabic ? selectedStatusArabic : selectedStatus} ({projects.length})
+    </Typography>
+
+    {/* Projects */}
+    <Box
+      sx={{
+        width: "100%",
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        overflowY: "auto",
+        maxHeight: { xs: "400px", sm: "500px", md: "550px" },
+        paddingRight: 1,
+        scrollbarWidth: "thin",
+        "&::-webkit-scrollbar": { width: "8px" },
+        "&::-webkit-scrollbar-thumb": { backgroundColor: "#ccc", borderRadius: "8px" },
+        "&::-webkit-scrollbar-thumb:hover": { backgroundColor: "#aaa" },
+      }}
+    >
+      {loading ? (
+        <Typography>Loading projects...</Typography>
+      ) : projects.length === 0 ? (
+        <Typography
+          variant="body1"
+          sx={{
+            color: "#9e9e9e",
+            fontWeight: 500,
+            textAlign: "center",
+            mt: 4,
+          }}
+        >
+          {t("NotFound")}
+        </Typography>
+      ) : (
+        projects.map((project, index) => (
+          <Card
+            key={index}
+            sx={{
+              display: "flex",
+              p: 2,
+              borderRadius: 3,
+              width: { xs: "100%", sm: "95%", md: "1000px" },
+              height: { xs: "auto", sm: "auto", md: "240px" },
+              flexShrink: 0,
+              boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
+              backgroundColor: "white",
+              flexDirection: { xs: "column", sm: "column", md: "row" },
+            }}
+          >
+            <CardContent sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
+              {/* Project Header */}
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1, flexWrap: "wrap" }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: "#333" }}>
+                  {project.title}
+                </Typography>
+                <Chip
+                  label={project.status}
+                  sx={{
+                    backgroundColor:
+                      statusFilters.find((s) => s.value === project.status)?.color ||
+                      "grey",
+                    color: "white",
+                    fontWeight: 600,
+                  }}
+                  size="small"
+                />
+              </Box>
+
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {project.outline
+                  ? project.outline.split(" ").slice(0, 50).join(" ") +
+                    (project.outline.split(" ").length > 50 ? "..." : "")
+                  : "No outline available."}
+              </Typography>
+
+              <Divider sx={{ my: 1 }} />
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 2 }}>
+                <Typography variant="body2">
+                  <strong>Budget:</strong> {project.budgetRange || "Not Specified"}
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Timeline:</strong>{" "}
+                  <span style={{ color: theme.palette.primary.main }}>{project.timeline}</span>
+                </Typography>
+                <Typography variant="body2">
+                  <strong>Skills:</strong>{" "}
+                  <span style={{ color: theme.palette.primary.main }}>
+                    {(project.skillsRequired || []).join(", ") || "0 required"}
+                  </span>
+                </Typography>
+              </Box>
+
+              <Box display={"flex"} justifyContent={"center"} sx={{ mt: 1 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    borderRadius: "12px",
+                    textTransform: "none",
+                    py: 1.2,
+                  }}
+                  onClick={() => handleOpenModal(project.id)}
+                >
+                  View Bids
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
+        ))
+      )}
+    </Box>
+
+    {/* Pagination */}
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 2, gap: 1 }}>
+      <Button
+        variant="outlined"
+        disabled={pagination.page <= 1}
+        onClick={() => fetchProjects(selectedStatus, pagination.page - 1)}
+      >
+        Prev
+      </Button>
+      <Typography>
+        Page {pagination.page} of {pagination.totalPages}
+      </Typography>
+      <Button
+        variant="outlined"
+        disabled={pagination.page >= pagination.totalPages}
+        onClick={() => fetchProjects(selectedStatus, pagination.page + 1)}
+      >
+        Next
+      </Button>
+    </Box>
+
+    <BidsModal open={openModal} onClose={() => setOpenModal(false)} projectId={selectedProjectId} />
+  </Container>
+</Box>
+          )}
     </DashBoardLayout>
   
   );

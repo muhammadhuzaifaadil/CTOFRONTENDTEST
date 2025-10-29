@@ -7,6 +7,8 @@ import {
   Button,
   Divider,
   useTheme,
+  useMediaQuery,
+  CircularProgress,
 } from "@mui/material";
 import Navbar from "../../components/NavBar";
 import { useAuth } from "@/hooks/useAuth";
@@ -27,6 +29,7 @@ const BuyerDashboard: React.FC = () => {
   const t = useTranslations("BuyerDashboard");
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
+const [projectSummary, setProjectSummary] = useState<any>(null);
 useEffect(() => {
   const blockBackForward = () => {
     window.history.pushState(null, "", window.location.href);
@@ -82,16 +85,46 @@ useEffect(() => {
 
   fetchProjects();
 }, [user?.id]);
-    if (!user) return <div>Loading...</div>;
+
+useEffect(() => {
+  const fetchSummary = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token || !user?.id) return;
+
+    try {
+      const res = await apiClient.get(`http://localhost:3005/projects/buyersummary/${user.id}`);
+
+      if (res.data?.Success && res.data?.Data) {
+        setProjectSummary(res.data.Data);
+      } else {
+        setProjectSummary(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch project summary:", error);
+      setProjectSummary(null);
+    }
+  };
+
+  fetchSummary();
+}, [user]);
+
+    // if (!user) return <div>Loading...</div>;
 
   // Dummy stats (replace later with API data)
+  // const stats = [
+  //   { label: `${t("Stats_Actives_Projects")}`, value: 0 },
+  //   { label: `${t("Stats_Pending_Bids")}`, value: 0 },
+  //   { label: `${t("Stats_Completed")}`, value: 0 },
+  //   { label: `${t("Stats_Total_Spent")}`, value: "$0" },
+  // ];
   const stats = [
-    { label: `${t("Stats_Actives_Projects")}`, value: 0 },
-    { label: `${t("Stats_Pending_Bids")}`, value: 0 },
-    { label: `${t("Stats_Completed")}`, value: 0 },
-    { label: `${t("Stats_Total_Spent")}`, value: "$0" },
-  ];
-
+  { label: t("Stats_Actives_Projects"), value: projectSummary?.activeProjects || 0 },
+  { label: t("Stats_Pending_Bids"), value: projectSummary?.pendingBids || 0 },
+  { label: t("Stats_Completed"), value: projectSummary?.completed || 0 },
+  { label: t("Stats_Total_Spent"), value: `$${projectSummary?.totalSpent || 0}` },
+];
+const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("sm")); 
   // Recent projects array
   // const recentProjects:any = [
   //   {
@@ -127,12 +160,24 @@ useEffect(() => {
   return (
     // <ProtectedRoute allowedRoles={["buyer"]}>    
       <DashBoardLayout>
-      
+    {!user?(
+      <Box
+        sx={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress size={80} thickness={5} />
+      </Box>
+    ):(  
     <Box
       sx={{
         minHeight: "100vh",
         backgroundColor: theme.palette.background.default,
         overflowX: "hidden",
+        mt:0
       }}
     >
       {/* Navbar (fixed) */}
@@ -164,6 +209,7 @@ useEffect(() => {
         <Box
           sx={{
             display: "flex",
+            // flex:1,
             gap: 2,
             flexWrap: "wrap",
             mb: 4,
@@ -178,7 +224,7 @@ useEffect(() => {
                 p: 2,
                 // Responsive widths using calc to preserve gap
                 width: {
-                  xs: "100%",
+                  xs: "calc(50% - 8px)",
                   sm: "calc(50% - 8px)", // two columns on small screens
                   md: "calc(25% - 12px)", // four columns on md+
                 },
@@ -200,319 +246,424 @@ useEffect(() => {
 
         {/* ===== Middle Actions (3 cards) ===== */}
         <Box
-          sx={{
-            display: "flex",
-            gap: 5,
-            flexDirection: "row",
-            mb: 4,
-            width:"100%",
-            justifyContent:"space-between"
-          }}
-        >
-          {/* Post New Project */}
-          <Card
-            sx={{
-              borderRadius: "24px",
-              p: 3,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-              width: { xs: "100%", md: "calc(33.333% - 12px)" },
-              // width:"389.35px",
-              height:"311.8px",
-              display:"flex",
-              flexDirection:"column",
-              gap:2
-            }}
-          >
-          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
-            <Box
   sx={{
-    borderRadius: "24px",
-    height: "50px",
-    width: "50px",
-    backgroundColor: theme.palette.primary.main,
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    
+    gap: 5,
+    flexDirection: { xs: "column", sm: "column", md: "row" }, // 👈 only changes on small screens
+    mb: 4,
+    width: "100%",
+    justifyContent: "space-between",
   }}
 >
-            <AddIcon sx={{ fontSize: 26, color: "white", display:'flex', justifyContent:`${isArabic?"flex-end":"flex-start"}` }} />
-            
- </Box>
- </Box>
-            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("PostProjectHeader")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("PostProjectContent")}
-            </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                background: theme.palette.primary.main,
-                color: "#fff",
-                fontWeight: 600,
-                borderRadius: 3,
-                width: "100%",
-              }}
-              onClick={() => router.push("/dashboard/buyer/createproject")}
-            >
-              {t("PostProjectButton")}
-            </Button>
-          </Card>
-
-          {/* My Projects */}
-          <Card
-            sx={{
-              borderRadius: "24px",
-              p: 3,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-              width: { xs: "100%", md: "calc(33.333% - 12px)" },
-              //  width:"389.35px",
-              height:"311.8px",
-              display:"flex",
-              flexDirection:"column",
-              gap:2
-            }}
-          >
-      <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
-
-<Box
-  sx={{
-    borderRadius: "24px",
-    height: "50px",
-    width: "50px",
-    backgroundColor: theme.palette.primary.main,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    //  ml:isArabic?43:0
-  }}
->
-  <FolderOpenIcon sx={{ fontSize: 26, color: "white" }} />
-</Box>
-</Box>
-            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("MyProjectHeader")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("MyProjectContent")}
-            </Typography>
-            <Button
-              variant="outlined"
-              sx={{ fontWeight: 600, borderRadius: 3 }}
-              onClick={() => router.push("/dashboard/buyer/manageproject")}
-            >
-              {t("MyProjectButton")}
-            </Button>
-          </Card>
-
-          {/* Profile Settings */}
-          <Card
-            sx={{
-              borderRadius: "24px",
-              p: 3,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-              width: { xs: "100%", md: "calc(33.333% - 12px)" },
-              //  width:"389.35px",
-              height:"311.8px",
-              display:"flex",
-              flexDirection:"column",
-              gap:2
-            }}
-          >
-          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
-            <Box
-  sx={{
-    borderRadius: "24px",
-    height: "50px",
-    width: "50px",
-    backgroundColor: theme.palette.primary.main,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    //  ml:isArabic?43:0
-  }}
->
-            <PersonIcon sx={{ fontSize: 26, color: "white" }}/>
-           </Box>
-           </Box>
-            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("ProfileSettingHeader")}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
-              {t("ProfileSettingsContent")}
-            </Typography>
-            <Box sx={{display:"flex", flexDirection:"row",alignItems:"center",justifyContent:"space-between", gap:1}}>
-            <Button
-              variant="outlined"
-              sx={{ fontWeight: 600, borderRadius: 3, width:"40%" }}
-              onClick={() => router.push("/dashboard/buyer/profilemanagement")}
-            >
-              {t("ProfileSettingsButton1")}
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ fontWeight: 600, borderRadius: 3,width:"50%" }}
-              onClick={() => router.push("/updatepassword")}
-            >
-              {t("ProfileSettingsButton2")}
-            </Button>
-            </Box>
-          </Card>
-        </Box>
-
-        {/* ===== Recent Activity (large full-width card) ===== */}
-        <Card
-          sx={{
-            borderRadius: 3,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-            p: 3,
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
-          >
-            {t("RecentActivity")}
-          </Typography>
-          <Divider sx={{ mb: 3 }} />
-          {/* when no project */}
-          {loadingProjects ? (
-  <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", my: 4 }}>
-    Loading recent projects...
-  </Typography>
-) : recentProjects.length === 0 ? (
-  // ===== Static fallback when there are no projects =====
-  <Box
+  {/* Post New Project */}
+  <Card
     sx={{
-      minHeight: 220,
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
       display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
       flexDirection: "column",
-      gap: 1,
+      gap: 2,
     }}
   >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <AddIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("PostProjectHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("PostProjectContent")}
+    </Typography>
+
+    <Button
+      variant="contained"
+      sx={{
+        background: theme.palette.primary.main,
+        color: "#fff",
+        fontWeight: 600,
+        borderRadius: 3,
+        width: "100%",
+      }}
+      onClick={() => router.push("/dashboard/buyer/createproject")}
+    >
+      {t("PostProjectButton")}
+    </Button>
+  </Card>
+
+  {/* My Projects */}
+  <Card
+    sx={{
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <FolderOpenIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("MyProjectHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("MyProjectContent")}
+    </Typography>
+
+    <Button
+      variant="outlined"
+      sx={{ fontWeight: 600, borderRadius: 3 }}
+      onClick={() => router.push("/dashboard/buyer/manageproject")}
+    >
+      {t("MyProjectButton")}
+    </Button>
+  </Card>
+
+  {/* Profile Settings */}
+  <Card
+    sx={{
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <PersonIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("ProfileSettingHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("ProfileSettingsContent")}
+    </Typography>
+
     <Box
       sx={{
-        width: 56,
-        height: 56,
-        borderRadius: "50%",
-        backgroundColor: theme.palette.background.paper,
         display: "flex",
+        flexDirection: { xs: "column", sm: "column", md: "row" },
         alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+        justifyContent: "space-between",
+        gap: 1.5,
       }}
     >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M3 12h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
-        <path d="M3 6h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
+      <Button
+        variant="outlined"
+        sx={{
+          fontWeight: 600,
+          borderRadius: 3,
+          width: { xs: "100%", md: "40%" },
+        }}
+        onClick={() => router.push("/dashboard/buyer/profilemanagement")}
+      >
+        {t("ProfileSettingsButton1")}
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{
+          fontWeight: 600,
+          borderRadius: 3,
+          width: { xs: "100%", md: "50%" },
+        }}
+        onClick={() => router.push("/updatepassword")}
+      >
+        {t("ProfileSettingsButton2")}
+      </Button>
     </Box>
-    <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
-      No projects yet
-    </Typography>
-    <Typography variant="body2" color="text.secondary">
-      Start by posting your first project
-    </Typography>
-  </Box>
-) : (
-  // ===== Render recent projects from API =====
-  <Box
-    sx={{
-      minHeight: 220,
-      display: "flex",
-      flexDirection: "column",
-      gap: 1,
-    }}
-  >
-    {recentProjects.map((project: any, idx: number) => {
-      const outlinePreview =
-        project.outline?.length > 430
-          ? project.outline.slice(0, 430) + "..."
-          : project.outline;
+  </Card>
+</Box>
 
-      return (
+
+        {/* ===== Recent Activity (large full-width card) ===== */}
+       <Card
+      sx={{
+        borderRadius: 3,
+        boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+        p: 3,
+      }}
+    >
+      <Typography
+        variant="h6"
+        sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
+      >
+        {t("RecentActivity")}
+      </Typography>
+      <Divider sx={{ mb: 3 }} />
+
+      {/* Loading state */}
+      {loadingProjects ? (
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "center", my: 4 }}
+        >
+          Loading recent projects...
+        </Typography>
+      ) : recentProjects.length === 0 ? (
+        // ===== Static fallback when there are no projects =====
         <Box
-          key={idx}
           sx={{
+            minHeight: 220,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
+          <Box
+            sx={{
+              width: 56,
+              height: 56,
+              borderRadius: "50%",
+              backgroundColor: theme.palette.background.paper,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3 12h18"
+                stroke="#6B7280"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M3 6h18"
+                stroke="#6B7280"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </Box>
+          <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
+            No projects yet
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Start by posting your first project
+          </Typography>
+        </Box>
+      ) : (
+        // ===== Render recent projects =====
+        <Box
+          sx={{
+            minHeight: 220,
             display: "flex",
             flexDirection: "column",
             gap: 1,
-            width: "100%",
-            mb: 2,
-            boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-            p: 2,
-            borderRadius: 2,
           }}
         >
-          {/* Title + Status */}
-          <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
-            {/* <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              {project.title}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              sx={{
-                textTransform: "capitalize",
-                fontWeight: 600,
-                color: "black",
-                backgroundColor: "orange",
-                px: 1,
-                borderRadius: "6px",
-              }}
-            >
-              {project.status}
-            </Typography> */}
-            <Typography variant="subtitle1" sx={{fontWeight:600,width:"40%"}}>{project.title}</Typography>
-            <Typography variant="subtitle2" sx={{textTransform:"capitalize", fontWeight:600, color:"black",backgroundColor:`${project.statusColor}`,display:"flex",width:"8%",justifyContent:"center",borderRadius:"6px"}}>{project.status}</Typography>
-          </Box>
+          {recentProjects.map((project: any, idx: number) => {
+            const outlinePreview =
+              project.outline?.length > 430
+                ? project.outline.slice(0, 430) + "..."
+                : project.outline;
 
-          {/* Outline */}
-          <Typography variant="body2" color="gray">
-            {outlinePreview}
-          </Typography>
+            return (
+              <Box
+                key={idx}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                  width: "100%",
+                  mb: 2,
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+                  p: 2,
+                  borderRadius: 2,
+                }}
+              >
+                {/* Title + Status */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: isMobile ? "flex-start" : "center",
+                    width: "100%",
+                    flexDirection: isMobile ? "column" : "row",
+                    gap: isMobile ? 1 : 0,
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      fontWeight: 600,
+                      width: isMobile ? "100%" : "40%",
+                    }}
+                  >
+                    {project.title}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      textTransform: "capitalize",
+                      fontWeight: 600,
+                      color: "black",
+                      backgroundColor: `${project.statusColor}`,
+                      display: "flex",
+                      justifyContent: "center",
+                      borderRadius: "6px",
+                      // width: isMobile ? "fit-content" : "8%",
+                      width: {xs:"fit-content", sm:"fit-content", md:"12%"},
+                      px: isMobile ? 1 : 0,
+                    }}
+                  >
+                    {project.status}
+                  </Typography>
+                </Box>
 
-          {/* Budget, Timeline, Skills */}
-          <Box sx={{ display: "flex", gap: 3, mt: 1 }}>
-            <Box sx={{ width: "25%" }}>
-              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
-                Budget
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {project.budgetRange || "N/A"}
-              </Typography>
-            </Box>
+                {/* Outline */}
+                <Typography variant="body2" color="gray">
+                  {outlinePreview}
+                </Typography>
 
-            <Box sx={{ width: "25%" }}>
-              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
-                Timeline
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {project.timeline || "N/A"}
-              </Typography>
-            </Box>
+                {/* Budget, Timeline, Skills */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 3,
+                    mt: 1,
+                    flexDirection: isMobile ? "column" : "row",
+                  }}
+                >
+                  <Box sx={{ width: isMobile ? "100%" : "25%" }}>
+                    <Typography
+                      variant="caption"
+                      color="gray"
+                      sx={{ fontWeight: 600 }}
+                    >
+                      Budget
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {project.budgetRange || "N/A"}
+                    </Typography>
+                  </Box>
 
-            <Box sx={{ width: "25%" }}>
-              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
-                Skills
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {project.skillsRequired?.join(", ") || "N/A"}
-              </Typography>
-            </Box>
-          </Box>
+                  <Box sx={{ width: isMobile ? "100%" : "25%" }}>
+                    <Typography
+                      variant="caption"
+                      color="gray"
+                      sx={{ fontWeight: 600 }}
+                    >
+                      Timeline
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {project.timeline || "N/A"}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ width: isMobile ? "100%" : "25%" }}>
+                    <Typography
+                      variant="caption"
+                      color="gray"
+                      sx={{ fontWeight: 600 }}
+                    >
+                      Skills
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {project.skillsRequired?.join(", ") || "N/A"}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            );
+          })}
         </Box>
-      );
-    })}
-  </Box>
-)}
-
-        </Card>
+      )}
+    </Card>
       </Box>
     </Box>
+    )}
     </DashBoardLayout>
     // </ProtectedRoute>
 
@@ -522,91 +673,3 @@ useEffect(() => {
 export default BuyerDashboard;
 
 
-
-// {recentProjects.length === 0 ? (
-           
-//            <>
-//            <Box
-//             sx={{
-//               minHeight: 220,
-//               display: "flex",
-//               alignItems: "center",
-//               justifyContent: "center",
-//               flexDirection: "column",
-//               gap: 1,
-//             }}
-//           >
-//             <Box
-//               sx={{
-//                 width: 56,
-//                 height: 56,
-//                 borderRadius: "50%",
-//                 backgroundColor: theme.palette.background.paper,
-//                 display: "flex",
-//                 alignItems: "center",
-//                 justifyContent: "center",
-//                 boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-//               }}
-//             >
-//               {/* placeholder icon circle */}
-//               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-//                 <path d="M3 12h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
-//                 <path d="M3 6h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
-//               </svg>
-//             </Box>
-//             <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
-//               No projects yet
-//             </Typography>
-//             <Typography variant="body2" color="text.secondary">
-//               Start by posting your first project
-//             </Typography>
-//           </Box>
-//             </>
-//           ):(
-//           <Box
-//             sx={{
-//               minHeight: 220,
-//               display: "flex",
-//               alignItems: "center",
-//               justifyContent: "center",
-//               flexDirection: "column",
-//               gap: 1,
-//             }}
-//           >
-//             {/* recent projects last 3 */}
-//             {recentProjects.map((project:any, idx:any) => {
-//               const outlinePreview = project.Outline.length > 430 ? project.Outline.slice(0, 430) + "..." : project.Outline;
-//               return (
-//                 <Box key={idx} sx={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:1, width:"100%", mb:2,boxShadow: "0 2px 10px rgba(0,0,0,0.05)", p:2, borderRadius:2}}>
-//                   {/* first inside row title status */}
-//                   <Box sx={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"flex-start", width:"100%"}}>
-//                     <Typography variant="subtitle1" sx={{fontWeight:600,width:"40%"}}>{project.Title}</Typography>
-//                     <Typography variant="subtitle2" sx={{textTransform:"capitalize", fontWeight:600, color:"black",backgroundColor:`${project.StatusColor}`,display:"flex",width:"8%",justifyContent:"center",borderRadius:"6px"}}>{project.Status}</Typography>
-//                   </Box>
-//                   {/* second row project outline */}
-//                   <Box>
-//                     <Typography variant="body2" color="gray">{outlinePreview}</Typography>
-//                   </Box>
-//                   {/* last box timeline duration budget */}
-//                   <Box sx={{display:"flex",flexDirection:"row", alignItems:"center", justifyContent:"flex-start", width:"100%"}}>
-//                     {/* Budget */}
-//                     <Box sx={{display:"flex", flexDirection:"column", width:"25%"}}>
-//                       <Typography variant="caption" color="gray" sx={{fontWeight:600}}>Budget</Typography>
-//                       <Typography variant="body2" color="text.secondary">{project.Budget}</Typography>
-//                     </Box>
-//                     {/* timeline */}
-//                     <Box sx={{display:"flex", flexDirection:"column", width:"25%"}}>
-//                       <Typography variant="caption" color="gray" sx={{fontWeight:600}}>Timeline</Typography>
-//                       <Typography variant="body2" color="text.secondary">{project.Timeline}</Typography>
-//                     </Box>
-//                     {/* Skills */}
-//                     <Box sx={{display:"flex", flexDirection:"column", width:"25%"}}>
-//                       <Typography variant="caption" color="gray" sx={{fontWeight:600}}>Skills</Typography>
-//                       <Typography variant="body2" color="text.secondary">{project.Skills}</Typography>
-//                     </Box>
-//                   </Box>
-//                 </Box>
-//               );
-//             })}
-//           </Box>
-//           )}

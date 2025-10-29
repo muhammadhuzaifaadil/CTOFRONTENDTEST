@@ -8,6 +8,7 @@ import {
   Chip,
   Container,
   Pagination,
+  CircularProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ import apiClient from "@/api/apiClient";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import ProjectBidModal from "@/app/components/ProjectBidModal";
+import { useAuth } from "@/hooks/useAuth";
 
 const BrowseProjects: React.FC = () => {
   const theme = useTheme();
@@ -30,7 +32,7 @@ const BrowseProjects: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
+  const {user} = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [budgetRange, setBudgetRange] = useState<number[]>([0, 100000]);
@@ -265,241 +267,250 @@ useEffect(() => {
 
    return (
     <DashBoardLayout>
+ {!user?(
       <Box
         sx={{
-          minHeight: "100vh",
+          height: "100vh",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          background: "white",
-          mt: 3,
-          py: { xs: 2, sm: 4, md: 6 },
+          justifyContent: "center",
         }}
       >
-        {/* Back Button */}
-        <Box
-          sx={{
-            display: "flex",
-            width: "75%",
-            justifyContent: "flex-start",
-            mb: 2,
-          }}
-        >
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={() => router.push("/dashboard/seller")}
-            sx={{
-              textTransform: "none",
-              fontSize: "16px",
-              fontWeight: "600",
-              color: "black",
-            }}
-          >
-            {t("BackDashboard")}
-          </Button>
-        </Box>
+        <CircularProgress size={80} thickness={5} />
+      </Box>
+    ):( 
 
-        {/* Main Container */}
-        <Container
-          maxWidth={false}
-          sx={{
-            backgroundColor: theme.palette.background.default,
-            borderRadius: 3,
-            width: "1152px",
-            p: { xs: 3, sm: 4, md: 5 },
-            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {/* Header */}
-          <Box sx={{ textAlign: "center", mb: 2 }}>
-            <SearchIcon
-              sx={{
-                height: 60,
-                width: 60,
-                color: "white",
-                backgroundColor: theme.palette.primary.main,
-                borderRadius: "60%",
-                border: `2px solid ${theme.palette.primary.main}`,
-                padding: "12px",
-              }}
-            />
-            <Typography variant="subtitle2" color="primary">
-              {t("Header")}
-            </Typography>
-            <Typography variant="subtitle1">{t("Header2")}</Typography>
-            <Typography>
-              {loading
-                ? "Loading projects..."
-                : `${filteredProjects.length} ${t("Content")}`}
-            </Typography>
-          </Box>
+      <Box
+  sx={{
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background: "white",
+    mt: {xs:6,sm:4,md:3},
+    py: { xs: 2, sm: 4, md: 6 },
+  }}
+>
+  {/* Back Button */}
+  <Box
+    sx={{
+      display: "flex",
+      width: { xs: "95%", sm: "90%", md: "75%" },
+      justifyContent: "flex-start",
+      mb: 2,
+    }}
+  >
+    <Button
+      startIcon={<ArrowBackIcon />}
+      onClick={() => router.push("/dashboard/seller")}
+      sx={{
+        textTransform: "none",
+        fontSize: { xs: "14px", sm: "16px" },
+        fontWeight: "600",
+        color: "black",
+      }}
+    >
+      {t("BackDashboard")}
+    </Button>
+  </Box>
 
-          {/* Search */}
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Search by title, description, or category..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            sx={{ mb: 3 }}
+  {/* Main Container */}
+  <Container
+    maxWidth={false}
+    sx={{
+      backgroundColor: theme.palette.background.default,
+      borderRadius: 3,
+      width: { xs: "95%", sm: "90%", md: "75%" },
+      p: { xs: 2, sm: 3, md: 5 },
+      boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    }}
+  >
+    {/* Header */}
+    <Box sx={{ textAlign: "center", mb: 2 }}>
+      <SearchIcon
+        sx={{
+          height: { xs: 50, sm: 60 },
+          width: { xs: 50, sm: 60 },
+          color: "white",
+          backgroundColor: theme.palette.primary.main,
+          borderRadius: "60%",
+          border: `2px solid ${theme.palette.primary.main}`,
+          padding: { xs: "10px", sm: "12px" },
+        }}
+      />
+      <Typography variant="subtitle2" color="primary">
+        {t("Header")}
+      </Typography>
+      <Typography variant="subtitle1">{t("Header2")}</Typography>
+      <Typography>
+        {loading
+          ? "Loading projects..."
+          : `${filteredProjects.length} ${t("Content")}`}
+      </Typography>
+    </Box>
+
+    {/* Search */}
+    <TextField
+      fullWidth
+      variant="outlined"
+      placeholder="Search by title, description, or category..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      sx={{ mb: 3 }}
+    />
+
+    {/* Skills Filter */}
+    <Box sx={{ width: "100%", mb: 2 }}>
+      <Typography variant="subtitle2" color="text.secondary" mb={1}>
+        Filter by Skills:
+      </Typography>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+        {allSkills.map((skill, i) => (
+          <Chip
+            key={i}
+            label={skill}
+            variant={selectedSkills.includes(skill) ? "filled" : "outlined"}
+            color={selectedSkills.includes(skill) ? "primary" : "default"}
+            onClick={() => handleSkillClick(skill)}
+            sx={{ cursor: "pointer" }}
           />
+        ))}
+      </Box>
+    </Box>
 
-          {/* Skills Filter */}
-          <Box sx={{ width: "100%", mb: 2 }}>
-            <Typography variant="subtitle2" color="text.secondary" mb={1}>
-              Filter by Skills:
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {allSkills.map((skill, i) => (
-                <Chip
-                  key={i}
-                  label={skill}
-                  variant={
-                    selectedSkills.includes(skill) ? "filled" : "outlined"
-                  }
-                  color={selectedSkills.includes(skill) ? "primary" : "default"}
-                  onClick={() => handleSkillClick(skill)}
-                  sx={{ cursor: "pointer" }}
-                />
-              ))}
-            </Box>
-          </Box>
+    {/* Budget Range */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        width: "100%",
+        justifyContent: "space-between",
+        gap: 1,
+      }}
+    >
+      <TextField
+        placeholder="0"
+        fullWidth
+        value={budgetRange[0]}
+        onChange={(e) =>
+          setBudgetRange([Number(e.target.value), budgetRange[1]])
+        }
+      />
+      <TextField
+        placeholder="100000"
+        fullWidth
+        value={budgetRange[1]}
+        onChange={(e) =>
+          setBudgetRange([budgetRange[0], Number(e.target.value)])
+        }
+      />
+    </Box>
 
-          {/* Budget Range */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "space-between",
-              gap: 1,
-            }}
+    {/* Project List */}
+    <Box display="flex" flexDirection="column" width="100%" sx={{ mt: 2 }} gap={3}>
+      {filteredProjects.map((project: any, index: number) => (
+        <Box
+          key={index}
+          sx={{
+            borderRadius: "16px",
+            boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+            p: { xs: 2, sm: 3 },
+            backgroundColor: "white",
+          }}
+        >
+          <Typography variant="h6" fontSize={{ xs: "1rem", sm: "1.25rem" }}>
+            {project.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            mt={1}
+            fontSize={{ xs: "0.75rem", sm: "0.875rem" }}
           >
-            <TextField
-              placeholder="0"
-              fullWidth
-              value={budgetRange[0]}
-              onChange={(e) =>
-                setBudgetRange([Number(e.target.value), budgetRange[1]])
-              }
-            />
-            <TextField
-              placeholder="100000"
-              fullWidth
-              value={budgetRange[1]}
-              onChange={(e) =>
-                setBudgetRange([budgetRange[0], Number(e.target.value)])
-              }
-            />
+            {project.outline}
+          </Typography>
+
+          <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+            {project.skillsRequired.map((skill: string, i: number) => (
+              <Chip
+                key={i}
+                label={skill}
+                sx={{ backgroundColor: "#f4f4f4", fontSize: "0.75rem" }}
+              />
+            ))}
           </Box>
 
-          {/* Project List */}
           <Box
             display="flex"
-            flexDirection="column"
-            width="100%"
-            sx={{ mt: 2 }}
-            gap={3}
+            flexDirection={{ xs: "column", sm: "row" }}
+            justifyContent="space-between"
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            mt={2}
+            gap={2}
           >
-            {filteredProjects.map((project: any, index: number) => (
-              <Box
-                key={index}
-                sx={{
-                  borderRadius: "16px",
-                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
-                  p: 3,
-                  backgroundColor: "white",
-                }}
-              >
-                <Typography variant="h6">{project.title}</Typography>
-                <Typography variant="body2" color="text.secondary" mt={1}>
-                  {project.outline}
-                </Typography>
-
-                <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
-                  {project.skillsRequired.map((skill: string, i: number) => (
-                    <Chip
-                      key={i}
-                      label={skill}
-                      sx={{
-                        backgroundColor: "#f4f4f4",
-                        fontSize: "0.75rem",
-                      }}
-                    />
-                  ))}
-                </Box>
-
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  mt={2}
-                  flexWrap="wrap"
-                  gap={2}
-                >
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <MonetizationOnIcon
-                      sx={{ color: theme.palette.primary.main }}
-                    />
-                    <Typography variant="body2">
-                      <strong>Budget:</strong> {project.budgetRange}
-                    </Typography>
-                  </Box>
-
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <AccessTimeIcon sx={{ color: theme.palette.primary.main }} />
-                    <Typography variant="body2">
-                      <strong>Timeline:</strong> {project.timeline}
-                    </Typography>
-                  </Box>
-
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <PeopleAltIcon sx={{ color: theme.palette.primary.main }} />
-                    <Typography variant="body2">
-                      <strong>Bids:</strong> {project.bidCount}
-                    </Typography>
-                  </Box>
-                </Box>
-
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    mt: 2,
-                    borderRadius: "12px",
-                    textTransform: "none",
-                    py: 1.2,
-                  }}
-                  onClick={() => handleOpen(project.id)}
-                >
-                  View Project & Submit Bid
-                </Button>
-              </Box>
-            ))}
-
-            {!loading && filteredProjects.length === 0 && (
-              <Typography color="text.secondary" textAlign="center" mt={3}>
-                {t("NotFound")}
+            <Box display="flex" alignItems="center" gap={1}>
+              <MonetizationOnIcon sx={{ color: theme.palette.primary.main }} />
+              <Typography variant="body2">
+                <strong>Budget:</strong> {project.budgetRange}
               </Typography>
-            )}
+            </Box>
+
+            <Box display="flex" alignItems="center" gap={1}>
+              <AccessTimeIcon sx={{ color: theme.palette.primary.main }} />
+              <Typography variant="body2">
+                <strong>Timeline:</strong> {project.timeline}
+              </Typography>
+            </Box>
+
+            <Box display="flex" alignItems="center" gap={1}>
+              <PeopleAltIcon sx={{ color: theme.palette.primary.main }} />
+              <Typography variant="body2">
+                <strong>Bids:</strong> {project.bidCount}
+              </Typography>
+            </Box>
           </Box>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={(_, value) => setPage(value)}
-                color="primary"
-              />
-            </Box>
-          )}
-        </Container>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 2,
+              borderRadius: "12px",
+              textTransform: "none",
+              py: 1.2,
+            }}
+            onClick={() => handleOpen(project.id)}
+          >
+            View Project & Submit Bid
+          </Button>
+        </Box>
+      ))}
+
+      {!loading && filteredProjects.length === 0 && (
+        <Typography color="text.secondary" textAlign="center" mt={3}>
+          {t("NotFound")}
+        </Typography>
+      )}
+    </Box>
+
+    {/* Pagination */}
+    {totalPages > 1 && (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(_, value) => setPage(value)}
+          color="primary"
+        />
       </Box>
+    )}
+  </Container>
+</Box>
+    )}
+
       <ProjectBidModal
       open={openModal}
       onClose={() => setOpenModal(false)}

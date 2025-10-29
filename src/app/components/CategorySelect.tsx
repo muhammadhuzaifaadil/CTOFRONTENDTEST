@@ -12,6 +12,7 @@ interface CategorySelectProps {
   onChange: (value: string) => void;
   label?: string; // 👈 optional label prop
   required?: boolean;
+  isArabic?:boolean;
 }
 
 const categories = [
@@ -26,12 +27,27 @@ const categories = [
   "UI",
   "Web Experts",
 ];
+const categoriesArabic = [
+  "البرمجة",          // Coding
+  "تكنولوجيا المعلومات", // IT
+  "ضمان الجودة",       // SQA
+  "قاعدة البيانات",     // Database
+  "الذكاء الاصطناعي",   // AI
+  "نظام تخطيط موارد المؤسسات", // ERP
+  "تطبيقات الجوال",     // Mobile Apps
+  "كتابة المحتوى",      // Content Writing
+  "واجهة المستخدم",     // UI
+  "خبراء الويب",        // Web Experts
+];
+const selectCategoryArabic = "اختر الفئة";
 
 const CategorySelect: React.FC<CategorySelectProps> = ({
   value,
   onChange,
-  label = "Category",
+  label ,
   required = false,
+  isArabic=false,
+
 }) => {
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value);
@@ -71,13 +87,14 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           }}
         >
           <MenuItem value="" disabled>
-            Select Category
+            {isArabic?selectCategoryArabic: `Select Category`}
           </MenuItem>
-          {categories.map((item) => (
-            <MenuItem key={item} value={item}>
-              {item}
-            </MenuItem>
-          ))}
+          {(isArabic ? categoriesArabic : categories).map((item) => (
+        <MenuItem key={item} value={item}>
+           {item}
+        </MenuItem>
+        ))}
+
         </Select>
       </FormControl>
     </Box>

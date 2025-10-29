@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import RegisterLayout from "@/app/layouts/RegisterLayout";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
+import TermsAndConditionsModal from "@/app/components/TermsandConditions";
 const BuyerRegister: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
@@ -98,6 +99,19 @@ const handleFieldError = (field: string, hasError: boolean) => {
     "firstName", "lastName", "email", "phoneCode", "phoneNumber",
     "city", "country", "password", "confirmPassword"
   ];
+ const requiredFieldsArabic = [
+  "الاسم الأول",
+  "اسم العائلة",
+  "البريد الإلكتروني",
+  "رمز الهاتف",
+  "رقم الهاتف",
+  "المدينة",
+  "الدولة",
+  "كلمة المرور",
+  "تأكيد كلمة المرور"
+];
+
+
 
   const missing = requiredFields.filter((f) => !formData[f]);
   if (missing.length > 0) {
@@ -184,21 +198,57 @@ const handleFieldError = (field: string, hasError: boolean) => {
         px: { xs: 2, sm: 3 },
       }}
     >
-      <Box sx={{display:"flex",flexDirection:"row",justifyContent:"flex-start", alignItems:"center",pr:95,mb:2}}>
-        <Button onClick={() => router.push('/')}>
-        <ArrowBackIcon sx={{color:"white"}} />
-        </Button>
-        <Typography variant="subtitle1" sx={{color:"white"}}>{t("BackButton")}</Typography>
+      {/* back and arabic toggle button */}
+      {/* Back and Arabic toggle button */}
+<Box
+  sx={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    maxWidth: "900px",
+    mb: { xs: 2, sm: 3 },
+    px: { xs: 1, sm: 2 },
+  }}
+>
+  {/* Back Button */}
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    <Button onClick={() => router.push("/")} sx={{ minWidth: "auto", p: 0.5 }}>
+      <ArrowBackIcon sx={{ color: "white" }} />
+    </Button>
+    <Typography
+      variant="subtitle1"
+      sx={{
+        color: "white",
+        fontSize: { xs: "0.9rem", sm: "1rem" },
+      }}
+    >
+      {t("BackButton")}
+    </Typography>
+  </Box>
 
-          {/* arabic english toggle */}
-            <Button
-              variant="outlined"
-              onClick={toggleLanguage}
-              sx={{ position:'absolute', ml:"840px",mt:1,color:"white",border:"ActiveBorder" }}
-            >
-              {locale === "en" ? "عربي" : "English"}
-            </Button>
-      </Box>
+  {/* Arabic / English Toggle */}
+  <Button
+    variant="outlined"
+    onClick={toggleLanguage}
+    sx={{
+      color: "white",
+      borderColor: "white",
+      textTransform: "none",
+      fontSize: { xs: "0.8rem", sm: "0.9rem" },
+      px: { xs: 1.5, sm: 2 },
+      py: { xs: 0.5, sm: 0.7 },
+      "&:hover": {
+        borderColor: "white",
+        backgroundColor: "rgba(255,255,255,0.1)",
+      },
+    }}
+  >
+    {locale === "en" ? "عربي" : "English"}
+  </Button>
+</Box>
+
        
       <Container
         maxWidth="md"
@@ -547,10 +597,17 @@ const handleFieldError = (field: string, hasError: boolean) => {
           </Box>
            {/* Terms */}
            <Box sx={{backgroundColor:theme.palette.grey[200],borderRadius:3,mt:1}}>
+          
           <FormGroup>
             <FormControlLabel
-              required
-              sx={{ml:1}}
+ required
+  sx={{
+    ml: 1,
+    '& .MuiFormControlLabel-asterisk': {
+      display: 'none',
+    },
+  }}            
+    // sx={{ml:1}}
               control={
                 <Checkbox
                   color="primary"
@@ -558,9 +615,19 @@ const handleFieldError = (field: string, hasError: boolean) => {
                   onChange={(e) => setAcceptedTerms(e.target.checked)}
                 />
               }
-              label={t("TermsAcceptance")}
-            />
+              // label={t("TermsAcceptance")}
+                  label={
+      <Box display="flex" alignItems="center" gap={0.5}>
+          {/* <Typography component="span" sx={{ color: 'red' }}>*</Typography>
+
+        <Typography sx={{ fontSize: 14 }}>{t("AcceptTerms")}</Typography> */}
+        
+        <TermsAndConditionsModal />
+      </Box>
+    }
+  />
           </FormGroup>
+          
           </Box>
           {/* Upload + Category */}
       
@@ -579,11 +646,11 @@ const handleFieldError = (field: string, hasError: boolean) => {
                 fontWeight: 600,
                 borderRadius: 3,
                 textTransform: "none",
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`,
+        background: theme.palette.primary.main,
                 color: theme.palette.common.white,
-                "&:hover": {
-                  background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.success.dark})`,
-                },
+                // "&:hover": {
+                //   background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.success.dark})`,
+                // },
               }}
             >
               {isSubmitting ? "Registering..." : `${t("RegisterButton")}`}
@@ -594,6 +661,7 @@ const handleFieldError = (field: string, hasError: boolean) => {
               variant="contained"
               fullWidth
               disabled={isSubmitting}
+              onClick={() => router.push('/')}
               sx={{
                 py: 1.5,
                 fontWeight: 600,
@@ -601,9 +669,9 @@ const handleFieldError = (field: string, hasError: boolean) => {
                 textTransform: "none",
                 background:theme.palette.grey[200],
                 color: theme.palette.common.black,
-                "&:hover": {
-                  background: `linear-gradient(90deg, ${theme.palette.success.main}, ${theme.palette.success.dark})`,
-                },
+                // "&:hover": {
+                //   background: `lightred`,
+                // },
               }}
             >
               {t("CancelButton")}

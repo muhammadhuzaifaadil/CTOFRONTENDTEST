@@ -25,7 +25,7 @@ const countryData = [
 
 interface CustomTextFieldProps {
   fullWidth?: boolean;
-  label: string;
+  label?: string;
   placeholder?: string;
   margin?: "none" | "dense" | "normal";
   required?: boolean;
@@ -82,7 +82,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (type === "password" && fieldName?.toLowerCase().includes("confirm") &&
+    if ((type === "password"||type ==="كلمة المرور" )&& (fieldName?.toLowerCase().includes("confirm")||fieldName?.toLowerCase().includes("تأكيد")) &&
     inputValue) {
       validateInput(inputValue);
     }
@@ -170,12 +170,12 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     newError = `Max ${maxChar} characters allowed.`;
   } else if (minChar && val.length < minChar) {
     newError = `Min ${minChar} characters required.`;
-  } else if (label.toLowerCase().includes("email") && val && !val.includes("@")) {
-    newError = "Email must contain '@'";
+  } else if ((label?.toLowerCase().includes("email") || label?.toLowerCase().includes("البريد الإلكتروني")) && val && !val.includes("@")) {
+    newError = isArabic?"يجب أن يحتوي البريد الإلكتروني على '@'":"Email must contain '@'";
   } else if (phoneFormat && !isPhoneCode) {
     const onlyDigits = val.replace(/\D/g, "");
     if (onlyDigits.length !== 9) {
-      newError = "Phone number must be exactly 9 digits.";
+      newError = isArabic?"يجب أن يحتوي رقم الهاتف على 9 أرقام بالضبط.":"Phone number must be exactly 9 digits.";
     }
   } 
   
@@ -196,30 +196,32 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   // } 
   // 🔹 Password complexity validation (works for both 'password' and 'newPassword')
   else if (
-    type === "password" &&
+    (type === "password"||type ==="كلمة المرور") &&
     (fieldName?.toLowerCase() === "password" ||
-      fieldName?.toLowerCase() === "newpassword")
+      fieldName?.toLowerCase() === "newpassword"||fieldName?.toLowerCase()==="كلمة المرور"||
+    fieldName?.toLowerCase() === "كلمة المرور الجديدة")
   ) {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]).{8,}$/;
     if (!passwordRegex.test(val)) {
-      newError =
+      newError = isArabic?"يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص.":
         "Password must contain uppercase, lowercase, number & special character.";
     }
   }
 
   // 🔹 Confirm password validation (works for both confirmPassword & confirmNewPassword)
   else if (
-    type === "password" &&
+    (type === "password" || type ==="كلمة المرور") &&
     (fieldName?.toLowerCase().includes("confirm") ||
-      fieldName?.toLowerCase().includes("confirmnew"))
+      fieldName?.toLowerCase().includes("confirmnew") ||fieldName?.toLowerCase().includes("تأكيد")
+    || fieldName?.toLowerCase().includes("تأكيد جديد"))
   ) {
     if (confirmValue && confirmValue !== val) {
-      newError = "Passwords do not match.";
+      newError = isArabic?"كلمات المرور غير متطابقة.":"Passwords do not match.";
     }
   }
   else if (unique && val === "123456") {
-    newError = "Value too common. Please choose another.";
+    newError = isArabic?"القيمة شائعة جدًا. يرجى اختيار قيمة أخرى.":"Value too common. Please choose another.";
   }
 
   setError(newError);
@@ -239,7 +241,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
       {/* 👇 Conditional Rendering */}
       {isCountry ? (
         <TextField
-          name={fieldName || label.replace(/\s+/g, "")}
+          name={fieldName || label?.replace(/\s+/g, "")}
           select
           fullWidth={fullWidth}
           value={inputValue}
@@ -264,7 +266,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
       ) : isPhoneCode ? (
         <TextField
           select
-          name={fieldName || label.replace(/\s+/g, "")}
+          name={fieldName || label?.replace(/\s+/g, "")}
           label={label}
           value={inputValue}
           onChange={handleChange}
@@ -277,17 +279,39 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           <MenuItem value="" disabled>
             Select Phone Code
           </MenuItem>
-          {countryData.map((c) => (
+          {/* {countryData.map((c) => (
             <MenuItem key={c.code} value={c.phoneCode}>
               {c.flag} {c.phoneCode}
             </MenuItem>
-          ))}
+          ))} */}
+          {countryData.map((c) => {
+  // Remove leading zeros just for display
+  const displayCode = c.phoneCode.replace(/\+0+/, '+');
+  
+  return (
+    <MenuItem key={c.code} value={c.phoneCode}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          fontFamily: "monospace", // keeps widths aligned
+          minWidth: "80px", // adjust as needed for fixed width look
+        }}
+      >
+        <span>{c.flag}</span>
+        <span>{displayCode}</span>
+      </Box>
+    </MenuItem>
+  );
+})}
+
         </TextField>
       ) : (
         <Box sx={{ position: "relative" }}>
           <TextField
             fullWidth={fullWidth}
-            name={fieldName || label.replace(/\s+/g, "")}
+            name={fieldName || label?.replace(/\s+/g, "")}
             placeholder={placeholder}
             margin={margin}
             multiline={multiline}
@@ -342,7 +366,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
                 // right: 8,
                 // bottom: 2,
                 color: "#888",
-                background: "rgba(255,255,255,0.7)",
+                // background: "rgba(255,255,255,0.7)",
                 // px: 0.5,
                 // zIndex: 2,
                 display:'flex',

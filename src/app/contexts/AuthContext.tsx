@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       await apiClient.post(
-        "/auth/logout",
+        "/users/logout",
         {},
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );

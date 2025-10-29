@@ -28,6 +28,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import RegisterLayout from "@/app/layouts/RegisterLayout";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
+import TermsAndConditionsModal from "@/app/components/TermsandConditions";
 
 const SellerRegister: React.FC = () => {
   const theme = useTheme();
@@ -140,80 +141,6 @@ const handleFieldError = (field: string, hasError: boolean) => {
     else setPortfolio(null);
   };
 
-//   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
-//   event.preventDefault();
-//   if (isSubmitting) return;
-
-//   // ✅ Validate passwords
-//   if (formData.password !== formData.confirmPassword) {
-//     alert("Passwords do not match!");
-//     return;
-//   }
-
-//   // ✅ Validate terms
-//   if (!acceptedTerms) {
-//     alert("Please accept the Terms & Conditions.");
-//     return;
-//   }
-
-//   // ✅ Validate required seller info
-//   if (!formData.companyName || !selectedCategory) {
-//     alert("Please fill in all required fields and select a category.");
-//     return;
-//   }
-
-//   setIsSubmitting(true);
-
-//   try {
-//     let logoUrl = null, licenseUrl = null, portfolioUrl = null;
-
-//     if (profilePhoto) logoUrl = await uploadFile(profilePhoto);
-//     if (businessLicense) licenseUrl = await uploadFile(businessLicense);
-//     if (portfolio) portfolioUrl = await uploadFile(portfolio);
-
-//     const payload = {
-//       role: "seller",
-//       user: {
-//         firstName: formData.firstName || "",
-//         middleName: formData.middleName || null,
-//         lastName: formData.lastName || "",
-//         email: formData.email,
-//         password: formData.password,
-//         confirmPassword: formData.confirmPassword,
-//       },
-//       contact: {
-//         phoneCode: formData.phoneCode,
-//         phoneNumber: formData.phoneNumber,
-//         city: formData.city,
-//         country: formData.country,
-//       },
-//       company: {
-//         name: formData.companyName,
-//         websiteUrl: formData.companyUrl,
-//         businessCategory: selectedCategory,
-//       },
-//       acceptedTerms: acceptedTerms,
-//     };
-
-//     const res = await apiClient.post("/auth/register", payload, {
-//       headers: { "Content-Type": "application/json" },
-//     });
-
-//     console.log("✅ Seller registration successful:", res.data);
-//     setAlertSuccess({ type: "success", text: "You have been registered successfully." });;
-//     router.push('/login');
-//     // navigate("/login"); // optional redirect
-//   } catch (error: any) {
-//     console.error("❌ Registration Error:", error.response?.data || error.message);
-//     setAlertSuccess({
-//       type: "error",
-//       text: error.response?.data?.message || "Registration failed. Please try again.",
-//     });
-//   } finally {
-//     setIsSubmitting(false);
-//   }
-// };
-
 const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   if (isSubmitting) return;
@@ -238,13 +165,6 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     return;
   }
 
-  // 📧 Email format validation (extra safety)
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // if (!emailRegex.test(formData.email)) {
-  //   setFieldErrors((prev:any) => ({ ...prev, email: true }));
-  //   alert("Please enter a valid email address.");
-  //   return;
-  // }
 
   // 🔒 Password match validation
   if (formData.password !== formData.confirmPassword) {
@@ -340,21 +260,54 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
         px: { xs: 2, sm: 3 },
       }}
     >
-      <Box sx={{display:"flex",flexDirection:"row",justifyContent:"flex-start", alignItems:"center",pr:95,mb:2}}>
-              <Button onClick={() => router.push('/')}>
-              <ArrowBackIcon sx={{color:"white"}} />
-              </Button>
-              <Typography variant="subtitle1" sx={{color:"white"}}>{t("BackButton")}</Typography>
+      <Box
+  sx={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    maxWidth: "900px",
+    mb: { xs: 2, sm: 3 },
+    px: { xs: 1, sm: 2 },
+  }}
+>
+  {/* Back Button */}
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+    <Button onClick={() => router.push("/")} sx={{ minWidth: "auto", p: 0.5 }}>
+      <ArrowBackIcon sx={{ color: "white" }} />
+    </Button>
+    <Typography
+      variant="subtitle1"
+      sx={{
+        color: "white",
+        fontSize: { xs: "0.9rem", sm: "1rem" },
+      }}
+    >
+      {t("BackButton")}
+    </Typography>
+  </Box>
 
-                   {/* arabic english toggle */}
-                          <Button
-                            variant="outlined"
-                            onClick={toggleLanguage}
-                            sx={{ position:'absolute', ml:"840px",mt:1,color:"white",border:"ActiveBorder" }}
-                          >
-                            {locale === "en" ? "عربي" : "English"}
-                          </Button>
-            </Box>
+  {/* Arabic / English Toggle */}
+  <Button
+    variant="outlined"
+    onClick={toggleLanguage}
+    sx={{
+      color: "white",
+      borderColor: "white",
+      textTransform: "none",
+      fontSize: { xs: "0.8rem", sm: "0.9rem" },
+      px: { xs: 1.5, sm: 2 },
+      py: { xs: 0.5, sm: 0.7 },
+      "&:hover": {
+        borderColor: "white",
+        backgroundColor: "rgba(255,255,255,0.1)",
+      },
+    }}
+  >
+    {locale === "en" ? "عربي" : "English"}
+  </Button>
+</Box>
       <Container
         maxWidth="md"
         sx={{
@@ -473,16 +426,37 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     {t("FileCheck")}
   </Typography>
 </Box>
-            <Box sx={{ display: "flex", gap: 2,mt:2, flexDirection: { xs: "column", md: "row" } }}>
-            <CategorySelect label="Business Category" value={selectedCategory} onChange={setSelectedCategory} />
+            <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}>
+            <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start", mt:"15px"}}>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"flex-start"}` }}
+                  >
+              {t("BusinessCategory")}
+            </Typography>
+            <CategorySelect isArabic={isArabic}  value={selectedCategory} onChange={setSelectedCategory} />
+            </Box>
+            <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start"}}>
+            <Box>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"left"}` }}
+                  >
+                    {t("Experience")}
+                  </Typography>
+            </Box>
+            <Box>
             <CustomTextField
               fullWidth
-              label={t("Experience")}
               placeholder="5.0"
               value={formData.experience}
               onChange={handleFieldChange("experience")}
             />
-
+            </Box>
+          </Box>
           </Box>
            <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}>
             
@@ -710,7 +684,12 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
                     <FormGroup>
                       <FormControlLabel
                         required
-                        sx={{ml:1}}
+                        sx={{
+    ml: 1,
+    '& .MuiFormControlLabel-asterisk': {
+      display: 'none',
+    },
+  }}    
                         control={
                           <Checkbox
                             color="primary"
@@ -718,7 +697,15 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
                             onChange={(e) => setAcceptedTerms(e.target.checked)}
                           />
                         }
-                        label={t("TermsAcceptance")}
+                        label={
+                              <Box display="flex" alignItems="center" gap={0.5}>
+                                  {/* <Typography component="span" sx={{ color: 'red' }}>*</Typography>
+                        
+                                <Typography sx={{ fontSize: 14 }}>{t("AcceptTerms")}</Typography> */}
+                                
+                                <TermsAndConditionsModal />
+                              </Box>
+                        }
                       />
                     </FormGroup>
                     </Box>
@@ -772,11 +759,11 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
                           fontWeight: 600,
                           borderRadius: 3,
                           textTransform: "none",
-                  background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.secondary.light})`,
+                          background: theme.palette.primary.main,
                           color: theme.palette.common.white,
-                          "&:hover": {
-                            background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.success.dark})`,
-                          },
+                          // "&:hover": {
+                          //   background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.success.dark})`,
+                          // },
                         }}
                       >
                         {isSubmitting ? "Registering..." : `${t("RegisterButton")}`}
@@ -786,6 +773,7 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
                         variant="contained"
                         fullWidth
                         disabled={isSubmitting}
+                        onClick={() => router.push('/')}
                         sx={{
                           py: 1.5,
                           fontWeight: 600,
@@ -793,9 +781,9 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
                           textTransform: "none",
                           background:theme.palette.grey[200],
                           color: theme.palette.common.black,
-                          "&:hover": {
-                            background: `linear-gradient(90deg, ${theme.palette.success.main}, ${theme.palette.success.dark})`,
-                          },
+                          // "&:hover": {
+                          //   background: `linear-gradient(90deg, ${theme.palette.success.main}, ${theme.palette.success.dark})`,
+                          // },
                         }}
                       >
                       {t("CancelButton")}

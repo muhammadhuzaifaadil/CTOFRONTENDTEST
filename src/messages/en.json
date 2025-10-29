@@ -137,7 +137,8 @@
             "fourthrequirement":"At least one number (0-9)",
             "fifthrequirement":"At least one special character (!@#$%^&*)",
             "updatebutton":"Update Password",
-            "cancelbutton":"Cancel"
+            "cancelbutton":"Cancel",
+            "backbutton":"Back to Dashboard"
         },
 
         "SellerDashboard":{
@@ -197,7 +198,9 @@
             "CompanyWebsite":"Company URL",
             "TermsAcceptance":"I Accept the TERMS & CONDITIONS",
             "RegisterButton":"Register / SignUp",
-            "CancelButton":"Cancel"
+            "CancelButton":"Cancel",
+            "AcceptTerms":"I Accept the",
+            "Terms&Conditions":"TERMS & CONDITIONS"
         },
         "SellerRegister":{
             "BackButton":"Back To Welcome",
@@ -225,6 +228,12 @@
             "ChooseFile":"Choose File",
             "TermsAcceptance":"I Accept the TERMS & CONDITIONS",
             "RegisterButton":"Register / SignUp",
-            "CancelButton":"Cancel"
+            "CancelButton":"Cancel",
+            "BusinessCategory":"Business Category"
+
+        },
+        "Navbar":{
+            "Dashboard":"DASHBOARD",
+            "Welcome":"Welcome Back,"
         }
 }

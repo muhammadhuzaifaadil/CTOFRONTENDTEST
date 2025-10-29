@@ -303,130 +303,299 @@ const BidsModal: React.FC<BidsModalProps> = ({ open, onClose, projectId }) => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-      <DialogTitle sx={{ fontWeight: 600 }}>Project Details & Bids</DialogTitle>
-      <DialogContent>
-        {loading ? (
-          <Typography>Loading...</Typography>
-        ) : (
-          project && (
-            <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
-              {/* Left: Project Details */}
-              <Box
-                sx={{
-                  flex: 1,
-                  p: 2,
-                  border: "1px solid #ddd",
-                  borderRadius: 2,
-                  backgroundColor: "#fafafa",
-                  minWidth: "45%",
-                }}
-              >
-                <Typography variant="h6" gutterBottom>
-                  {project.projectTitle}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Outline:</strong> {project.outline}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Requirements:</strong> {project.requirements}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Budget:</strong> {project.budgetRange}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  <strong>Timeline:</strong> {project.timeline}
-                </Typography>
-                <Typography variant="body2">
-                  <strong>Skills:</strong> {project.skillsRequired?.join(", ")}
-                </Typography>
-              </Box>
+    // <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
+    //   <DialogTitle sx={{ fontWeight: 600 }}>Project Details & Bids</DialogTitle>
+    //   <DialogContent>
+    //     {loading ? (
+    //       <Typography>Loading...</Typography>
+    //     ) : (
+    //       project && (
+    //         <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+    //           {/* Left: Project Details */}
+    //           <Box
+    //             sx={{
+    //               flex: 1,
+    //               p: 2,
+    //               border: "1px solid #ddd",
+    //               borderRadius: 2,
+    //               backgroundColor: "#fafafa",
+    //               minWidth: "45%",
+    //             }}
+    //           >
+    //             <Typography variant="h6" gutterBottom>
+    //               {project.projectTitle}
+    //             </Typography>
+    //             <Typography variant="body2" sx={{ mb: 1 }}>
+    //               <strong>Outline:</strong> {project.outline}
+    //             </Typography>
+    //             <Typography variant="body2" sx={{ mb: 1 }}>
+    //               <strong>Requirements:</strong> {project.requirements}
+    //             </Typography>
+    //             <Typography variant="body2" sx={{ mb: 1 }}>
+    //               <strong>Budget:</strong> {project.budgetRange}
+    //             </Typography>
+    //             <Typography variant="body2" sx={{ mb: 1 }}>
+    //               <strong>Timeline:</strong> {project.timeline}
+    //             </Typography>
+    //             <Typography variant="body2">
+    //               <strong>Skills:</strong> {project.skillsRequired?.join(", ")}
+    //             </Typography>
+    //           </Box>
 
-              {/* Right: Bids Section */}
-              <Box
-                sx={{
-                  flex: 1.2,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  maxHeight: "500px",
-                  overflowY: "auto",
-                  p: 1,
-                }}
-              >
-                <Typography variant="h6">Bids</Typography>
-                {bids.length === 0 ? (
-                  <Typography>No bids found.</Typography>
-                ) : (
-                  bids.map((bid) => (
-                    <Card
-                      key={bid.id}
-                      sx={{
-                        p: 2,
-                        borderRadius: 2,
-                        boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
-                        backgroundColor:
-                          bid.status === "Accepted"
-                            ? "#e7f9ee"
-                            : bid.status === "Rejected"
-                            ? "#fdeaea"
-                            : "white",
-                      }}
+    //           {/* Right: Bids Section */}
+    //           <Box
+    //             sx={{
+    //               flex: 1.2,
+    //               display: "flex",
+    //               flexDirection: "column",
+    //               gap: 2,
+    //               maxHeight: "500px",
+    //               overflowY: "auto",
+    //               p: 1,
+    //             }}
+    //           >
+    //             <Typography variant="h6">Bids</Typography>
+    //             {bids.length === 0 ? (
+    //               <Typography>No bids found.</Typography>
+    //             ) : (
+    //               bids.map((bid) => (
+    //                 <Card
+    //                   key={bid.id}
+    //                   sx={{
+    //                     p: 2,
+    //                     borderRadius: 2,
+    //                     boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
+    //                     backgroundColor:
+    //                       bid.status === "Accepted"
+    //                         ? "#e7f9ee"
+    //                         : bid.status === "Rejected"
+    //                         ? "#fdeaea"
+    //                         : "white",
+    //                   }}
+    //                 >
+    //                   <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+    //                     <strong>Name:</strong>{bid.sellerName || "Unnamed Seller"}
+    //                   </Typography>
+    //                   <Typography variant="body2" sx={{ mb: 0.5 }}>
+    //                     <strong>Bid Amount:</strong> ${bid.bidAmount}
+    //                   </Typography>
+    //                   <Typography variant="body2" sx={{ mb: 0.5 }}>
+    //                     <strong>Timeline:</strong> {bid.timeline}
+    //                   </Typography>
+    //                   <Typography variant="body2" sx={{ mb: 1 }}>
+    //                     {bid.proposalText}
+    //                   </Typography>
+    //                   <Chip
+    //                     label={bid.status}
+    //                     sx={{
+    //                       mb: 1,
+    //                       backgroundColor:
+    //                         bid.status === "Accepted"
+    //                           ? "green"
+    //                           : bid.status === "Rejected"
+    //                           ? "red"
+    //                           : "grey",
+    //                       color: "white",
+    //                     }}
+    //                   />
+    //                   <Box sx={{ display: "flex", gap: 1 }}>
+    //                     <Button
+    //                       variant="contained"
+    //                       color="success"
+    //                       size="small"
+    //                       onClick={() => handleAccept(bid.id)}
+    //                       disabled={bid.status === "Accepted"}
+    //                     >
+    //                       Accept
+    //                     </Button>
+    //                     <Button
+    //                       variant="contained"
+    //                       color="error"
+    //                       size="small"
+    //                       onClick={() => handleReject(bid.id)}
+    //                       disabled={bid.status === "Rejected"}
+    //                     >
+    //                       Reject
+    //                     </Button>
+    //                   </Box>
+    //                 </Card>
+    //               ))
+    //             )}
+    //           </Box>
+    //         </Box>
+    //       )
+    //     )}
+    //   </DialogContent>
+    // </Dialog>
+
+    <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
+  <DialogTitle sx={{ fontWeight: 600, fontSize: { xs: "1.1rem", md: "1.3rem" } }}>
+    Project Details & Bids
+  </DialogTitle>
+
+  <DialogContent
+    sx={{
+      maxHeight: { xs: "80vh", md: "85vh" },
+      overflowY: "auto",
+      px: { xs: 1, sm: 2 },
+    }}
+  >
+    {loading ? (
+      <Typography>Loading...</Typography>
+    ) : (
+      project && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column",sm:"column", md: "row" },
+            gap: { xs: 2,sm:2, md: 3 },
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Left: Project Details */}
+          <Box
+            sx={{
+              flex: 1,
+              p: { xs: 1.5, md: 2 },
+              border: "1px solid #ddd",
+              borderRadius: 2,
+              backgroundColor: "#fafafa",
+              minWidth: { xs: "100%", md: "45%" },
+            }}
+          >
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }}
+            >
+              {project.projectTitle}
+            </Typography>
+
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Outline:</strong> {project.outline}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Requirements:</strong> {project.requirements}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Budget:</strong> {project.budgetRange}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Timeline:</strong> {project.timeline}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Skills:</strong> {project.skillsRequired?.join(", ")}
+            </Typography>
+          </Box>
+
+          {/* Right: Bids Section */}
+          <Box
+            sx={{
+              flex: 1.2,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              p: { xs: 1, md: 1.5 },
+              maxHeight: { xs: "auto",sm:"auto", md: "500px" },
+              overflowY: { xs: "visible",sm:"visible", md: "auto" },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ fontSize: { xs: "1rem", md: "1.2rem" } }}
+            >
+              Bids
+            </Typography>
+
+            {bids.length === 0 ? (
+              <Typography>No bids found.</Typography>
+            ) : (
+              bids.map((bid) => (
+                <Card
+                  key={bid.id}
+                  sx={{
+                    p: { xs: 1.5,sm:1.5, md: 2 },
+                    borderRadius: 2,
+                    boxShadow: "0px 2px 6px rgba(0,0,0,0.05)",
+                    backgroundColor:
+                      bid.status === "Accepted"
+                        ? "#e7f9ee"
+                        : bid.status === "Rejected"
+                        ? "#fdeaea"
+                        : "white",
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: { xs: "0.9rem", md: "1rem" },
+                    }}
+                  >
+                    <strong>Name:</strong> {bid.sellerName || "Unnamed Seller"}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 0.5 }}>
+                    <strong>Bid Amount:</strong> ${bid.bidAmount}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 0.5 }}>
+                    <strong>Timeline:</strong> {bid.timeline}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 1 }}>
+                    {bid.proposalText}
+                  </Typography>
+
+                  <Chip
+                    label={bid.status}
+                    sx={{
+                      mb: 0,
+                      backgroundColor:
+                        bid.status === "Accepted"
+                          ? "green"
+                          : bid.status === "Rejected"
+                          ? "red"
+                          : "grey",
+                      color: "white",
+                      fontSize: { xs: "0.7rem",sm:"0.7rem", md: "0.8rem" },
+                    }}
+                  />
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      flexWrap: "wrap",
+                      justifyContent: { xs: "center",sm:"center", md: "center" },
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="success"
+                      size="small"
+                      onClick={() => handleAccept(bid.id)}
+                      disabled={bid.status === "Accepted"}
                     >
-                      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                        <strong>Name:</strong>{bid.sellerName || "Unnamed Seller"}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 0.5 }}>
-                        <strong>Bid Amount:</strong> ${bid.bidAmount}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 0.5 }}>
-                        <strong>Timeline:</strong> {bid.timeline}
-                      </Typography>
-                      <Typography variant="body2" sx={{ mb: 1 }}>
-                        {bid.proposalText}
-                      </Typography>
-                      <Chip
-                        label={bid.status}
-                        sx={{
-                          mb: 1,
-                          backgroundColor:
-                            bid.status === "Accepted"
-                              ? "green"
-                              : bid.status === "Rejected"
-                              ? "red"
-                              : "grey",
-                          color: "white",
-                        }}
-                      />
-                      <Box sx={{ display: "flex", gap: 1 }}>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          size="small"
-                          onClick={() => handleAccept(bid.id)}
-                          disabled={bid.status === "Accepted"}
-                        >
-                          Accept
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          size="small"
-                          onClick={() => handleReject(bid.id)}
-                          disabled={bid.status === "Rejected"}
-                        >
-                          Reject
-                        </Button>
-                      </Box>
-                    </Card>
-                  ))
-                )}
-              </Box>
-            </Box>
-          )
-        )}
-      </DialogContent>
-    </Dialog>
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="small"
+                      onClick={() => handleReject(bid.id)}
+                      disabled={bid.status === "Rejected"}
+                    >
+                      Reject
+                    </Button>
+                  </Box>
+                </Card>
+              ))
+            )}
+          </Box>
+        </Box>
+      )
+    )}
+  </DialogContent>
+</Dialog>
+
   );
 };
 

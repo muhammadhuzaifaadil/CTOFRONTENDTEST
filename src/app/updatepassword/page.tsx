@@ -84,127 +84,220 @@ console.log("conifrm new pass",form.confirmNewPassword)
   };
 
     return (
-        <Box sx={{
-        minHeight: "100vh",
-        width: "100%",
-        maxWidth: "100%",
-        overflowX: "hidden",
+       
+<Box
+  sx={{
+    minHeight: "100vh",
+    width: "100%",
+    maxWidth: "100%",
+    overflowX: "hidden",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundImage: "url('/cto/blue-bg.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    py: { xs: 2, sm: 4, md: 6 },
+    px: { xs: 2, sm: 3 },
+  }}
+>
+  {/* Back Button & Language Toggle */}
+{/* Back Button & Language Toggle */}
+<Box
+  sx={{
+    display: "flex",
+    width: {xs:"100%",sm:"100%",md:"50%"},
+    justifyContent: "space-between", // left & right alignment
+    alignItems: "center",
+    mb: { xs: 2, sm: 2, md: 3 },
+    px: { xs: 0, sm: 0, md: 0 },
+  }}
+>
+  {/* Back Button */}
+  <Button
+    startIcon={<ArrowBackIcon />}
+    onClick={() => router.push("/dashboard/buyer")}
+    sx={{
+      textTransform: "none",
+      color: "white",
+      fontSize: { xs: "14px", sm: "15px", md: "16px" },
+      fontWeight: "600",
+      justifyContent: "flex-start",
+    }}
+  >
+    {t("backbutton")}
+  </Button>
+
+  {/* Arabic/English Toggle */}
+  <Button
+    variant="outlined"
+    onClick={toggleLanguage}
+    sx={{
+      textTransform: "none",
+      justifyContent: "center",
+      color: "white",
+      fontSize: { xs: "14px", sm: "15px", md: "16px" },
+      fontWeight: "600",
+      borderColor: "white",
+    }}
+  >
+    {locale === "en" ? "عربي" : "English"}
+  </Button>
+</Box>
+
+
+
+  {/* Form Container */}
+  <Container
+    maxWidth="md"
+    sx={{
+      backgroundColor: theme.palette.background.default,
+      borderRadius: 3,
+      width: { xs: "100%", sm: "90%", md: "50%" },
+      p: { xs: 2, sm: 3, md: 6 },
+      boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+      display: "flex",
+      flexDirection: "column",
+      gap: 3,
+    }}
+  >
+    {/* Form Header */}
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        background:theme.palette.primary.main,
-        py: { xs: 2, sm: 4, md: 6 },
-        px: { xs: 2, sm: 3 },
+        gap: 1,
+      }}
+    >
+      <LockPersonSharpIcon
+        sx={{
+          fontSize: { xs: 40, sm: 50, md: 60 },
+          height: { xs: 50, sm: 60, md: 60 },
+          width: { xs: 50, sm: 60, md: 60 },
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+          borderRadius: "50%",
+          border: `2px solid ${theme.palette.primary.main}`,
+          padding: "12px",
         }}
-        >
-            {/* Back Button */}
-            <Box sx={{display:"flex", width:"50%", justifyContent:"flex-start"}}>
-                        <Button startIcon={<ArrowBackIcon />} onClick={()=>router.push('/dashboard/buyer')} sx={{textTransform:"none", color:"white", fontSize:"16px", fontWeight:"600", marginTop:"20px",display:"flex",justifyContent:"flex-start"}}>Back to Dashboard</Button>
-            
+      />
+      <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
+        {t("Header")}
+      </Typography>
+      <Typography variant="subtitle1">{t("Header2")}</Typography>
+      <Typography variant="body1" sx={{ color: "#6c757d", textAlign: "center" }}>
+        {t("Content")}
+      </Typography>
+    </Box>
 
-            {/* arabic english toggle */}
-                          <Button
-                            variant="outlined"
-                            onClick={toggleLanguage}
-                            sx={{ position:'absolute', ml:"685px",mt:1,textTransform: "none",
-                        color: "white",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        marginTop: "20px",
-                        border:"ActiveBorder" }}
-                          >
-                            {locale === "en" ? "عربي" : "English"}
-                          </Button>
-            </Box>
-            
+    {/* Password Fields */}
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <CustomTextField
+        label={`${t("CurrentPassLabel")}`}
+        fieldName="currentPassword"
+        placeholder={`${t("CurrentPassPlaceholder")}`}
+        onChange={handleChange}
+        isArabic={isArabic}
+        value={form.currentPassword}
+        required
+        type="password"
+        fullWidth
+      />
+      <CustomTextField
+        label={`${t("NewPasswordLabel")}`}
+        fieldName="newPassword"
+        placeholder={`${t("NewPasswordPlaceholder")}`}
+        type="password"
+        onChange={handleChange}
+        value={form.newPassword}
+        isArabic={isArabic}
+        required
+        fullWidth
+      />
+      <CustomTextField
+        label={`${t("ConfirmNewPasswordLabel")}`}
+        fieldName="confirmNewPassword"
+        placeholder={`${t("ConfirmNewPasswordPlaceholder")}`}
+        onChange={handleChange}
+        isArabic={isArabic}
+        value={form.confirmNewPassword}
+        confirmValue={form.newPassword}
+        required
+        type="password"
+        fullWidth
+      />
 
-            {/* form at center */}
-            <Container
-                                maxWidth="md"
-                                sx={{
-                                  backgroundColor: theme.palette.background.default,
-                                  borderRadius: 3,
-                                  width:"50%",
-                                  p: { xs: 3, sm: 4, md: 6 },
-                                  boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
-                                }}
-                              >
-                {/* first half of form */}
-            <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",gap:1}}>
-                                <LockPersonSharpIcon sx={{
-                                    fontSize:"50px",
-                                    height: 60,
-                                    width: 60,
-                                    backgroundColor:theme.palette.primary.main,
-                                    color:"white",
-                                    borderRadius: "60%",
-                                    border: `2px solid ${theme.palette.primary.main}`,
-                                    padding: "12px"
-                                    }} />
-                                <Typography variant="subtitle2" sx={{color:theme.palette.primary.main}}>{t("Header")}</Typography>
-                                <Typography variant="subtitle1">{t("Header2")}</Typography>
-                                <Typography variant="body1" sx={{color:"#6c757d", textAlign:"center"}}>{t("Content")}</Typography>
-                            </Box>
-
-
-                {/* Second Half of form */}
-            <Box sx={{gap:1, display:"flex", flexDirection:"column", marginTop:"20px"}}>
-            <CustomTextField 
-            label={`${t("CurrentPassLabel")}`}
-            fieldName="currentPassword" 
-            placeholder={`${t("CurrentPassPlaceholder")}`} 
-            onChange={handleChange} 
-            isArabic={isArabic}
-            value={form.currentPassword} 
-            required type="password" 
-            fullWidth />
-            <CustomTextField 
-            label={`${t("NewPasswordLabel")}`} 
-            fieldName="newPassword" 
-            placeholder={`${t("NewPasswordPlaceholder")}`}  
-            type="password" 
-            onChange={handleChange} 
-            value={form.newPassword} 
-            isArabic={isArabic}
-            required 
-            fullWidth />
-            <CustomTextField 
-            label={`${t("ConfirmNewPasswordLabel")}`} 
-            fieldName="confirmNewPassword" 
-            placeholder={`${t("ConfirmNewPasswordPlaceholder")}`} 
-            onChange={handleChange} 
-            isArabic={isArabic}
-            value={form.confirmNewPassword} 
-            confirmValue={form.newPassword}
-            required type="password"
-             fullWidth />            
-                        <Box sx ={{display:"flex",flexDirection:"column", alignItems:"start", justifyContent:"flex-start", marginTop:"10px",backgroundColor:"lightgray", borderRadius:2}}>
-                         <Typography variant="body1" sx={{marginLeft:2,marginTop:0.5}}>{t("PasswordRequirementsHeader")}</Typography>
-                         <Box sx={{display: 'flex', flexDirection: 'column', gap: 0.5, mt: 1,marginLeft:2}}>
-                             {arr.map((req, idx) => (
-                                 <Typography key={idx} variant="body2" sx={{color: "#6c757d", display: 'flex', alignItems: 'flex-start'}}>
-                                     {"\u2022\u00A0"}{req}
-                                 </Typography>
-                             ))}
-                         </Box>
-                        </Box>
-
-            </Box>
-
-
-                {/* Third Half of Form */}
-
-                <Box sx={{display:"flex",flexDirection:"row", justifyContent:"center", alignItems:"center", gap:1 }}>
-                <Button variant="contained" onClick={handleSubmit} disabled={loading} fullWidth sx={{ backgroundColor:theme.palette.primary.main, textTransform: "none", fontSize: "16px", fontWeight: "600", padding: "10px 0", borderRadius:4, marginTop:"20px" }}>Update Password</Button>
-                <Button variant="outlined" fullWidth href="/" sx={{ color:"black", textTransform: "none", fontSize: "16px", fontWeight: "600", padding: "10px 0", borderRadius:4, marginTop:"10px", borderColor:"#ced4da",backgroundColor:"lightgray" }}>Cancel</Button>
-
-                </Box>
-
-
-
-                              </Container>
+      {/* Password Requirements */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: "flex-start",
+          mt: 1,
+          backgroundColor: "lightgray",
+          borderRadius: 2,
+          p: 1,
+        }}
+      >
+        <Typography variant="body1">{t("PasswordRequirementsHeader")}</Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, mt: 1, pl: 1 }}>
+          {arr.map((req, idx) => (
+            <Typography key={idx} variant="body2" sx={{ color: "#6c757d" }}>
+              {"\u2022\u00A0"}{req}
+            </Typography>
+          ))}
         </Box>
+      </Box>
+    </Box>
+
+    {/* Action Buttons */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        gap: 2,
+        mt: 2,
+      }}
+    >
+      <Button
+        variant="contained"
+        onClick={handleSubmit}
+        disabled={loading}
+        fullWidth
+        sx={{
+          backgroundColor: theme.palette.primary.main,
+          textTransform: "none",
+          fontSize: "16px",
+          fontWeight: "600",
+          py: 1.2,
+          borderRadius: 4,
+        }}
+      >
+        {t("updatebutton")}
+      </Button>
+      <Button
+        variant="outlined"
+        fullWidth
+        onClick={()=>{router.push(`/dashboard/${user?.role}`)}}
+        sx={{
+          color: "black",
+          textTransform: "none",
+          fontSize: "16px",
+          fontWeight: "600",
+          py: 1.2,
+          borderRadius: 4,
+          borderColor: "#ced4da",
+          backgroundColor: "lightgray",
+        }}
+      >
+        {t("cancelbutton")}
+      </Button>
+    </Box>
+  </Container>
+</Box>
 
     );
 }

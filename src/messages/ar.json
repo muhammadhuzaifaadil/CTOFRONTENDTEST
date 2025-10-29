@@ -139,7 +139,8 @@
     "fourthrequirement": "رقم واحد على الأقل (0-9)",
     "fifthrequirement": "رمز خاص واحد على الأقل (!@#$%^&*)",
     "updatebutton": "تحديث كلمة المرور",
-    "cancelbutton": "إلغاء"
+    "cancelbutton": "إلغاء",
+    "backbutton": "العودة إلى لوحة التحكم"
 },
 "SellerDashboard": {
   "Stats_Actives_Bids": "العطاءات النشطة",
@@ -198,7 +199,9 @@
   "CompanyWebsite": "رابط موقع الشركة",
   "TermsAcceptance": "أوافق على الشروط والأحكام",
   "RegisterButton": "تسجيل / إنشاء حساب",
-  "CancelButton": "إلغاء"
+  "CancelButton": "إلغاء",
+   "AcceptTerms":"أوافق على",
+   "Terms&Conditions":"الشروط والأحكام"
 },
 "SellerRegister": {
   "BackButton": "العودة إلى صفحة الترحيب",
@@ -226,8 +229,13 @@
   "ChooseFile": "اختيار ملف",
   "TermsAcceptance": "أوافق على الشروط والأحكام",
   "RegisterButton": "تسجيل / إنشاء حساب",
-  "CancelButton": "إلغاء"
-}
+  "CancelButton": "إلغاء",
+  "BusinessCategory": "فئة العمل"
+},
+"Navbar":{
+            "Dashboard":"لوحة التحكم",
+            "Welcome": "،مرحباً بعودتك"
+        }
 
 
 

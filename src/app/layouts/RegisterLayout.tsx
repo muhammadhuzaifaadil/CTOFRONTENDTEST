@@ -8,50 +8,109 @@ interface RegisterLayoutProps {
 
 const RegisterLayout: React.FC<RegisterLayoutProps> = ({ children }) => {
   return (
-    <Box
+  //   <Box
+  //     sx={{
+  //       minHeight: "100vh",
+  //       width: "100%",
+  //       display: "flex",
+  //       alignItems: "center",
+  //       justifyContent: "center",
+  //       position: "relative",
+  //       overflow: "hidden",
+  //     }}
+  //   >
+  //     {/* Background Image */}
+  //     <Box
+  //       sx={{
+  //         position: "absolute",
+  //         inset: 0,
+  //         backgroundImage: "url('/cto/blue-bg.png')", // <-- export from Figma as SVG/PNG and put in /public
+  //         backgroundSize: "cover",
+  //         backgroundPosition: "center",
+  //         // opacity:"80%",
+  //         borderRadius:"19px",
+  //         zIndex: 0,
+  //       }}
+  //     />
+  //     {/* overlay */}
+  //     {/* <Box
+  //   sx={{
+  //     position: "absolute",
+  //     inset: 0,
+  //     backgroundColor: "rgba(0, 102, 255, 0.4)", // adjust opacity (0.5 = 50%)
+  //     zIndex: 1,
+  //   }}
+  // /> */}
+
+  //     {/* Logo Top Left */}
+  //     <Box
+  //       sx={{
+  //         position: "absolute",
+  //         top: 20,
+  //         left: 20,
+  //         zIndex: 1,
+  //       }}
+  //     >
+  //       <Image
+  //         src="/cto/Logo - Monochrome.png" // <-- your CTO logo image in /public
+  //         alt="CTO Logo"
+  //         width={80}
+  //         height={80}
+  //       />
+  //     </Box>
+
+  //     {/* Page Content */}
+  //     <Box sx={{ position: "relative", zIndex: 1, width: "100%" }}>
+  //       {children}
+  //     </Box>
+  //   </Box>
+  <Box
       sx={{
         minHeight: "100vh",
         width: "100%",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "column",
         position: "relative",
         overflow: "hidden",
+        backgroundImage: "url('/cto/blue-bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
-      {/* Background Image */}
+      {/* Top Header (Logo) */}
       <Box
         sx={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url('/cto/bg.jpg')", // <-- export from Figma as SVG/PNG and put in /public
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity:"70%",
-          borderRadius:"19px",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Logo Top Left */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 20,
-          left: 20,
-          zIndex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          width: "100%",
+          px: { xs: 2, sm: 4, md: 6 },
+          py: { xs: 2, sm: 3, md: 1 },
         }}
       >
         <Image
-          src="/cto/Logo - Original.png" // <-- your CTO logo image in /public
+          src="/cto/Logo - Monochrome.png"
           alt="CTO Logo"
           width={80}
           height={80}
+          style={{
+            objectFit: "contain",
+          }}
         />
       </Box>
 
-      {/* Page Content */}
-      <Box sx={{ position: "relative", zIndex: 1, width: "100%" }}>
+      {/* Main Content (children) */}
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         {children}
       </Box>
     </Box>

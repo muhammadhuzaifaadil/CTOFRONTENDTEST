@@ -504,7 +504,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "650px",
+            width: {xs:"500px",md:"650px"},
             height: "85%",
             bgcolor: "background.paper",
             borderRadius: 0,

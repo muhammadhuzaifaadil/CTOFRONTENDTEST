@@ -108,17 +108,23 @@ const t = useTranslations("ForgotPage");
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: theme.palette.primary.main,
+        // background: theme.palette.primary.main,
+        backgroundImage: "url('/cto/blue-bg.png')", // <-- export from Figma as SVG/PNG and put in /public
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         py: { xs: 2, sm: 4, md: 6 },
       }}
     >
       {/* Back Button */}
-      <Box sx={{ display: "flex", width: "30%", justifyContent: "flex-start" }}>
+      <Box sx={{ display: "flex",     width: { xs: "90%", sm: "70%", md: "50%", lg: "30%" },  justifyContent: "flex-start" }}>
          
         <Button
           startIcon={<ArrowBackIcon />}
           href="/login"
           sx={{
+            display:"flex",
+            justifyContent:"flex-start",
+            width:"100%",
             textTransform: "none",
             color: "white",
             fontSize: "16px",
@@ -133,7 +139,7 @@ const t = useTranslations("ForgotPage");
               <Button
                 variant="outlined"
                 onClick={toggleLanguage}
-                sx={{ position:'fixed', ml:"400px",mt:1,textTransform: "none",
+                sx={{ display:"flex",justifyContent:"flex-end",width:"100%",mt:1,textTransform: "none",
             color: "white",
             fontSize: "16px",
             fontWeight: "600",
@@ -150,7 +156,7 @@ const t = useTranslations("ForgotPage");
         sx={{
           backgroundColor: theme.palette.background.default,
           borderRadius: 3,
-          width: "30%",
+    width: { xs: "90%", sm: "70%", md: "50%", lg: "30%" }, // ✅ Responsive widths
           p: { xs: 3, sm: 4, md: 6 },
           boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
         }}

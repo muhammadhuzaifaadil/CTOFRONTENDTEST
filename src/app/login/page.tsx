@@ -59,8 +59,15 @@ const Login: React.FC = () => {
     <Box
       sx={{
         display: "flex",
-        flexDirection: "row",
-        height: "100vh",
+        flexDirection: {
+      xs: "column", // 📱 For mobile (xs & sm)
+      sm: "column", // optional, but explicit
+      md: "row",    // 💻 For tablets & desktops
+    },
+        height: {
+          md:"100vh",
+        sm:"80vh",
+      xs:"80vh"},
         width: "100vw",
       }}
     >
@@ -71,7 +78,7 @@ const Login: React.FC = () => {
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "flex-start",
-          p: 1,
+          p: {md:1,sm:0,xs:0},
         }}
       >
           <img
@@ -83,14 +90,6 @@ const Login: React.FC = () => {
           />
         
       </Box>
-      {/* arabic english toggle
-      <Button
-        variant="outlined"
-        onClick={toggleLanguage}
-        sx={{ position:'fixed', ml:"888px",mt:1 }}
-      >
-        {locale === "en" ? "عربي" : "English"}
-      </Button> */}
 
       {/* Center Box - Login Form (Wider) */}
       
@@ -98,11 +97,19 @@ const Login: React.FC = () => {
         sx={{
           flex: 2.5,
           display: "flex",
+          width:{
+            md:"100%",
+            // xs:"60%",
+            // sm:"60%"
+          },
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: {md:"center"},
           alignItems: "center",
-           position: "relative", // 👈 key to anchor the toggle
-        minHeight: "100vh", // ensures proper height for positioning
+           position: {
+            md:"relative",
+            xs:"",
+          sm:""}, // 👈 key to anchor the toggle
+        minHeight: {md:"100vh",sm:"100vh",xs:"80vh"}, // ensures proper height for positioning
         }}
       >
          {/* Language Toggle at top-right inside center box */}
@@ -119,7 +126,7 @@ const Login: React.FC = () => {
       </Box>
         <Box
           sx={{
-            width: "100%",
+            width: {md:"100%",sm:"80%",xs:"80%"},
             maxWidth: 400,
             display: "flex",
             flexDirection: "column",
@@ -266,15 +273,17 @@ const Login: React.FC = () => {
       {/* Right Box - Sign Up Section */}
       <Box
         sx={{
-          flex: 1.7,
-          backgroundImage: "url('/cto/bg.jpg')",
-          backgroundSize: "cover",
-          height:"99%",
-          borderRadius:4,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      flex: 1.7,
+      backgroundImage: "url('/cto/bg.jpg')",
+      backgroundSize: "cover",
+      height: { md: "99%", xs: "auto" },
+      borderRadius: { md: 4, xs: 0 },
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      p: { xs: 3, sm: 4, md: 0 },
+    }}
       >
         <Box
           sx={{

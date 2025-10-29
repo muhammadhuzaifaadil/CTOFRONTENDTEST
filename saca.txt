@@ -1,12 +1,3007 @@
-// // next-intl.config.ts
-// import { getRequestConfig } from 'next-intl/server';
 
-// export default getRequestConfig(async ({ locale }) => {
-//   const supportedLocales = ['en', 'ar'];
-//   const finalLocale = supportedLocales.includes(locale) ? locale : 'en';
+<Box
+          sx={{
+            display: "flex",
+            gap: 5,
+            flexDirection: "row",
+            mb: 4,
+            width:"100%",
+            justifyContent:"space-between"
+          }}
+        >
+          {/* Post New Project */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              // width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+            <Box
+  sx={{
+    borderRadius: "24px",
+    height: "50px",
+    width: "50px",
+    backgroundColor: theme.palette.primary.main,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    
+  }}
+>
+            <AddIcon sx={{ fontSize: 26, color: "white", display:'flex', justifyContent:`${isArabic?"flex-end":"flex-start"}` }} />
+            
+ </Box>
+ </Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("PostProjectHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("PostProjectContent")}
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                background: theme.palette.primary.main,
+                color: "#fff",
+                fontWeight: 600,
+                borderRadius: 3,
+                width: "100%",
+              }}
+              onClick={() => router.push("/dashboard/buyer/createproject")}
+            >
+              {t("PostProjectButton")}
+            </Button>
+          </Card>
 
-//   return {
-//     locale: finalLocale,
-//     messages: (await import(`./src/messages/${finalLocale}.json`)).default
-//   };
-// });
+          {/* My Projects */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              //  width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+      <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+
+<Box
+  sx={{
+    borderRadius: "24px",
+    height: "50px",
+    width: "50px",
+    backgroundColor: theme.palette.primary.main,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    //  ml:isArabic?43:0
+  }}
+>
+  <FolderOpenIcon sx={{ fontSize: 26, color: "white" }} />
+</Box>
+</Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("MyProjectHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("MyProjectContent")}
+            </Typography>
+            <Button
+              variant="outlined"
+              sx={{ fontWeight: 600, borderRadius: 3 }}
+              onClick={() => router.push("/dashboard/buyer/manageproject")}
+            >
+              {t("MyProjectButton")}
+            </Button>
+          </Card>
+
+          {/* Profile Settings */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              //  width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+          <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+            <Box
+  sx={{
+    borderRadius: "24px",
+    height: "50px",
+    width: "50px",
+    backgroundColor: theme.palette.primary.main,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    //  ml:isArabic?43:0
+  }}
+>
+            <PersonIcon sx={{ fontSize: 26, color: "white" }}/>
+           </Box>
+           </Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("ProfileSettingHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("ProfileSettingsContent")}
+            </Typography>
+            <Box sx={{display:"flex", flexDirection:"row",alignItems:"center",justifyContent:"space-between", gap:1}}>
+            <Button
+              variant="outlined"
+              sx={{ fontWeight: 600, borderRadius: 3, width:"40%" }}
+              onClick={() => router.push("/dashboard/buyer/profilemanagement")}
+            >
+              {t("ProfileSettingsButton1")}
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{ fontWeight: 600, borderRadius: 3,width:"50%" }}
+              onClick={() => router.push("/updatepassword")}
+            >
+              {t("ProfileSettingsButton2")}
+            </Button>
+            </Box>
+          </Card>
+        </Box>
+
+        Middleboxes before responsive buyer page
+
+        recent
+         <Card
+          sx={{
+            borderRadius: 3,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+            p: 3,
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
+          >
+            {t("RecentActivity")}
+          </Typography>
+          <Divider sx={{ mb: 3 }} />
+          {/* when no project */}
+          {loadingProjects ? (
+  <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", my: 4 }}>
+    Loading recent projects...
+  </Typography>
+) : recentProjects.length === 0 ? (
+  // ===== Static fallback when there are no projects =====
+  <Box
+    sx={{
+      minHeight: 220,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+      gap: 1,
+    }}
+  >
+    <Box
+      sx={{
+        width: 56,
+        height: 56,
+        borderRadius: "50%",
+        backgroundColor: theme.palette.background.paper,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+      }}
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M3 12h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M3 6h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+      </svg>
+    </Box>
+    <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
+      No projects yet
+    </Typography>
+    <Typography variant="body2" color="text.secondary">
+      Start by posting your first project
+    </Typography>
+  </Box>
+) : (
+  // ===== Render recent projects from API =====
+  <Box
+    sx={{
+      minHeight: 220,
+      display: "flex",
+      flexDirection: "column",
+      gap: 1,
+    }}
+  >
+    {recentProjects.map((project: any, idx: number) => {
+      const outlinePreview =
+        project.outline?.length > 430
+          ? project.outline.slice(0, 430) + "..."
+          : project.outline;
+
+      return (
+        <Box
+          key={idx}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+            width: "100%",
+            mb: 2,
+            boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+            p: 2,
+            borderRadius: 2,
+          }}
+        >
+          {/* Title + Status */}
+          <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
+            {/* <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              {project.title}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              sx={{
+                textTransform: "capitalize",
+                fontWeight: 600,
+                color: "black",
+                backgroundColor: "orange",
+                px: 1,
+                borderRadius: "6px",
+              }}
+            >
+              {project.status}
+            </Typography> */}
+            <Typography variant="subtitle1" sx={{fontWeight:600,width:"40%"}}>{project.title}</Typography>
+            <Typography variant="subtitle2" sx={{textTransform:"capitalize", fontWeight:600, color:"black",backgroundColor:`${project.statusColor}`,display:"flex",width:"8%",justifyContent:"center",borderRadius:"6px"}}>{project.status}</Typography>
+          </Box>
+
+          {/* Outline */}
+          <Typography variant="body2" color="gray">
+            {outlinePreview}
+          </Typography>
+
+          {/* Budget, Timeline, Skills */}
+          <Box sx={{ display: "flex", gap: 3, mt: 1 }}>
+            <Box sx={{ width: "25%" }}>
+              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
+                Budget
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.budgetRange || "N/A"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ width: "25%" }}>
+              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
+                Timeline
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.timeline || "N/A"}
+              </Typography>
+            </Box>
+
+            <Box sx={{ width: "25%" }}>
+              <Typography variant="caption" color="gray" sx={{ fontWeight: 600 }}>
+                Skills
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.skillsRequired?.join(", ") || "N/A"}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      );
+    })}
+  </Box>
+)}
+
+        </Card>
+
+        createproject
+        <Box
+      sx={{
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+         background:"white",
+         mt:2,
+        py: { xs: 2, sm: 4, md: 6 },
+      }}
+    >
+
+ {/* Back Button */}
+      <Box sx={{ display: "flex", width: "60%", color:"black", justifyContent: "flex-start" }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={()=>router.push("/dashboard/buyer")}
+          sx={{
+            textTransform: "none",
+            fontSize: "16px",
+            fontWeight: "600",
+            color:"black"
+            
+          }}
+        >
+          {t("BackButton")}
+        </Button>
+      </Box>
+
+       {/* Form Container */}
+      <Container
+        maxWidth="md"
+        sx={{
+          backgroundColor: theme.palette.background.default,
+          borderRadius: 3,
+          width: "70%",
+          p: { xs: 3, sm: 4, md: 6 },
+          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {/* Header Section */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <DescriptionIcon
+            sx={{
+              height: 60,
+              width: 60,
+              backgroundColor: theme.palette.primary.main,
+              color: "white",
+              borderRadius: "60%",
+              border: `2px solid ${theme.palette.primary.main}`,
+              padding: "12px",
+            }}
+          />
+          <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }} >
+            {t("Header1")}
+          </Typography>
+            <Typography variant="subtitle1">{t("Header2")}</Typography>
+              <Typography variant="body1" sx={{ color: "#6c757d", textAlign: "center" }}>
+                {t("Content")}
+              </Typography>
+          
+        </Box>
+
+        {/* Form Fields */}
+        <Box sx={{ mt: 3, display: "flex", flexDirection: "column", gap: 2 }}>
+          
+          {/* title */}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+
+            <CustomTextField 
+            label={`${t("TitleFieldLabel")}`}
+  placeholder={`${t("TitleFieldPlaceholder")}`}
+  fullWidth
+  required
+  maxChar={150}
+  multiline
+  rows={1}
+  value={title}
+  isArabic={isArabic}
+  onChange={(e) => setTitle(e.target.value)}
+   />
+          </Box>
+          {/* outline */}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+
+            <CustomTextField 
+            label={`${t("OutlineLabel")}`}
+  placeholder={`${t("OutlinePlaceholder")}`}
+  fullWidth
+  required
+  multiline
+  rows={4}
+  maxChar={700}
+  value={outline}
+  isArabic={isArabic}
+  onChange={(e) => setOutline(e.target.value)}
+   />
+          </Box>
+
+          {/* requirements */}
+             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+
+            <CustomTextField 
+            label={`${t("RequirementsLabel")}`}
+  placeholder={`${t("RequirementsPlaceholder")}`}
+  fullWidth
+  multiline
+  rows={5}
+  maxChar={1000}
+  value={requirements}
+  isArabic={isArabic}
+  onChange={(e) => setRequirements(e.target.value)}
+   />
+          </Box>
+          {/* Budget range */}
+<Box>
+            <BudgetSelect label={`${t("BudgetLabel")}`} value={budgetRange} onChange={setBudgetRange} isArabic/>
+     </Box>
+
+     {/* Skills Required */}
+<Box sx={{display:"flex",flexDirection:"column"}}>
+  <Typography sx={{fontWeight:"bold"}} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+    {t("SkillsRequired")}
+  </Typography>
+     <Box sx={{display:'flex',flexDirection:'row',width:"100%", backgroundColor:"lightgrey",justifyContent:"space-between", borderRadius:1, gap:1, height:"160px"}}>
+          
+          {/* Use flex-wrap to wrap buttons, and whiteSpace to keep text in one line */}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, width: '100%' }}>
+            {/* {skills.map((skill) => (
+              <Button
+                key={skill}
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 4,
+                  mt: 2,
+                  ml:0.5,
+                  backgroundColor: 'white',
+                  height: '50px',
+                  color: theme.palette.primary.main,
+                  whiteSpace: 'nowrap',
+                  textAlign: 'center',
+                  px: 2,
+                  boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+                }}
+              >
+                {skill}
+              </Button>
+            ))} */}
+
+            {skills.map((skill) => {
+  const isSelected = skillsRequired.includes(skill);
+  return (
+    <Button
+      key={skill}
+      onClick={() => {
+        setSkillsRequired((prev) =>
+          isSelected ? prev.filter((s) => s !== skill) : [...prev, skill]
+        );
+      }}
+      sx={{
+        borderRadius: 4,
+        mt: 2,
+        backgroundColor: isSelected ? theme.palette.primary.main : "white",
+        color: isSelected ? "white" : theme.palette.primary.main,
+        height: "50px",
+        px: 2,
+        boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+      }}
+    >
+      {skill}
+    </Button>
+  );
+})}
+
+          </Box>
+            
+</Box>
+
+<Typography variant ="caption" sx={{display:"flex", flexDirection:'flex-start', color:"gray", gap:0.8}} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+                {t("SkillAtleastSelection")}
+              </Typography>
+     </Box>
+          {/* Timeline */}
+            <Box sx={{display:'flex', flexDirection:'row', justifyContent:"space-between", width:"100%",gap:1}}>
+              <Box sx={{display:"flex", width:"50%"}}>
+              <CustomTextField label={`${t("Timeline")}`} placeholder={`${t("Duration")}`} 
+              sx={{display:"flex",
+               justifyContent:isArabic?"flex-end":"flex-start",
+               textAlign: isArabic ? "right" : "left",
+        right: isArabic ? 14 : "auto",
+        left: isArabic ? "auto" : 14,
+        transformOrigin: isArabic ? "top right" : "top left",
+        "& .MuiInputBase-input": {
+        textAlign: isArabic ? "right" : "left", // for Arabic placeholders
+      },
+               
+               }}
+               
+               
+               required fullWidth value={timelineNumber} onChange={(e) => setTimelineNumber(e.target.value)} />
+              </Box>
+              <Box sx={{display:"flex", width:"50%", mt:4.4}}>
+              <DurationSelect  label="" value={timelineString} onChange={setTimeLineString}/>
+            </Box>
+            
+            </Box>
+          {/* Skills required */}
+
+          {/* Attachments */}
+            <Box>
+              <InputFileUpload text={t("UploadButtonLabel")} sx={{width:"100%"}} isArabic onFileSelect={handleUpload}/>
+              <Typography variant ="caption" sx={{display:"flex", flexDirection:'flex-start', color:"gray", gap:0.8}} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+                {t("DocCheck")}
+              </Typography>
+            </Box>
+          {/* Buttons */}
+          <Box sx={{display:"flex",flexDirection:'row', gap:2,justifyContent:"space-between", width:"100%", borderRadius:3}}>
+            <Button sx={{borderRadius:4,backgroundColor:"lightgray", width:"100%",color:"black" }}>
+              {t("CancelButton")}
+              </Button>
+               <Button startIcon={<SaveIcon sx={{fontSize: 20, color: "black"}} />} onClick={() => handleSubmit("Draft")} sx={{borderRadius:4, width:"100%", backgroundColor:"white",color:"black" }}>
+              {t("DraftButton")}
+              </Button>
+               <Button startIcon={<SendIcon sx={{fontSize: 20, color: "white"}} />} onClick={() => handleSubmit("Published")} sx={{borderRadius:4,backgroundColor:theme.palette.primary.main,color:"white", width:"100%" }}>
+              {t("PublishButton")}
+              </Button>
+          </Box>
+        </Box>
+      </Container>
+
+
+
+</Box>
+
+
+manage bid b4 responsive mobile
+<Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          background: "white",
+          mt: 3,
+          py: { xs: 2, sm: 4, md: 6 },
+        }}
+      >
+        {/* Back Button */}
+        <Box
+          sx={{
+            display: "flex",
+            width: "75%",
+            justifyContent: "flex-start",
+            mb: 2,
+          }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/buyer")}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            {t("BackButton")}
+          </Button>
+        </Box>
+
+        <Container
+          maxWidth={false}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            borderRadius: 3,
+            width: "1152px",
+            height: "886px",
+            p: { xs: 3, sm: 4, md: 5 },
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            transition: "0.3s ease",
+          }}
+        >
+          {/* Filter Chips */}
+          <Stack direction="row" spacing={2} sx={{ width: "100%" }} mb={3}>
+            {statusFilters.map((status) => (
+              <Chip
+                key={status.value}
+                label={status.label}
+                onClick={() => {
+                  setSelectedStatus(status.value);
+                  setSelectedStatusArabic(status.label)
+                }}
+                sx={{
+                  backgroundColor: theme.palette.grey[200],
+                  fontWeight: selectedStatus === status.label ? 600 : 400,
+                  color:
+                    selectedStatus === status.value
+                      ? status.color
+                      : theme.palette.text.secondary,
+                  cursor: "pointer",
+                  border: `2px solid ${status.color}`,
+                  px: 1.5,
+                  py: 1,
+                  fontSize: "0.9rem",
+                  borderRadius: 2,
+                }}
+              />
+            ))}
+          </Stack>
+
+          {/* Header */}
+          <Box sx={{ textAlign: "center", mb: 3 }}>
+            <FolderOpenIcon
+              sx={{
+                borderRadius: "24px",
+                height: "50px",
+                width: "50px",
+                backgroundColor: theme.palette.primary.main,
+                color: "white",
+                p: 1,
+              }}
+            />
+            <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
+              {t("Header1")}
+            </Typography>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              {t("Header2")}
+            </Typography>
+            <Typography variant="body1" sx={{ color: "#6c757d" }}>
+              {t("Content")}
+            </Typography>
+          </Box>
+<Typography
+              variant="subtitle1"
+              sx={{
+                width: "100%",
+                fontWeight: "bold",
+                // mb: 1.5,
+                borderBottom: `2px solid #f5b400`,
+                // pb: 0.5,
+              }}
+            >
+              {isArabic?selectedStatusArabic: selectedStatus} ({projects.length})
+            </Typography>
+          {/* Projects */}
+          <Box
+            sx={{
+              width: "100%",
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+              overflowY: "auto",        // ✅ only vertical scroll
+    maxHeight: "550px",       // ✅ enough for about 2 cards (each 183px + spacing)
+    paddingRight: 1,          // ✅ avoids scrollbar overlay on content
+    scrollbarWidth: "thin",   // ✅ Firefox scroll styling
+              "&::-webkit-scrollbar": {
+      width: "8px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "#ccc",
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: "#aaa",
+    },
+              // scrollbarWidth: "none",
+              // "&::-webkit-scrollbar": { display: "none" },
+            }}
+          >
+            
+
+            {loading ? (
+              <Typography>Loading projects...</Typography>
+            ) : projects.length === 0 ? (
+              <Typography
+                variant="body1"
+                sx={{
+                  color: "#9e9e9e",
+                  fontWeight: 500,
+                  textAlign: "center",
+                  mt: 4,
+                }}
+              >
+                {t("NotFound")}
+              </Typography>
+            ) : (
+              projects.map((project, index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    display:"flex",
+                    p: 2,
+                    borderRadius: 3,
+       
+                    width: "1000px",
+                    height:"240px",
+                    flexShrink: 0,
+                    boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <CardContent sx={{display:"flex",width:"100%",flexDirection:"column"}}>
+                    <Box
+                      sx={{
+                        display:"flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 1,
+                      }}
+                    >
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontWeight: "bold", color: "#333" }}
+                      >
+                        {project.title}
+                      </Typography>
+                      <Chip
+                        label={project.status}
+                        sx={{
+                          backgroundColor:
+                            statusFilters.find((s) => s.value === project.status)?.color ||
+                            "grey",
+                          color: "white",
+                          fontWeight: 600,
+                        }}
+                        size="small"
+                      />
+                    </Box>
+
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {project.outline
+    ? project.outline.split(" ").slice(0, 50).join(" ") +
+      (project.outline.split(" ").length > 50 ? "..." : "")
+    : "No outline available."}
+                    </Typography>
+
+                    <Divider sx={{ my: 1 }} />
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexWrap: "wrap",
+                        gap: 2,
+                      }}
+                    >
+                      <Typography variant="body2">
+                        <strong>Budget:</strong> {project.budgetRange || "Not Specified"}
+                      </Typography>
+                      <Typography variant="body2">
+                        <strong>Timeline:</strong>{" "}
+                        <span style={{ color: theme.palette.primary.main }}>
+                          {project.timeline}
+                        </span>
+                      </Typography>
+                      <Typography variant="body2">
+                        <strong>Skills:</strong>{" "}
+                        <span style={{ color: theme.palette.primary.main }}>
+                          {(project.skillsRequired || []).join(", ") || "0 required"}
+                        </span>
+                      </Typography>
+                    </Box>
+                    <Box display={"flex"} justifyContent={"center"}>
+                      <Button
+                                        fullWidth
+                                        variant="contained"
+                                        sx={{
+                                          mt: 2,
+                                          borderRadius: "12px",
+                                          textTransform: "none",
+                                          py: 1.2,
+                                        }}
+                                        onClick={() => handleOpenModal(project.id)}
+                                      >
+                                        View Bids
+                                      </Button>
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </Box>
+
+          {/* Pagination */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              mt: 2,
+              gap: 1,
+            }}
+          >
+            <Button
+              variant="outlined"
+              disabled={pagination.page <= 1}
+              onClick={() => fetchProjects(selectedStatus, pagination.page - 1)}
+            >
+              Prev
+            </Button>
+            <Typography>
+              Page {pagination.page} of {pagination.totalPages}
+            </Typography>
+            <Button
+              variant="outlined"
+              disabled={pagination.page >= pagination.totalPages}
+              onClick={() => fetchProjects(selectedStatus, pagination.page + 1)}
+            >
+              Next
+            </Button>
+          </Box>
+           <BidsModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        projectId={selectedProjectId}
+      />
+        </Container>
+      </Box>
+
+
+      edit profilemanagement
+       <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          background: "white",
+          mt:3,
+          py: { xs: 2, sm: 4, md: 6 },
+        }}
+      >
+        {/* Back Button */}
+        <Box
+          sx={{
+            display: "flex",
+            width: "75%", // Wider alignment for main container
+            justifyContent: "flex-start",
+            mb: 2,
+          }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/buyer")}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            {t("BackButton")}
+          </Button>
+        </Box>
+
+        {/* Container */}
+            <Container
+          maxWidth={false}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            borderRadius: 3,
+            width: "1152px", // Larger width
+            height: "100%", // Fixed container height
+            p: { xs: 3, sm: 4, md: 5 },
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            transition: "0.3s ease",
+          }}
+        >
+
+          {/* Logo Headers */}
+          <Box sx={{display:"flex", flexDirection:'column',alignItems:'center',justifyContent:'center',gap:1}}>
+
+                
+                 <AccountCircleOutlinedIcon
+      sx={{
+        height: 60,
+        width: 60,
+        color: "white", // icon color
+        backgroundColor: theme.palette.primary.main, // fill background with theme color
+        borderRadius: "60%", // make it circular
+        border: `2px solid ${theme.palette.primary.main}`, // solid border matching theme
+        padding: "12px", // centers the svg nicely
+      }}
+    /> 
+        <Typography variant="subtitle2" sx={{color:theme.palette.primary.main}}>
+            {t("Header1")}
+          </Typography>
+          <Typography variant="subtitle1">
+            {t("Header2")}
+          </Typography>
+                
+
+          </Box>
+
+
+          {/* Account Info */}
+
+       <Box sx={{gap:1, display:"flex",flexDirection:"column", width:"100%"}}>
+                 {/* Personal Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: isArabic?"right":"left",
+                 }}
+               >
+                 {t("AccountInfoHeader")}
+               </Typography>
+             </Box>
+       
+             {/* Blue Divider */}
+             <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+             </Box>
+                
+                 {/* Contact Fields */}
+                 <Box
+                   sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}
+                 >
+                <Box sx={{display:"flex",flexDirection:"column",width:"50%"}}>
+                 <Typography sx={{fontWeight:"bold"}} display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+                    {t("AccountEmail")}
+
+                 </Typography>
+                   <TextField
+                     fullWidth
+                     label={`${user?.email}`}
+                     disabled
+                    //  placeholder="johndoe@example.com"
+                     
+                    />
+                    <Typography sx={{display:"flex", justifyContent:isArabic?"flex-start":"flex-end"}}>
+                        {t("AccountEmailCheck")}
+                    </Typography>
+                 </Box>
+                   <Box sx={{display:"flex",flexDirection:"column",width:"50%"}}>
+                 <Typography sx={{fontWeight:"bold"}} display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+                    {t("AccountRole")}
+
+                 </Typography>
+                   <TextField
+                     fullWidth
+                     label={`${user?.role}`}
+                     disabled
+                    //  placeholder="johndoe@example.com"
+                     
+                    />
+                    <Typography sx={{display:"flex", justifyContent:isArabic?"flex-start":"flex-end"}}>
+                        {t("AccountRoleCheck")}
+                    </Typography>
+                 </Box>
+             
+       
+         
+                  
+                 </Box>
+                 {/* Address */}
+                
+               </Box>
+
+          {/* Personal Info */}
+
+<Box sx={{gap:1, display:"flex",flexDirection:"column", width:"100%"}}>
+                 {/* Personal Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: isArabic?"right":"left",
+                 }}
+               >
+                 {t("PersonalInfoHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+                
+                 {/* Contact Fields */}
+                 <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                   {/* Name Fields */}
+                           <Box
+                             sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}
+                           >
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                               fullWidth
+                               label={`${t("PersonalInfoFirstName")}`}
+                               placeholder="John"
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.firstName}
+                               onChange={handleFieldChange("firstName")}
+                             />
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                            fullWidth
+                               label={`${t("PersonalInfoMiddleName")}`}
+                               placeholder="Optional"
+                               isArabic={isArabic}
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.middleName}
+                               onChange={handleFieldChange("middleName")}
+                             />
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                            fullWidth
+                               label={`${t("PersonalInfoLastName")}`}
+                               placeholder="Doe"
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.lastName}
+                               onChange={handleFieldChange("lastName")}
+                             />
+                            </Box>
+                   
+                 {/* Phone Number */}
+                    <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+                    <CustomTextField
+    sx={{width:"50%"}}
+    label={`${t("PersonalInfoPhoneCode")}`}
+    isArabic={isArabic}
+    required
+    isPhoneCode
+    value={formData.phoneCode}
+    onChange={handleFieldChange("phoneCode")}
+  />
+
+  <CustomTextField
+    fullWidth
+     label={`${t("PersonalInfoPhoneNumber")}`}
+    isArabic={isArabic}
+    required
+    phoneFormat
+    placeholder="512345678"
+    value={formData.phoneNumber}
+    onChange={handleFieldChange("phoneNumber")}
+  />
+                </Box>                  
+                </Box>
+                
+               </Box>
+
+
+          {/* Address */}
+<Box sx={{gap:1, mt:1, display:"flex",flexDirection:"column", width:"100%"}}>
+
+{/* Address Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: isArabic?"right":"left",
+                 }}
+               >
+                 {t("AddressHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+
+
+                  <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                   {/* Surface Address */}
+                           <Box
+                             sx={{ display: "flex", gap: 1,mt:1,width:"100%", flexDirection: "row" }}
+                           >
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                               fullWidth
+                               label={`${t("AddressSurfaceAdd")}`}
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.address}
+                               onChange={handleFieldChange("address")
+
+                               }
+                             />
+                            
+                            </Box>
+                   {/* country city */}
+                   <Box sx={{display:'flex', flexDirection:'row', width:'100%', gap:1,borderRadius:4, justifyContent:'space-between'}}>
+                               <CustomTextField
+              fullWidth
+              label={`${t("AddressCity")}`}
+              placeholder = "Riyadh"
+              isArabic={isArabic}
+              required
+              minChar={5}
+              maxChar={50}
+              unique
+              value={formData.city}
+              onChange={handleFieldChange("city")}
+            />
+             <CustomTextField
+    fullWidth
+    label={`${t("AddressCountry")}`}
+    isArabic={isArabic}
+    isCountry
+    placeholder="Select Country"
+    value={formData.country}
+    onChange={handleFieldChange("country")}
+  />
+
+
+
+                   </Box>
+                                 
+                </Box>
+
+
+
+
+</Box>
+
+          {/* Business Info */}
+<Box sx={{gap:1, mt:1, display:"flex",flexDirection:"column", width:"100%"}}>
+
+{/* Business Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: "left",
+                 }}
+               >
+                 {t("BusinessInfoHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+
+                 {/* fields */}
+                   <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                     <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+
+            <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} />
+
+
+<CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoExp")}`}
+              isArabic={isArabic}
+              placeholder="5.0"
+              value={formData.experience}
+              onChange={handleFieldChange("experience")}
+            />
+
+                           </Box>
+
+                 <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+
+            <CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoCompanyName")}`}
+              placeholder="Your Company Ltd."
+              required
+              minChar={3}
+              maxChar={50}
+              value={formData.companyName}
+              onChange={handleFieldChange("companyName")}
+            />
+            <CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoCompanyURL")}`}
+              isArabic={isArabic}
+              placeholder="https://example.com"
+              value={formData.companyUrl}
+              onChange={handleFieldChange("companyUrl")}
+            />
+
+                           </Box>
+
+
+                 </Box>
+
+</Box>
+
+
+          {/* Button */}
+
+                 <Box sx={{display:"flex",justifyContent:'center',alignItems:"center", width:"100%",mt:2}}>
+
+                    <Button onClick={handleSubmit} sx={{color:"white",backgroundColor:theme.palette.primary.main, width:"100%",borderRadius:3,py:1.1}}>
+                        {t("EditProfileButton")}
+                    </Button>
+                 </Box>
+            
+        </Container>
+
+
+        
+      </Box>
+
+      updatepassword
+       <Box sx={{
+        minHeight: "100vh",
+        width: "100%",
+        maxWidth: "100%",
+        overflowX: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        // background:theme.palette.primary.main,
+          backgroundImage: "url('/cto/blue-bg.png')", // <-- export from Figma as SVG/PNG and put in /public
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        py: { xs: 2, sm: 4, md: 6 },
+        px: { xs: 2, sm: 3 },
+        }}
+        >
+            {/* Back Button */}
+            <Box sx={{display:"flex", width:"50%", }}>
+                        <Button startIcon={<ArrowBackIcon />} onClick={()=>router.push('/dashboard/buyer')} sx={{textTransform:"none", color:"white", fontSize:"16px", fontWeight:"600", marginTop:"20px",display:"flex",justifyContent:"flex-start",width:"100%"}}>{t("backbutton")}</Button>
+            
+
+            {/* arabic english toggle */}
+                          <Button
+                            variant="outlined"
+                            onClick={toggleLanguage}
+                            sx={{ display:"flex",justifyContent:"flex-end",textTransform: "none",width:"100%",
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        marginTop: "20px",
+                        border:"ActiveBorder" }}
+                          >
+                            {locale === "en" ? "عربي" : "English"}
+                          </Button>
+            </Box>
+            
+
+            {/* form at center */}
+            <Container
+                                maxWidth="md"
+                                sx={{
+                                  backgroundColor: theme.palette.background.default,
+                                  borderRadius: 3,
+                                  width:"50%",
+                                  p: { xs: 3, sm: 4, md: 6 },
+                                  boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+                                }}
+                              >
+                {/* first half of form */}
+            <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",gap:1}}>
+                                <LockPersonSharpIcon sx={{
+                                    fontSize:"50px",
+                                    height: 60,
+                                    width: 60,
+                                    backgroundColor:theme.palette.primary.main,
+                                    color:"white",
+                                    borderRadius: "60%",
+                                    border: `2px solid ${theme.palette.primary.main}`,
+                                    padding: "12px"
+                                    }} />
+                                <Typography variant="subtitle2" sx={{color:theme.palette.primary.main}}>{t("Header")}</Typography>
+                                <Typography variant="subtitle1">{t("Header2")}</Typography>
+                                <Typography variant="body1" sx={{color:"#6c757d", textAlign:"center"}}>{t("Content")}</Typography>
+                            </Box>
+
+
+                {/* Second Half of form */}
+            <Box sx={{gap:1, display:"flex", flexDirection:"column", marginTop:"20px"}}>
+            <CustomTextField 
+            label={`${t("CurrentPassLabel")}`}
+            fieldName="currentPassword" 
+            placeholder={`${t("CurrentPassPlaceholder")}`} 
+            onChange={handleChange} 
+            isArabic={isArabic}
+            value={form.currentPassword} 
+            required type="password" 
+            fullWidth />
+            <CustomTextField 
+            label={`${t("NewPasswordLabel")}`} 
+            fieldName="newPassword" 
+            placeholder={`${t("NewPasswordPlaceholder")}`}  
+            type="password" 
+            onChange={handleChange} 
+            value={form.newPassword} 
+            isArabic={isArabic}
+            required 
+            fullWidth />
+            <CustomTextField 
+            label={`${t("ConfirmNewPasswordLabel")}`} 
+            fieldName="confirmNewPassword" 
+            placeholder={`${t("ConfirmNewPasswordPlaceholder")}`} 
+            onChange={handleChange} 
+            isArabic={isArabic}
+            value={form.confirmNewPassword} 
+            confirmValue={form.newPassword}
+            required type="password"
+             fullWidth />            
+                        <Box sx ={{display:"flex",flexDirection:"column", alignItems:"start", justifyContent:"flex-start", marginTop:"10px",backgroundColor:"lightgray", borderRadius:2}}>
+                         <Typography variant="body1" sx={{marginLeft:2,marginTop:0.5}}>{t("PasswordRequirementsHeader")}</Typography>
+                         <Box sx={{display: 'flex', flexDirection: 'column', gap: 0.5, mt: 1,marginLeft:2}}>
+                             {arr.map((req, idx) => (
+                                 <Typography key={idx} variant="body2" sx={{color: "#6c757d", display: 'flex', alignItems: 'flex-start'}}>
+                                     {"\u2022\u00A0"}{req}
+                                 </Typography>
+                             ))}
+                         </Box>
+                        </Box>
+
+            </Box>
+
+
+                {/* Third Half of Form */}
+
+                <Box sx={{display:"flex",flexDirection:"row", justifyContent:"center", alignItems:"center", gap:1 }}>
+                <Button variant="contained" onClick={handleSubmit} disabled={loading} fullWidth sx={{ backgroundColor:theme.palette.primary.main, textTransform: "none", fontSize: "16px", fontWeight: "600", padding: "10px 0", borderRadius:4, marginTop:"20px" }}>{t("updatebutton")}</Button>
+                <Button variant="outlined" fullWidth href="/" sx={{ color:"black", textTransform: "none", fontSize: "16px", fontWeight: "600", padding: "10px 0", borderRadius:4, marginTop:"10px", borderColor:"#ced4da",backgroundColor:"lightgray" }}>{t("cancelbutton")}</Button>
+
+                </Box>
+
+                              </Container>
+        </Box>
+
+        seller dashboard
+          <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundColor: theme.palette.background.default,
+        overflowX: "hidden",
+      }}
+    >
+      {/* Navbar (fixed) */}
+      <Navbar />
+
+      {/* Page content container (account for fixed navbar with top padding) */}
+      <Box
+        sx={{
+          pt: 12, // adjust if your navbar height differs
+          px: { xs: 2, sm: 4, md: 6 },
+          pb: 6,
+        }}
+      >
+        
+
+        {/* ===== Top Stats (4 boxes) ===== */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
+            mb: 4,
+          }}
+        >
+          {stats.map((stat, index) => (
+            <Card
+              key={index}
+              sx={{
+                borderRadius: 3,
+                boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+                p: 2,
+                // Responsive widths using calc to preserve gap
+                width: {
+                  xs: "100%",
+                  sm: "calc(50% - 8px)", // two columns on small screens
+                  md: "calc(25% - 12px)", // four columns on md+
+                },
+              }}
+            >
+              <Typography variant="subtitle2" sx={{ mb: 1 }} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+                {stat.label}
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: 700, color: theme.palette.primary.main }}
+                display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}
+              >
+                {stat.value}
+              </Typography>
+            </Card>
+          ))}
+        </Box>
+
+        {/* ===== Middle Actions (3 cards) ===== */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 5,
+            flexDirection: "row",
+            mb: 4,
+            width:"100%",
+            justifyContent:"space-between"
+          }}
+        >
+          {/* Post New Project */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              // width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+            <Box
+              sx={{
+                borderRadius: "24px",
+                height: "50px",
+                width: "50px",
+                backgroundColor: theme.palette.primary.main,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                // ml:isArabic?43:0
+              }}
+            >
+                        <SearchIcon sx={{ fontSize: 26, color: "white" }}/>
+             </Box>
+             </Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("BrowseProjectHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("BrowseProjectContent")}
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
+                color: "#fff",
+                fontWeight: 600,
+                borderRadius: 3,
+              }}
+              onClick={() => router.push("/dashboard/seller/browseprojects")}
+            >
+              {t("BrowseProjectButton")}
+            </Button>
+          </Card>
+
+          {/* My Projects */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              //  width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+            <Box
+              sx={{
+                borderRadius: "24px",
+                height: "50px",
+                width: "50px",
+                backgroundColor: theme.palette.primary.main,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                // ml:isArabic?43:0
+              }}
+            >
+              <WorkIcon sx={{ fontSize: 26, color: "white" }} />
+            </Box>
+            </Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("MyBidsHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("MyBidsContent")}
+            </Typography>
+            <Button
+              variant="outlined"
+              sx={{ fontWeight: 600, borderRadius: 3 }}
+              onClick={() => router.push("/dashboard/seller/managebids")}
+            >
+              {t("MyBidsButton")}
+            </Button>
+          </Card>
+
+          {/* Profile Settings */}
+          <Card
+            sx={{
+              borderRadius: "24px",
+              p: 3,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+              width: { xs: "100%", md: "calc(33.333% - 12px)" },
+              //  width:"389.35px",
+              height:"311.8px",
+              display:"flex",
+              flexDirection:"column",
+              gap:2
+            }}
+          >
+             <Box display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+            <Box
+              sx={{
+                borderRadius: "24px",
+                height: "50px",
+                width: "50px",
+                backgroundColor: theme.palette.primary.main,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                // ml:isArabic?43:0
+              }}
+            >
+                        <PersonIcon sx={{ fontSize: 26, color: "white" }}/>
+                       </Box>
+</Box>
+            <Typography variant="h6" fontWeight={600} gutterBottom display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("ProfileSettingHeader")}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" mb={2} display={"flex"} justifyContent={`${isArabic?"flex-end":"flex-start"}`}>
+              {t("ProfileSettingsContent")}
+            </Typography>
+            <Box sx={{display:"flex", flexDirection:"row",alignItems:"center",justifyContent:"space-between", gap:1}}>
+                        <Button
+                          variant="outlined"
+                          sx={{ fontWeight: 600, borderRadius: 3, width:"40%" }}
+                          onClick={() => router.push("/dashboard/seller/profilemanagement")}
+                        >
+                          {t("ProfileSettingsButton1")}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          sx={{ fontWeight: 600, borderRadius: 3,width:"50%" }}
+                          onClick={() => router.push("/updatepassword")}
+                        >
+                          {t("ProfileSettingsButton2")}
+                        </Button>
+                        </Box>
+          </Card>
+        </Box>
+
+  {/* ===== Recent Activity (large full-width card) ===== */}
+<Card
+  sx={{
+    borderRadius: 3,
+    boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+    p: 3,
+  }}
+>
+  <Typography
+    variant="h6"
+    sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
+  >
+    {t("AvailableProjects")}
+  </Typography>
+  <Divider sx={{ mb: 3 }} />
+
+  {/* when no project */}
+  {recentProjects.length === 0 ? (
+    <>
+      <Box
+        sx={{
+          minHeight: 220,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        <Box
+          sx={{
+            width: 56,
+            height: 56,
+            borderRadius: "50%",
+            backgroundColor: theme.palette.background.paper,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+          }}
+        >
+          {/* placeholder icon circle */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+            <path d="M3 6h18" stroke="#6B7280" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </Box>
+        <Typography variant="h6" sx={{ color: theme.palette.text.secondary }}>
+          No projects yet
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Start by posting your first project
+        </Typography>
+      </Box>
+    </>
+  ) : (
+    <>
+      {recentProjects.map((bid: any, idx: number) => {
+        const project = bid.projectInfo || {};
+        const coverLetterPreview =
+          bid.proposalText?.length > 430
+            ? bid.proposalText.slice(0, 430) + "..."
+            : bid.proposalText;
+
+        return (
+          <Box
+            key={idx}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              borderRadius: 2,
+              boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+              p: 2,
+              backgroundColor: "white",
+              transition: "0.3s",
+              "&:hover": { boxShadow: "0 4px 20px rgba(0,0,0,0.08)" },
+            }}
+          >
+            {/* ===== Header ===== */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                {project.title || "No title"}
+              </Typography>
+
+              <Chip
+                label={bid.status || "Unknown"}
+                size="small"
+                sx={{
+                  fontWeight: 600,
+                  color: "white",
+                  backgroundColor:
+                    bid.status === "Withdrawn"
+                      ? theme.palette.error.main
+                      : theme.palette.success.main,
+                }}
+              />
+            </Box>
+
+            <Typography variant="caption" sx={{ color: "gray", mt: 0.5 }}>
+              Budget Range: {project.budgetRange || "N/A"}
+            </Typography>
+
+            {/* ===== Budget & Timeline ===== */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "space-between",
+                gap: 2,
+                mt: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 2,
+                  p: 2,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AttachMoneyIcon
+                    sx={{
+                      fontSize: 18,
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    Your Bid Amount
+                  </Typography>
+                </Box>
+                <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
+                  {bid.bidAmount || "N/A"}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  flex: 1,
+                  backgroundColor: theme.palette.grey[100],
+                  borderRadius: 2,
+                  p: 2,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <AccessTimeIcon
+                    sx={{
+                      fontSize: 18,
+                      color: theme.palette.primary.main,
+                    }}
+                  />
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    Timeline
+                  </Typography>
+                </Box>
+                <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
+                  {bid.timeline || "N/A"}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* ===== Proposal Text ===== */}
+            <Box
+              sx={{
+                mt: 2,
+                backgroundColor: theme.palette.grey[100],
+                borderRadius: 2,
+                p: 2,
+              }}
+            >
+              <Typography variant="body2" fontWeight={500}>
+                Your Proposal:
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                {coverLetterPreview || "No proposal provided."}
+              </Typography>
+            </Box>
+          </Box>
+        );
+      })}
+    </>
+  )}
+</Card>
+
+      </Box>
+    </Box>
+
+    browseprojects
+         <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "white",
+          mt: 3,
+          py: { xs: 2, sm: 4, md: 6 },
+        }}
+      >
+        {/* Back Button */}
+        <Box
+          sx={{
+            display: "flex",
+            width: "75%",
+            justifyContent: "flex-start",
+            mb: 2,
+          }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/seller")}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            {t("BackDashboard")}
+          </Button>
+        </Box>
+
+        {/* Main Container */}
+        <Container
+          maxWidth={false}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            borderRadius: 3,
+            width: "1152px",
+            p: { xs: 3, sm: 4, md: 5 },
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* Header */}
+          <Box sx={{ textAlign: "center", mb: 2 }}>
+            <SearchIcon
+              sx={{
+                height: 60,
+                width: 60,
+                color: "white",
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: "60%",
+                border: `2px solid ${theme.palette.primary.main}`,
+                padding: "12px",
+              }}
+            />
+            <Typography variant="subtitle2" color="primary">
+              {t("Header")}
+            </Typography>
+            <Typography variant="subtitle1">{t("Header2")}</Typography>
+            <Typography>
+              {loading
+                ? "Loading projects..."
+                : `${filteredProjects.length} ${t("Content")}`}
+            </Typography>
+          </Box>
+
+          {/* Search */}
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Search by title, description, or category..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ mb: 3 }}
+          />
+
+          {/* Skills Filter */}
+          <Box sx={{ width: "100%", mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              Filter by Skills:
+            </Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+              {allSkills.map((skill, i) => (
+                <Chip
+                  key={i}
+                  label={skill}
+                  variant={
+                    selectedSkills.includes(skill) ? "filled" : "outlined"
+                  }
+                  color={selectedSkills.includes(skill) ? "primary" : "default"}
+                  onClick={() => handleSkillClick(skill)}
+                  sx={{ cursor: "pointer" }}
+                />
+              ))}
+            </Box>
+          </Box>
+
+          {/* Budget Range */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+              gap: 1,
+            }}
+          >
+            <TextField
+              placeholder="0"
+              fullWidth
+              value={budgetRange[0]}
+              onChange={(e) =>
+                setBudgetRange([Number(e.target.value), budgetRange[1]])
+              }
+            />
+            <TextField
+              placeholder="100000"
+              fullWidth
+              value={budgetRange[1]}
+              onChange={(e) =>
+                setBudgetRange([budgetRange[0], Number(e.target.value)])
+              }
+            />
+          </Box>
+
+          {/* Project List */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            sx={{ mt: 2 }}
+            gap={3}
+          >
+            {filteredProjects.map((project: any, index: number) => (
+              <Box
+                key={index}
+                sx={{
+                  borderRadius: "16px",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+                  p: 3,
+                  backgroundColor: "white",
+                }}
+              >
+                <Typography variant="h6">{project.title}</Typography>
+                <Typography variant="body2" color="text.secondary" mt={1}>
+                  {project.outline}
+                </Typography>
+
+                <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+                  {project.skillsRequired.map((skill: string, i: number) => (
+                    <Chip
+                      key={i}
+                      label={skill}
+                      sx={{
+                        backgroundColor: "#f4f4f4",
+                        fontSize: "0.75rem",
+                      }}
+                    />
+                  ))}
+                </Box>
+
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mt={2}
+                  flexWrap="wrap"
+                  gap={2}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <MonetizationOnIcon
+                      sx={{ color: theme.palette.primary.main }}
+                    />
+                    <Typography variant="body2">
+                      <strong>Budget:</strong> {project.budgetRange}
+                    </Typography>
+                  </Box>
+
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <AccessTimeIcon sx={{ color: theme.palette.primary.main }} />
+                    <Typography variant="body2">
+                      <strong>Timeline:</strong> {project.timeline}
+                    </Typography>
+                  </Box>
+
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <PeopleAltIcon sx={{ color: theme.palette.primary.main }} />
+                    <Typography variant="body2">
+                      <strong>Bids:</strong> {project.bidCount}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    borderRadius: "12px",
+                    textTransform: "none",
+                    py: 1.2,
+                  }}
+                  onClick={() => handleOpen(project.id)}
+                >
+                  View Project & Submit Bid
+                </Button>
+              </Box>
+            ))}
+
+            {!loading && filteredProjects.length === 0 && (
+              <Typography color="text.secondary" textAlign="center" mt={3}>
+                {t("NotFound")}
+              </Typography>
+            )}
+          </Box>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={(_, value) => setPage(value)}
+                color="primary"
+              />
+            </Box>
+          )}
+        </Container>
+      </Box>
+
+      managebids
+       <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          background: "white",
+          mt: 3,
+          py: { xs: 2, sm: 4, md: 6 },
+        }}
+      >
+        {/* Back Button */}
+        <Box sx={{ display: "flex", width: "75%", justifyContent: "flex-start", mb: 2 }}>
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/seller")}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            {t("BackDashboard")}
+          </Button>
+        </Box>
+
+        {/* Main Container */}
+        <Container
+          maxWidth={false}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            borderRadius: 3,
+            width: "1152px",
+            height: "100%",
+            p: { xs: 3, sm: 4, md: 5 },
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* Header */}
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+            <DescriptionIcon
+              sx={{
+                height: 60,
+                width: 60,
+                color: "white",
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: "60%",
+                padding: "12px",
+              }}
+            />
+            <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main }}>
+              {t("Header1")}
+            </Typography>
+            <Typography variant="subtitle1">{t("Header2")}</Typography>
+            <Typography variant="caption">{t("Content")}</Typography>
+          </Box>
+
+          {/* Status Cards */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+              mt: 3,
+              mb: 2,
+            }}
+          >
+            {(["Pending", "Accepted", "Rejected", "Withdrawn"] as const).map((status) => (
+              <Card
+                key={status}
+                onClick={() => setSelectedStatus(status)}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "260px",
+                  height: "103.91px",
+                  cursor: "pointer",
+                  border:
+                    selectedStatus === status
+                      ? `2px solid ${colorMap[status]}`
+                      : "2px solid transparent",
+                  boxShadow:
+                    selectedStatus === status
+                      ? "0 4px 12px rgba(0,0,0,0.1)"
+                      : "0 2px 5px rgba(0,0,0,0.05)",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <Typography sx={{ color: colorMap[status], fontWeight: 600, fontSize: "18px" }}>
+                  {/* {status} */}
+                  {statusLabelMap[status]}
+                </Typography>
+                <Typography sx={{ color: colorMap[status], fontSize: "16px", fontWeight: 500 }}>
+                  {statusCounts[status] || 0}
+                </Typography>
+              </Card>
+            ))}
+          </Box>
+
+          {/* Filtered Data */}
+          <Box sx={{ gap: 1, display: "flex", flexDirection: "column", mt: 2, width: "100%" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: theme.palette.primary.main,
+                textAlign: "left",
+              }}
+            >
+              {statusLabelMap[selectedStatus]} ({statusCounts[selectedStatus] || 0})
+            </Typography>
+
+            <Divider
+              sx={{
+                mt: 1,
+                borderBottomWidth: 3,
+                borderColor: theme.palette.primary.main,
+                opacity: 0.7,
+                width: "100%",
+              }}
+            />
+
+            {loading ? (
+              <Typography sx={{ mt: 3, color: "gray", textAlign: "center" }}>Loading...</Typography>
+            ) : filteredProjects.length === 0 ? (
+              <Typography sx={{ mt: 3, color: "gray", textAlign: "center" }}>
+                {t("No")} {statusLabelMap[selectedStatus].toLowerCase()} {t("BidsFound")}
+              </Typography>
+            ) : (
+              filteredProjects.map((project, idx) => {
+                const coverLetterPreview =
+                  project.CoverLetter.length > 430
+                    ? project.CoverLetter.slice(0, 430) + "..."
+                    : project.CoverLetter;
+
+                return (
+                  <Box
+                    key={idx}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                      width: "100%",
+                      mb: 2,
+                      boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+                      p: 2,
+                      borderRadius: 2,
+                    }}
+                  >
+                    {/* Header row */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        width: "100%",
+                      }}
+                    >
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600, width: "40%" }}>
+                        {project.Title}
+                      </Typography>
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          textTransform: "capitalize",
+                          fontWeight: 600,
+                          color: "white",
+                          backgroundColor: colorMap[project.Status] || "gray",
+                          display: "flex",
+                          justifyContent: "center",
+                          borderRadius: "6px",
+                          px: 1,
+                          width: "8%",
+                        }}
+                      >
+                        {/* {project.Status} */}
+                        {statusLabelMap[project.Status]}
+
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
+                      <Typography variant="caption" sx={{ color: "gray" }}>
+                        Submitted On {project.SubmittedOn}
+                      </Typography>
+                    </Box>
+
+                    {/* Budget + Timeline */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        justifyContent: "space-between",
+                        gap: 2,
+                        mt: 2,
+                        width: "100%",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          flex: 1,
+                          backgroundColor: theme.palette.grey[100],
+                          borderRadius: 2,
+                          p: 2,
+                        }}
+                      >
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <AttachMoneyIcon
+                            sx={{ fontSize: 18, color: theme.palette.primary.main }}
+                          />
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            Your Proposed Budget
+                          </Typography>
+                        </Box>
+                        <Typography
+                          sx={{ ml: 3, mt: 0.5 }}
+                          variant="body2"
+                          fontWeight={600}
+                        >
+                          {project.Budget}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          flex: 1,
+                          backgroundColor: theme.palette.grey[100],
+                          borderRadius: 2,
+                          p: 2,
+                        }}
+                      >
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <AccessTimeIcon
+                            sx={{ fontSize: 18, color: theme.palette.primary.main }}
+                          />
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            Your Proposed Timeline
+                          </Typography>
+                        </Box>
+                        <Typography
+                          sx={{ ml: 3, mt: 0.5 }}
+                          variant="body2"
+                          fontWeight={600}
+                        >
+                          {project.Timeline}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    {/* Cover Letter */}
+                    <Box
+                      sx={{
+                        mt: 2,
+                        backgroundColor: theme.palette.grey[100],
+                        borderRadius: 2,
+                        p: 2,
+                        width: "100%",
+                      }}
+                    >
+                      <Typography variant="body2" fontWeight={500}>
+                        Your Cover Letter:
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.5 }}
+                      >
+                        {coverLetterPreview}
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              })
+            )}
+          </Box>
+        </Container>
+      </Box>
+
+      seller edit profilemanagement
+        <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          background: "white",
+          mt:3,
+          py: { xs: 2, sm: 4, md: 6 },
+        }}
+      >
+        {/* Back Button */}
+        <Box
+          sx={{
+            display: "flex",
+            width: "75%", // Wider alignment for main container
+            justifyContent: "flex-start",
+            mb: 2,
+          }}
+        >
+          <Button
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/seller")}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              fontWeight: "600",
+              color: "black",
+            }}
+          >
+            {t("BackButton")}
+          </Button>
+        </Box>
+
+        {/* Container */}
+            <Container
+          maxWidth={false}
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            borderRadius: 3,
+            width: "1152px", // Larger width
+            height: "100%", // Fixed container height
+            p: { xs: 3, sm: 4, md: 5 },
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            transition: "0.3s ease",
+          }}
+        >
+
+          {/* Logo Headers */}
+          <Box sx={{display:"flex", flexDirection:'column',alignItems:'center',justifyContent:'center',gap:1}}>
+
+                
+                 <AccountCircleOutlinedIcon
+      sx={{
+        height: 60,
+        width: 60,
+        color: "white", // icon color
+        backgroundColor: theme.palette.primary.main, // fill background with theme color
+        borderRadius: "60%", // make it circular
+        border: `2px solid ${theme.palette.primary.main}`, // solid border matching theme
+        padding: "12px", // centers the svg nicely
+      }}
+    /> 
+        <Typography variant="subtitle2" sx={{color:theme.palette.primary.main}}>
+            {t("Header1")}
+          </Typography>
+          <Typography variant="subtitle1">
+            {t("Header2")}
+          </Typography>
+                
+
+          </Box>
+
+
+          {/* Account Info */}
+
+       <Box sx={{gap:1, display:"flex",flexDirection:"column", width:"100%"}}>
+                 {/* Personal Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: "left",
+                 }}
+               >
+                 {t("AccountInfoHeader")}
+               </Typography>
+             </Box>
+       
+             {/* Blue Divider */}
+             <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+             </Box>
+                
+                 {/* Contact Fields */}
+                 <Box
+                   sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}
+                 >
+                <Box sx={{display:"flex",flexDirection:"column",width:"50%"}}>
+                 <Typography sx={{fontWeight:"bold"}} display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+                    {t("AccountEmail")}
+
+                 </Typography>
+                   <TextField
+                     fullWidth
+                     label={`${user?.email}`}
+                     disabled
+                    //  placeholder="johndoe@example.com"
+                     
+                    />
+                    <Typography sx={{display:"flex", justifyContent:isArabic?"flex-start":"flex-end"}}>
+                        {t("AccountEmailCheck")}
+                    </Typography>
+                 </Box>
+                   <Box sx={{display:"flex",flexDirection:"column",width:"50%"}}>
+                 <Typography sx={{fontWeight:"bold"}} display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+                    {t("AccountRole")}
+
+                 </Typography>
+                   <TextField
+                     fullWidth
+                     label={`${user?.role}`}
+                     disabled
+                    //  placeholder="johndoe@example.com"
+                     
+                    />
+                    <Typography sx={{display:"flex", justifyContent:isArabic?"flex-start":"flex-end"}}>
+                        {t("AccountRoleCheck")}
+                    </Typography>
+                 </Box>
+             
+       
+         
+                  
+                 </Box>
+                 {/* Address */}
+                
+               </Box>
+
+          {/* Personal Info */}
+
+<Box sx={{gap:1, display:"flex",flexDirection:"column", width:"100%"}}>
+                 {/* Personal Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: isArabic?"right":"left",
+                 }}
+               >
+                 {t("PersonalInfoHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+                
+                 {/* Contact Fields */}
+                 <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                   {/* Name Fields */}
+                           <Box
+                             sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}
+                           >
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                               fullWidth
+                               label={`${t("PersonalInfoFirstName")}`}
+                               placeholder="John"
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.firstName}
+                               onChange={handleFieldChange("firstName")}
+                             />
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                            fullWidth
+                               label={`${t("PersonalInfoMiddleName")}`}
+                               placeholder="Optional"
+                               isArabic={isArabic}
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.middleName}
+                               onChange={handleFieldChange("middleName")}
+                             />
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                            fullWidth
+                               label={`${t("PersonalInfoLastName")}`}
+                               placeholder="Doe"
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.lastName}
+                               onChange={handleFieldChange("lastName")}
+                             />
+                            </Box>
+                   
+                 {/* Phone Number */}
+                    <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+                    <CustomTextField
+    sx={{width:"50%"}}
+    label={`${t("PersonalInfoPhoneCode")}`}
+    isArabic={isArabic}
+    required
+    isPhoneCode
+    value={formData.phoneCode}
+    onChange={handleFieldChange("phoneCode")}
+  />
+
+  <CustomTextField
+    fullWidth
+    label={`${t("PersonalInfoPhoneNumber")}`}
+    isArabic={isArabic}
+    required
+    phoneFormat
+    placeholder="512345678"
+    value={formData.phoneNumber}
+    onChange={handleFieldChange("phoneNumber")}
+  />
+                </Box>                  
+                </Box>
+                
+               </Box>
+
+
+          {/* Address */}
+<Box sx={{gap:1, mt:1, display:"flex",flexDirection:"column", width:"100%"}}>
+
+{/* Address Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: isArabic?"right":"left",
+                 }}
+               >
+                 {t("AddressHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+
+
+                  <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                   {/* Surface Address */}
+                           <Box
+                             sx={{ display: "flex", gap: 1,mt:1,width:"100%", flexDirection: "row" }}
+                           >
+                             <CustomTextField
+                            //    sx={{display:"flex",width:"100%"}}
+                               fullWidth
+                               label={`${t("AddressSurfaceAdd")}`}
+                               isArabic={isArabic}
+                               required
+                               minChar={3}
+                               maxChar={50}
+                               value={formData.address}
+                               onChange={handleFieldChange("address")
+
+                               }
+                             />
+                            
+                            </Box>
+                   {/* country city */}
+                   <Box sx={{display:'flex', flexDirection:'row', width:'100%', gap:1,borderRadius:4, justifyContent:'space-between'}}>
+                               <CustomTextField
+              fullWidth
+              label={`${t("AddressCity")}`}
+              placeholder = "Riyadh"
+              isArabic={isArabic}
+              required
+              minChar={5}
+              maxChar={50}
+              unique
+              value={formData.city}
+              onChange={handleFieldChange("city")}
+            />
+             <CustomTextField
+    fullWidth
+    label={`${t("AddressCountry")}`}
+    isArabic={isArabic}
+    isCountry
+    placeholder="Select Country"
+    value={formData.country}
+    onChange={handleFieldChange("country")}
+  />
+
+
+
+                   </Box>
+                                 
+                </Box>
+
+
+
+
+</Box>
+
+          {/* Business Info */}
+<Box sx={{gap:1, mt:1, display:"flex",flexDirection:"column", width:"100%"}}>
+
+{/* Business Information */}
+                 <Box>
+               <Typography
+                 variant="h6"
+                 sx={{
+                   fontWeight: "bold",
+                   color: theme.palette.primary.main,
+                   textAlign: "left",
+                 }}
+               >
+                 {t("BusinessInfoHeader")}
+               </Typography>
+                 </Box>
+       
+             {/* Blue Divider */}
+                <Box>
+               <Divider
+                 sx={{
+                   mt: 1,
+                   borderBottomWidth: 3,
+                   borderColor: theme.palette.primary.main,
+                   opacity: 0.7,
+                   width: "100%",
+                 }}
+               />
+                </Box>
+
+                 {/* fields */}
+                   <Box
+                   sx={{ display: "flex", gap: 2, width:"100%", flexDirection: "column" }}
+                 >
+                     <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+
+            <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} />
+
+
+<CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoExp")}`}
+              isArabic={isArabic}
+              placeholder="5.0"
+              value={formData.experience}
+              onChange={handleFieldChange("experience")}
+            />
+
+                           </Box>
+
+                 <Box sx={{ display: "flex", gap: 1,mt:1,width:"100%",justifyContent:"space-between", flexDirection: "row" }}>
+
+            <CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoCompanyName")}`}
+              isArabic={isArabic}
+              placeholder="Your Company Ltd."
+              required
+              minChar={3}
+              maxChar={50}
+              value={formData.companyName}
+              onChange={handleFieldChange("companyName")}
+            />
+            <CustomTextField
+              fullWidth
+              label={`${t("BusinessInfoCompanyURL")}`}
+              isArabic={isArabic}
+              placeholder="https://example.com"
+              value={formData.companyUrl}
+              onChange={handleFieldChange("companyUrl")}
+            />
+
+                           </Box>
+
+
+                 </Box>
+
+</Box>
+
+
+          {/* Button */}
+
+                 <Box sx={{display:"flex",justifyContent:'center',alignItems:"center", width:"100%",mt:2}}>
+
+                    <Button onClick={handleSubmit} sx={{color:"white",backgroundColor:theme.palette.primary.main, width:"100%",borderRadius:3,py:1.1}}>
+                        {t("EditProfileButton")}
+                    </Button>
+                 </Box>
+            
+        </Container>
+
+
+        
+      </Box>
+
+
+      responsivenavbar
+
+      {/* <AppBar
+      position="fixed"
+      elevation={2}
+      sx={{
+        background: (theme) =>
+          `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: isSmallScreen ? "column" : "row",
+          alignItems: isSmallScreen ? "flex-start" : "center",
+          gap: isSmallScreen ? 1.5 : 0,
+          py: isSmallScreen ? 1 : 0,
+        }}
+      >
+        {/* Logo + Name */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+          }}
+          onClick={() => console.log("/")}
+        >
+          <img
+            src="/cto/Logo - Monochrome.png"
+            alt="Company Logo"
+            width="60"
+            height="60"
+          />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography sx={{ fontWeight: "bold", textTransform: "uppercase" }}>
+              {user?.role} {t("Dashboard")}
+            </Typography>
+            <Typography variant="caption">
+              {isArabic ? (
+                <>
+                  {user?.role === "seller"
+                    ? user?.companyName
+                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}، مرحباً بعودتك
+                </>
+              ) : (
+                <>
+                  Welcome Back,{" "}
+                  {user?.role === "seller"
+                    ? user?.companyName
+                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+                </>
+              )}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Buttons Section */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexDirection: isSmallScreen ? "column" : "row",
+            alignItems: isSmallScreen ? "stretch" : "center",
+            width: isSmallScreen ? "100%" : "auto",
+            mt: isSmallScreen ? 1 : 0,
+          }}
+        >
+          {/* Language Toggle */}
+          <Button
+            variant="outlined"
+            onClick={toggleLanguage}
+            sx={{
+              textTransform: "none",
+              color: "white",
+              border: "1px solid white",
+              fontWeight: 600,
+              width: isSmallScreen ? "100%" : "auto",
+            }}
+          >
+            {locale === "en" ? "عربي" : "English"}
+          </Button>
+
+          {/* Logout Button */}
+          {user && (
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              startIcon={<LogoutIcon sx={{ color: "white" }} />}
+              sx={{
+                fontWeight: 600,
+                textTransform: "none",
+                border: "1px solid white",
+                borderRadius: "20px",
+                px: 2,
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+                width: isSmallScreen ? "100%" : "auto",
+              }}
+            >
+              Logout
+            </Button>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>   */}
+);
+};
+
+
+navabar
+//     <AppBar
+//       position="fixed"
+//       elevation={2}
+//       sx={{
+//         background: (theme) =>
+//           `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+//       }}
+//     >
+//       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+//         {/* Logo + Name */}
+
+
+//         <Box
+//           sx={{
+//             display: "flex",
+//             alignItems: "center",
+//             gap: 1,
+//             cursor: "pointer",
+//           }}
+//           onClick={() => console.log("/")}
+//         >
+//           <img
+//             src="/cto/Logo - Monochrome.png" // or your client's company logo
+//             alt="Company Logo"
+//             width="60"
+//             height="60"
+//             // style={{ borderRadius: "30%" }}
+//           />
+//           <Box sx={{display:"flex", flexDirection:"column"}}>          
+//             <Typography sx={{fontWeight:"bold", textTransform:"uppercase"}}>
+//               {user?.role} {t("Dashboard")}
+//             </Typography>
+//             <Typography variant="caption">
+              
+//              {isArabic ? (
+//   <>
+//     {user?.role === "seller"
+//       ? user?.companyName
+//       : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}، مرحباً بعودتك
+//   </>
+// ) : (
+//   <>
+//     Welcome Back,{" "}
+//     {user?.role === "seller"
+//       ? user?.companyName
+//       : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+//   </>
+// )}
+// </Typography>
+//           </Box>
+
+//           {/* <Typography variant="h6" sx={{ fontWeight: 700 }}>
+//             CTO
+//           </Typography> */}
+//         </Box>
+
+//         {/* Logout Button */}
+//         <Box sx={{ display: "flex", gap: 2 }}>
+
+//           {/* Language Toggle + Logout */}
+//         <Box sx={{ display: "flex", gap: 2 }}>
+//           <Button
+//             variant="outlined"
+//             onClick={toggleLanguage}
+//             sx={{
+//               textTransform: "none",
+//               color: "white",
+//               border: "1px solid white",
+//               fontWeight: 600,
+//             }}
+//           >
+//             {locale === "en" ? "عربي" : "English"}
+//           </Button>
+//           </Box>
+//           {user && (
+//             <Button
+//               color="inherit"
+//               onClick={handleLogout}
+//               startIcon = {<LogoutIcon sx={{color:"white"}}/>}
+//               sx={{
+//                 fontWeight: 600,
+//                 textTransform: "none",
+//                 border: "1px solid white",
+//                 borderRadius: "20px",
+//                 px: 2,
+//                 "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+//               }}
+//             >
+//               Logout
+//             </Button>
+//           )}
+//         </Box>
+//       </Toolbar>
+//     </AppBar>
