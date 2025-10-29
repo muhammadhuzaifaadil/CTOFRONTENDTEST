@@ -69,7 +69,7 @@ useEffect(() => {
   const token = localStorage.getItem("accessToken");
   if (!token) return; // ⛔ Skip if logged out
     try {
-      const res = await apiClient.get("http://localhost:3005/projects");
+      const res = await apiClient.get("http://188.245.151.218:3005/projects");
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
@@ -92,7 +92,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://localhost:3005/projects/buyersummary/${user.id}`);
+      const res = await apiClient.get(`http://188.245.151.218:3005/projects/buyersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setProjectSummary(res.data.Data);

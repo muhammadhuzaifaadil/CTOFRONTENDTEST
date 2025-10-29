@@ -37,7 +37,7 @@ const ManageBids: React.FC = () => {
       if (!token) return;
 
       try {
-        const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=10");
+        const res = await apiClient.get("http://188.245.151.218:3005/bids/paginated/all?page=1&limit=10");
         const bidsData = res.data?.Data?.bids;
 
         if (res.data?.Success && Array.isArray(bidsData)) {

@@ -138,7 +138,7 @@ useEffect(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      let url = `http://localhost:3005/projects/paginated/all?page=${page}&limit=5`;
+      let url = `http://188.245.151.218:3005/projects/paginated/all?page=${page}&limit=5`;
 
       // ✅ Use backend search (multi-field) when user types
       if (searchTerm.trim()) {

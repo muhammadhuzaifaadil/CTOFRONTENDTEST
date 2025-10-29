@@ -421,7 +421,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     try {
       setLoading(true);
       const token = accessToken;
-      const res = await axios.get(`http://localhost:3005/projects/${projectId}`, {
+      const res = await axios.get(`http://188.245.151.218:3005/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data.Data);
@@ -436,7 +436,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await axios.post("http://localhost:3005/upload", formData, {
+      const res = await axios.post("http://188.245.151.218:3005/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data.url;
@@ -470,7 +470,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
         attachment: attachmentUrl || null,
       };
 
-      const result:any = await axios.post("http://localhost:3005/bids", payload, {
+      const result:any = await axios.post("http://188.245.151.218:3005/bids", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

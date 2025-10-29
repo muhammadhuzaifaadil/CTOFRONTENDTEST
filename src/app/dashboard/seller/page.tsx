@@ -53,7 +53,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=3");
+      const res = await apiClient.get("http://188.245.151.218:3005/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
       console.log(res);
       console.log(bids);
@@ -85,7 +85,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://localhost:3005/projects/sellersummary/${user.id}`);
+      const res = await apiClient.get(`http://188.245.151.218:3005/projects/sellersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setBidSummary(res.data.Data);
