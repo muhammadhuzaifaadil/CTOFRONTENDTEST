@@ -89,7 +89,7 @@ const Landing: React.FC = () => {
               fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
               "&:hover": { bgcolor: "#3e43d1" },
             }}
-            onClick={() => router.push("/auth/login")}
+            onClick={() => router.push("/welcome")}
           >
             Get Started
           </Button>
@@ -163,7 +163,7 @@ const Landing: React.FC = () => {
             boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
             "&:hover": { bgcolor: "#5459FD" },
           }}
-          onClick={() => router.push("/auth/login")}
+          onClick={() => router.push("/welcome")}
         >
           Get Started →
         </Button>
