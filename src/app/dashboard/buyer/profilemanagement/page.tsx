@@ -181,7 +181,7 @@ updateUser(updatedFields);
     alignItems: "center",
     justifyContent: "flex-start",
     background: "white",
-    mt: {xs:6,sm:4,md:3},
+    mt: {xs:8,sm:4,md:3},
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >
@@ -408,15 +408,47 @@ updateUser(updatedFields);
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
-          <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} />
-          <CustomTextField
+          {/* <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} /> */}
+          <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start", mt:"15px"}}>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"flex-start"}` }}
+                  >
+              {t("BusinessInfoCategory")}
+            </Typography>
+            <Box sx={{position:"relative"}}>
+            <CategorySelect isArabic={isArabic}  value={selectedCategory} onChange={setSelectedCategory} />
+            </Box>
+            </Box>
+         <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start"}}>
+            <Box>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"left"}` }}
+                  >
+                    {t("BusinessInfoExp")}
+                  </Typography>
+            </Box>
+            <Box>
+            <CustomTextField
+              fullWidth
+              placeholder="5.0"
+              value={formData.experience}
+              onChange={handleFieldChange("experience")}
+            />
+            </Box>
+          </Box>
+          {/* <CustomTextField
             fullWidth
             label={`${t("BusinessInfoExp")}`}
             isArabic={isArabic}
             placeholder="5.0"
             value={formData.experience}
             onChange={handleFieldChange("experience")}
-          />
+          /> */}
         </Box>
 
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>

@@ -55,14 +55,14 @@ if(!user) return <div></div>;
           <img
             src="/cto/Logo - Monochrome.png"
             alt="Company Logo"
-            width= {isSmallScreen?"50":"60"}
-            height={isSmallScreen?"50":"60"}
+            width= {isSmallScreen?"30":"60"}
+            height={isSmallScreen?"30":"60"}
           />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography sx={{ fontWeight: "bold", textTransform: "uppercase",fontSize: isSmallScreen ? "13px" : "auto", }}>
+            <Typography sx={{ fontWeight: "bold", textTransform: "uppercase",fontSize: {xs:"12px",sm:"auto"}, }}>
               {user?.role} {t("Dashboard")}
             </Typography>
-            <Typography variant="caption">
+            <Typography variant="caption" sx={{fontSize:{xs:"10px",sm:"auto"}}}>
               {isArabic ? (
                 <>
                   {user?.role === "seller"
@@ -85,7 +85,7 @@ if(!user) return <div></div>;
         <Box
           sx={{
             display: "flex",
-            gap: 2,
+            gap: {xs:"2px",sm:2},
             flexDirection: "row",
             alignItems:  "center",
             width:  "auto",
@@ -102,6 +102,7 @@ if(!user) return <div></div>;
               border: "1px solid white",
               fontWeight: 600,
               width:  "auto",
+              fontSize:{xs:"12px",sm:'auto'}
             }}
           >
             {locale === "en" ? "عربي" : "English"}
@@ -118,6 +119,7 @@ if(!user) return <div></div>;
                 textTransform: "none",
                 border: "1px solid white",
                 borderRadius: "20px",
+                fontSize:{xs:"12px",sm:'auto'},
                 px: 2,
                 "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
                 width: isSmallScreen ? "100%" : "auto",
@@ -129,6 +131,8 @@ if(!user) return <div></div>;
         </Box>
       </Toolbar>
     </AppBar>  
+
+    
 );
 };
 

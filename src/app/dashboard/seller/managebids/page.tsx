@@ -37,7 +37,7 @@ const ManageBids: React.FC = () => {
       if (!token) return;
 
       try {
-        const res = await apiClient.get("http://188.245.151.218:3005/bids/paginated/all?page=1&limit=10");
+        const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=10");
         const bidsData = res.data?.Data?.bids;
 
         if (res.data?.Success && Array.isArray(bidsData)) {
@@ -48,7 +48,7 @@ const ManageBids: React.FC = () => {
             Status: b.status || "Unknown",
             Budget: b.bidAmount || "N/A",
             Timeline: b.timeline || "N/A",
-            SubmittedOn: new Date().toLocaleString(),
+            SubmittedOn: new Date(b.createdAt).toLocaleString(),
           }));
           setBids(mapped);
         } else {
@@ -177,7 +177,7 @@ const ManageBids: React.FC = () => {
     justifyContent: "space-between",
     mt: 3,
     mb: 2,
-    flexWrap: { xs: "wrap", sm: "nowrap", md: "nowrap" }, // allow wrapping only on very small screens if needed
+    flexWrap: { xs: "nowrap", sm: "nowrap", md: "nowrap" }, // allow wrapping only on very small screens if needed
     gap: { xs: 1, sm: 2 }, // spacing for smaller screens
   }}
 >

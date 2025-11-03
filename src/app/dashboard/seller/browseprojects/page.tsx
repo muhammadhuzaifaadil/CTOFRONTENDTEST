@@ -138,7 +138,7 @@ useEffect(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      let url = `http://188.245.151.218:3005/projects/paginated/all?page=${page}&limit=5`;
+      let url = `http://localhost:3005/projects/paginated/all?page=${page}&limit=5`;
 
       // ✅ Use backend search (multi-field) when user types
       if (searchTerm.trim()) {
@@ -287,7 +287,7 @@ useEffect(() => {
     flexDirection: "column",
     alignItems: "center",
     background: "white",
-    mt: {xs:6,sm:4,md:3},
+    mt: {xs:8,sm:4,md:3},
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >

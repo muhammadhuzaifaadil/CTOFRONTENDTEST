@@ -207,7 +207,7 @@ return (
       md: "center", // keep original
     },
     background: "white",
-    mt: { xs: 2, sm: 2, md: 2 }, // slightly less margin top for mobile
+    mt: { xs: 6, sm: 2, md: 2 }, // slightly less margin top for mobile
     py: { xs: 2, sm: 4, md: 6 }, // already responsive padding
     px: { xs: 2, sm: 4, md: 6 }, // added horizontal padding for better mobile spacing
     gap: { xs: 2, sm: 3, md: 0 }, // add spacing between children on smaller screens

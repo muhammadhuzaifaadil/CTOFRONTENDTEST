@@ -283,7 +283,7 @@ const Welcome: React.FC = () => {
           gap: { xs: 4, sm: 8 },
           width: "100%",
           maxWidth: "1400px",
-          height: { xs: "auto", sm: "50vh" },
+          height: { xs: "auto", sm: "50vh",lg:"auto" },
           my: { xs: 3, sm: 0 },
         }}
       >
@@ -295,7 +295,7 @@ const Welcome: React.FC = () => {
             borderRadius: "16px",
             boxShadow: "0px 3px 8px rgba(0,0,0,0.05)",
             width: { xs: "90%", sm: "40%" },
-            height: { xs: "auto", sm: "85%" },
+            height: { xs: "auto", sm: "85%" ,lg:"auto"},
             p: { xs: 3, sm: 4 },
             mb: { xs: 3, sm: 0 },
             textAlign: "center",
@@ -359,7 +359,7 @@ const Welcome: React.FC = () => {
             borderRadius: "16px",
             boxShadow: "0px 3px 8px rgba(0,0,0,0.05)",
             width: { xs: "90%", sm: "40%" },
-            height: { xs: "auto", sm: "85%" },
+            height: { xs: "auto", sm: "85%",lg:"auto" },
             p: { xs: 3, sm: 4 },
             textAlign: "center",
           }}
@@ -423,7 +423,7 @@ const Welcome: React.FC = () => {
           justifyContent: "center",
           gap: 1,
           flexWrap: "wrap",
-          mt: { xs: 4, sm: 2 },
+          mt: { xs: 4, sm: 2,lg:4 },
         }}
       >
         <Typography

@@ -3005,3 +3005,348 @@ navabar
 //         </Box>
 //       </Toolbar>
 //     </AppBar>
+
+
+
+
+
+
+mobile responsive buyer dashboard middle cards
+  {/* ===== Middle Actions (3 cards) ===== */}
+        <Box
+  sx={{
+    display: "flex",
+    gap: 5,
+    flexDirection: { xs: "column", sm: "column", md: "row" }, // 👈 only changes on small screens
+    mb: 4,
+    width: "100%",
+    justifyContent: "space-between",
+  }}
+>
+  {/* Post New Project */}
+  <Card
+    sx={{
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <AddIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("PostProjectHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("PostProjectContent")}
+    </Typography>
+
+    <Button
+      variant="contained"
+      sx={{
+        background: theme.palette.primary.main,
+        color: "#fff",
+        fontWeight: 600,
+        borderRadius: 3,
+        width: "100%",
+      }}
+      onClick={() => router.push("/dashboard/buyer/createproject")}
+    >
+      {t("PostProjectButton")}
+    </Button>
+  </Card>
+
+  {/* My Projects */}
+  <Card
+    sx={{
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <FolderOpenIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("MyProjectHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("MyProjectContent")}
+    </Typography>
+
+    <Button
+      variant="outlined"
+      sx={{ fontWeight: 600, borderRadius: 3 }}
+      onClick={() => router.push("/dashboard/buyer/manageproject")}
+    >
+      {t("MyProjectButton")}
+    </Button>
+  </Card>
+
+  {/* Profile Settings */}
+  <Card
+    sx={{
+      borderRadius: "24px",
+      p: 3,
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+      width: { xs: "100%", md: "calc(33.333% - 12px)" },
+      height: "311.8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+    }}
+  >
+    <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
+      <Box
+        sx={{
+          borderRadius: "24px",
+          height: "50px",
+          width: "50px",
+          backgroundColor: theme.palette.primary.main,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <PersonIcon sx={{ fontSize: 26, color: "white" }} />
+      </Box>
+    </Box>
+
+    <Typography
+      variant="h6"
+      fontWeight={600}
+      gutterBottom
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("ProfileSettingHeader")}
+    </Typography>
+
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      mb={2}
+      display={"flex"}
+      justifyContent={isArabic ? "flex-end" : "flex-start"}
+    >
+      {t("ProfileSettingsContent")}
+    </Typography>
+
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "column", md: "row" },
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 1.5,
+      }}
+    >
+      <Button
+        variant="outlined"
+        sx={{
+          fontWeight: 600,
+          borderRadius: 3,
+          width: { xs: "100%", md: "40%" },
+          
+        }}
+        onClick={() => router.push("/dashboard/buyer/profilemanagement")}
+      >
+        {t("ProfileSettingsButton1")}
+      </Button>
+      <Button
+        variant="outlined"
+        sx={{
+          fontWeight: 600,
+          borderRadius: 3,
+          width: { xs: "100%", md: "50%" },
+        }}
+        onClick={() => router.push("/updatepassword")}
+      >
+        {t("ProfileSettingsButton2")}
+      </Button>
+    </Box>
+  </Card>
+</Box>
+
+
+
+
+
+
+
+
+
+
+
+
+<AppBar
+      position="fixed"
+      elevation={2}
+      sx={{
+        background: (theme) =>
+          `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+      }}
+    >
+      <Toolbar
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          // flexDirection: isSmallScreen ? "column" : "row",
+          // alignItems: isSmallScreen ? "flex-start" : "center",
+          // gap: isSmallScreen ? 1.5 : 0,
+          // py: isSmallScreen ? 1 : 0,
+          flexDirection:"row",
+          alignItems:"center",
+          gap:0,
+          py:0
+        }}
+      >
+        {/* Logo + Name */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            cursor: "pointer",
+          }}
+          onClick={() => console.log("/")}
+        >
+          <img
+            src="/cto/Logo - Monochrome.png"
+            alt="Company Logo"
+            width= {isSmallScreen?"50":"60"}
+            height={isSmallScreen?"50":"60"}
+          />
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography sx={{ fontWeight: "bold", textTransform: "uppercase",fontSize: isSmallScreen ? "13px" : "auto", }}>
+              {user?.role} {t("Dashboard")}
+            </Typography>
+            <Typography variant="caption" sx={{width:"fit-content"}}>
+              {isArabic ? (
+                <>
+                  {user?.role === "seller"
+                    ? user?.companyName
+                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}، مرحباً بعودتك
+                </>
+              ) : (
+                <>
+                  Welcome Back,{" "}
+                  {user?.role === "seller"
+                    ? user?.companyName
+                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+                </>
+              )}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Buttons Section */}
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexDirection: "row",
+            alignItems:  "center",
+            width:  "auto",
+            mt:  0,
+          }}
+        >
+          {/* Language Toggle */}
+          <Button
+            variant="outlined"
+            onClick={toggleLanguage}
+            sx={{
+              textTransform: "none",
+              color: "white",
+              border: "1px solid white",
+              fontWeight: 600,
+              width:  "auto",
+            }}
+          >
+            {locale === "en" ? "عربي" : "English"}
+          </Button>
+
+          {/* Logout Button */}
+          {user && (
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              startIcon={<LogoutIcon sx={{ color: "white" }} />}
+              sx={{
+                fontWeight: 600,
+                textTransform: "none",
+                border: "1px solid white",
+                borderRadius: "20px",
+                px: 2,
+                "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+                width: isSmallScreen ? "100%" : "auto",
+              }}
+            >
+              Logout
+            </Button>
+          )}
+        </Box>
+      </Toolbar>
+    </AppBar>  

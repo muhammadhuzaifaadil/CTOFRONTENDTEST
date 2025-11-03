@@ -157,7 +157,7 @@ const ManageProjects: React.FC = () => {
     alignItems: "center",
     justifyContent: "flex-start",
     background: "white",
-    mt: {xs:6,md:3},
+    mt: {xs:8,md:3},
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >

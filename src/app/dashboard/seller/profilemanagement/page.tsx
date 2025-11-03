@@ -143,7 +143,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     alignItems: "center",
     justifyContent: "flex-start",
     background: "white",
-    mt: { xs: 25,sm:4, md: 3 },
+    mt: { xs: 8,sm:4, md: 3 },
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >

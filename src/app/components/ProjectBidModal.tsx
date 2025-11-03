@@ -421,7 +421,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     try {
       setLoading(true);
       const token = accessToken;
-      const res = await axios.get(`http://188.245.151.218:3005/projects/${projectId}`, {
+      const res = await axios.get(`http://localhost:3005/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data.Data);
@@ -436,7 +436,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await axios.post("http://188.245.151.218:3005/upload", formData, {
+      const res = await axios.post("http://localhost:3005/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data.url;
@@ -470,7 +470,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
         attachment: attachmentUrl || null,
       };
 
-      const result:any = await axios.post("http://188.245.151.218:3005/bids", payload, {
+      const result:any = await axios.post("http://localhost:3005/bids", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -504,8 +504,8 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: {xs:"500px",md:"650px"},
-            height: "85%",
+            width: {xs:"325px",md:"650px"},
+            height: {xs:"55%",sm:"85%",md:"85%"},
             bgcolor: "background.paper",
             borderRadius: 0,
             boxShadow: 24,
@@ -563,7 +563,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
                   backgroundColor: "#fafafa",
                 }}
               >
-                <Box display="flex" gap={2} mb={1}>
+                <Box display="flex"  gap={2} mb={1}>
                   <Box flex={2}>
                     <Typography fontWeight="bold">Title</Typography>
                     <Typography>{data.title}</Typography>
@@ -596,16 +596,16 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
                   </Box>
                 </Box>
 
-                <Box display="flex" gap={2}>
-                  <Box flex={1}>
+                {/* <Box display="flex" gap={2}> */}
+                  <Box mb={1}>
                     <Typography fontWeight="bold">Buyer Name</Typography>
                     <Typography>{data.buyerInfo?.name}</Typography>
                   </Box>
-                  <Box flex={1}>
+                  <Box mb={1}>
                     <Typography fontWeight="bold">Buyer Email</Typography>
                     <Typography>{data.buyerInfo?.email}</Typography>
                   </Box>
-                </Box>
+                {/* </Box> */}
               </Box>
 
               <Divider sx={{ mb: 2 }} />

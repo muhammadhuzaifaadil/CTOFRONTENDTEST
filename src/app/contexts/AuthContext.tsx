@@ -23,6 +23,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   refreshAccessToken: () => Promise<string | null>;
   updateUser: (updatedFields: Partial<User>) => void; //for profile updation
+  isLoading:boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -33,7 +34,8 @@ export const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
   isAuthenticated: false,
   refreshAccessToken: async () => null,
-  updateUser:async ()=>{}
+  updateUser:async ()=>{},
+  isLoading:true
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -42,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
-
+const [isLoading, setIsLoading] = useState(true);
   // HARDCODED USER FOR TESTING ON CERTAIN PAGES
   // const [user, setUser] = useState<User | null>({
   //   id: 1,
@@ -62,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setAccessToken(storedAccess);
       setRefreshToken(storedRefresh);
     }
+    setIsLoading(false);
   }, []);
 
   // Login method
@@ -175,9 +178,10 @@ const refreshAccessToken = async () => {
         isAuthenticated,
         refreshAccessToken,
         updateUser, 
+        isLoading,
       }}
     >
-      {children}
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 };

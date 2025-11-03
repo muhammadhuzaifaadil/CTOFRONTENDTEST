@@ -23,7 +23,7 @@ import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 const BuyerDashboard: React.FC = () => {
   const theme = useTheme();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout,isLoading } = useAuth();
   const router = useRouter();
  const { isArabic, locale } = useContext(LanguageContext);
   const t = useTranslations("BuyerDashboard");
@@ -44,8 +44,8 @@ useEffect(() => {
 }, []);
 
   useEffect(() => {
-    if (!isAuthenticated) router.push("/login");
-  }, [isAuthenticated]);
+    if (!isLoading &&!isAuthenticated) router.push("/login");
+  }, [isAuthenticated,isLoading]);
 
   // ✅ Fetch latest 3 projects of buyer
   // useEffect(() => {
@@ -69,7 +69,7 @@ useEffect(() => {
   const token = localStorage.getItem("accessToken");
   if (!token) return; // ⛔ Skip if logged out
     try {
-      const res = await apiClient.get("http://188.245.151.218:3005/projects");
+      const res = await apiClient.get("http://localhost:3005/projects");
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
@@ -92,7 +92,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://188.245.151.218:3005/projects/buyersummary/${user.id}`);
+      const res = await apiClient.get(`http://localhost:3005/projects/buyersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setProjectSummary(res.data.Data);
@@ -244,8 +244,10 @@ const muiTheme = useTheme();
           ))}
         </Box>
 
-        {/* ===== Middle Actions (3 cards) ===== */}
-        <Box
+      
+
+{/* ===== Middle Actions (3 cards) ===== */}
+     <Box
   sx={{
     display: "flex",
     gap: 5,
@@ -263,9 +265,11 @@ const muiTheme = useTheme();
       boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
       width: { xs: "100%", md: "calc(33.333% - 12px)" },
       height: "311.8px",
+      // height:"min-content",
       display: "flex",
       flexDirection: "column",
       gap: 2,
+      
     }}
   >
     <Box display={"flex"} justifyContent={isArabic ? "flex-end" : "flex-start"}>
@@ -293,17 +297,25 @@ const muiTheme = useTheme();
     >
       {t("PostProjectHeader")}
     </Typography>
-
+<Box
+    sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}
+  >
     <Typography
       variant="body2"
       color="text.secondary"
+      fontSize={{xs:16,sm:18}}
+      // fontWeight={"bold"}
       mb={2}
       display={"flex"}
+
       justifyContent={isArabic ? "flex-end" : "flex-start"}
     >
       {t("PostProjectContent")}
     </Typography>
-
+   </Box>
     <Button
       variant="contained"
       sx={{
@@ -357,17 +369,23 @@ const muiTheme = useTheme();
     >
       {t("MyProjectHeader")}
     </Typography>
-
+<Box
+    sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}
+  >
     <Typography
       variant="body2"
       color="text.secondary"
       mb={2}
+      fontSize={{xs:16,sm:18}}
       display={"flex"}
       justifyContent={isArabic ? "flex-end" : "flex-start"}
     >
       {t("MyProjectContent")}
     </Typography>
-
+</Box>
     <Button
       variant="outlined"
       sx={{ fontWeight: 600, borderRadius: 3 }}
@@ -415,24 +433,31 @@ const muiTheme = useTheme();
     >
       {t("ProfileSettingHeader")}
     </Typography>
-
+<Box
+    sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}
+  >
     <Typography
       variant="body2"
       color="text.secondary"
+      fontSize={{xs:16,sm:18}}
       mb={2}
+
       display={"flex"}
       justifyContent={isArabic ? "flex-end" : "flex-start"}
     >
       {t("ProfileSettingsContent")}
     </Typography>
-
+</Box>
     <Box
       sx={{
         display: "flex",
         flexDirection: { xs: "column", sm: "column", md: "row" },
         alignItems: "center",
-        justifyContent: "space-between",
-        gap: 1.5,
+        justifyContent: "center",
+        gap:1.5
       }}
     >
       <Button
@@ -440,7 +465,8 @@ const muiTheme = useTheme();
         sx={{
           fontWeight: 600,
           borderRadius: 3,
-          width: { xs: "100%", md: "40%" },
+          width: { xs: "100%", md: "max-content" },
+          
         }}
         onClick={() => router.push("/dashboard/buyer/profilemanagement")}
       >
@@ -451,7 +477,7 @@ const muiTheme = useTheme();
         sx={{
           fontWeight: 600,
           borderRadius: 3,
-          width: { xs: "100%", md: "50%" },
+          width: { xs: "100%",  md: "max-content"  },
         }}
         onClick={() => router.push("/updatepassword")}
       >
@@ -460,7 +486,6 @@ const muiTheme = useTheme();
     </Box>
   </Card>
 </Box>
-
 
         {/* ===== Recent Activity (large full-width card) ===== */}
        <Card
@@ -594,7 +619,7 @@ const muiTheme = useTheme();
                       justifyContent: "center",
                       borderRadius: "6px",
                       // width: isMobile ? "fit-content" : "8%",
-                      width: {xs:"fit-content", sm:"fit-content", md:"12%"},
+                      width: {xs:"fit-content", sm:"15%", md:"12%",},
                       px: isMobile ? 1 : 0,
                     }}
                   >

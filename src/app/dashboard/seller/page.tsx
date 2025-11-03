@@ -53,7 +53,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("http://188.245.151.218:3005/bids/paginated/all?page=1&limit=3");
+      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
       console.log(res);
       console.log(bids);
@@ -85,7 +85,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://188.245.151.218:3005/projects/sellersummary/${user.id}`);
+      const res = await apiClient.get(`http://localhost:3005/projects/sellersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setBidSummary(res.data.Data);
@@ -117,10 +117,10 @@ useEffect(() => {
   // ];
 
   const stats = [
-  { label: t("Stats_Actives_Bids"), value: bidSummary?.["Active Bids"] || 0 },
-  { label: t("Stats_Projects_Won"), value: bidSummary?.["Projects Won"] || 0 },
+  { label: t("Stats_Actives_Bids"), value: bidSummary?.["ActiveBids"] || 0 },
+  { label: t("Stats_Projects_Won"), value: bidSummary?.["ProjectsWon"] || 0 },
   { label: t("Stats_Completed"), value: bidSummary?.["Completed"] || 0 },
-  { label: t("Stats_Total_Earnings"), value: `$${bidSummary?.["Total Earnings"] || 0}` },
+  { label: t("Stats_Total_Earnings"), value: `$${bidSummary?.["TotalEarnings"] || 0}` },
 ];
 // Recent projects array
   // const recentProjects:any = [
@@ -278,19 +278,25 @@ useEffect(() => {
         >
           {t("BrowseProjectHeader")}
         </Typography>
-        <Typography
+        <Box sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}>        <Typography
           variant="body2"
           color="text.secondary"
           mb={2}
           display="flex"
+          fontSize={{xs:16,sm:18}}
           justifyContent={isArabic ? "flex-end" : "flex-start"}
         >
           {t("BrowseProjectContent")}
         </Typography>
+        </Box>
+
         <Button
           variant="contained"
           sx={{
-            background: `linear-gradient(90deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`,
+            background: theme.palette.primary.main,
             color: "#fff",
             fontWeight: 600,
             borderRadius: 3,
@@ -340,15 +346,21 @@ useEffect(() => {
         >
           {t("MyBidsHeader")}
         </Typography>
+         <Box sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}>
         <Typography
           variant="body2"
           color="text.secondary"
           mb={2}
           display="flex"
+          fontSize={{xs:16,sm:18}}
           justifyContent={isArabic ? "flex-end" : "flex-start"}
         >
           {t("MyBidsContent")}
         </Typography>
+        </Box>
         <Button
           variant="outlined"
           sx={{ fontWeight: 600, borderRadius: 3, width: "100%" }}
@@ -396,15 +408,23 @@ useEffect(() => {
         >
           {t("ProfileSettingHeader")}
         </Typography>
+        <Box sx={{
+      height: "80px",          // 👈 fixed height for content
+      overflow: "hidden",      // hides extra text (or use auto to scroll)
+    }}>
         <Typography
           variant="body2"
           color="text.secondary"
           mb={2}
+          fontSize={{xs:16,sm:18}}
           display="flex"
+          
           justifyContent={isArabic ? "flex-end" : "flex-start"}
         >
           {t("ProfileSettingsContent")}
         </Typography>
+
+        </Box>
 
         <Box
           sx={{
