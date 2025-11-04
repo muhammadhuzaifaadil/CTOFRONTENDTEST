@@ -110,19 +110,27 @@ console.log("conifrm new pass",form.confirmNewPassword)
     width: {xs:"100%",sm:"100%",md:"50%"},
     justifyContent: "space-between", // left & right alignment
     alignItems: "center",
+    flexDirection:isArabic?"row-reverse":"row",
     mb: { xs: 2, sm: 2, md: 3 },
     px: { xs: 0, sm: 0, md: 0 },
   }}
 >
   {/* Back Button */}
   <Button
-    startIcon={<ArrowBackIcon />}
-    onClick={() => router.push("/dashboard/buyer")}
+    startIcon={<ArrowBackIcon 
+    sx={{
+          transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+          transition: "transform 0.2s ease",
+        }}
+    />}
+    onClick={() => router.push(`/dashboard/${user?.role}`)}
     sx={{
       textTransform: "none",
       color: "white",
       fontSize: { xs: "14px", sm: "15px", md: "16px" },
       fontWeight: "600",
+      flexDirection:isArabic?"row-reverse":"row",
+      gap:isArabic?"4px":0,
       justifyContent: "flex-start",
     }}
   >
@@ -234,7 +242,7 @@ console.log("conifrm new pass",form.confirmNewPassword)
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "start",
+          alignItems: isArabic?"end":"start",
           justifyContent: "flex-start",
           mt: 1,
           backgroundColor: "lightgray",
@@ -245,8 +253,8 @@ console.log("conifrm new pass",form.confirmNewPassword)
         <Typography variant="body1">{t("PasswordRequirementsHeader")}</Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, mt: 1, pl: 1 }}>
           {arr.map((req, idx) => (
-            <Typography key={idx} variant="body2" sx={{ color: "#6c757d" }}>
-              {"\u2022\u00A0"}{req}
+            <Typography key={idx} variant="body2" sx={{ color: "#6c757d",display:"flex",flexDirection:isArabic?"row-reverse":"row" }}>
+              {req}
             </Typography>
           ))}
         </Box>
@@ -257,7 +265,7 @@ console.log("conifrm new pass",form.confirmNewPassword)
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
         gap: 2,
         mt: 2,
       }}

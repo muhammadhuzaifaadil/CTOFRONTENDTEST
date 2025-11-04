@@ -60,7 +60,7 @@
 //     //   const token = localStorage.getItem("accessToken");
 //       const token = accessToken
 //       const res = await axios.get(
-//         `http://localhost:3005/projects/${projectId}`,
+//         `https://cto.sa/projects/${projectId}`,
 //         {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }
@@ -80,7 +80,7 @@
 //   formData.append('file', file);
 
 //   try {
-//     const res = await axios.post('http://localhost:3005/upload', formData, {
+//     const res = await axios.post('https://cto.sa/upload', formData, {
 //       headers: { 'Content-Type': 'multipart/form-data' },
 //     });
 //     return res.data.url; // ✅ file URL from backend
@@ -113,7 +113,7 @@
 //       attachment: attachmentUrl || null,
 //     };
 
-//     await axios.post("http://localhost:3005/bids", payload, {
+//     await axios.post("https://cto.sa/bids", payload, {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
 //         "Content-Type": "application/json",
@@ -138,7 +138,7 @@
 // //       if (attachment) formData.append("attachment", attachment);
 
 // //       await axios.post(
-// //         `http://localhost:3005/bids`,
+// //         `https://cto.sa/bids`,
 // //         formData,
 // //         {
 // //           headers: { Authorization: `Bearer ${token}` },
@@ -421,7 +421,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     try {
       setLoading(true);
       const token = accessToken;
-      const res = await axios.get(`http://localhost:3005/projects/${projectId}`, {
+      const res = await axios.get(`https://cto.sa/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data.Data);
@@ -436,7 +436,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await axios.post("http://localhost:3005/upload", formData, {
+      const res = await axios.post("https://cto.sa/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data.url;
@@ -470,7 +470,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
         attachment: attachmentUrl || null,
       };
 
-      const result:any = await axios.post("http://localhost:3005/bids", payload, {
+      const result:any = await axios.post("https://cto.sa/bids", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

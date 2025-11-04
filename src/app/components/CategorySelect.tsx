@@ -54,14 +54,14 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%",direction: isArabic ? "rtl" : "ltr"  }}>
       {/* 👇 Label above the dropdown (similar to CustomTextField) */}
       <Typography
         variant="subtitle2"
         sx={{
           fontWeight: "bold",
           mb: 0.5,
-          textAlign: "left",
+          textAlign: isArabic?"right":"left",
         }}
       >
         {label} {required && <span style={{ color: "red" }}>*</span>}
@@ -75,6 +75,8 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
           sx={{
             borderRadius: 2,
             backgroundColor: "#f9f9f9",
+            textAlign: isArabic ? "right" : "left",
+          
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: "#3B82F6",
             },

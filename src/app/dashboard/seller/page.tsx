@@ -53,7 +53,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=3");
+      const res = await apiClient.get("https://cto.sa/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
       console.log(res);
       console.log(bids);
@@ -85,7 +85,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://localhost:3005/projects/sellersummary/${user.id}`);
+      const res = await apiClient.get(`https://cto.sa/projects/sellersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setBidSummary(res.data.Data);
@@ -192,6 +192,7 @@ useEffect(() => {
         display: "flex",
         gap: 2,
         flexWrap: "wrap",
+        flexDirection: isArabic?"row-reverse":"row",
         mb: 4,
       }}
     >
@@ -234,7 +235,7 @@ useEffect(() => {
       sx={{
         display: "flex",
         gap: 5,
-        flexDirection: { xs: "column", sm: "column", md: "row" },
+        flexDirection: { xs: "column", sm: "column", md: isArabic?"row-reverse":"row" },
         mb: 4,
         width: "100%",
         justifyContent: "space-between",
@@ -471,7 +472,7 @@ useEffect(() => {
     >
       <Typography
         variant="h6"
-        sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
+        sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2,display:"flex", justifyContent:isArabic?"flex-end":"flex-start" }}
       >
         {t("AvailableProjects")}
       </Typography>
@@ -541,7 +542,7 @@ useEffect(() => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    flexDirection: { xs: "column", sm: "row" },
+                    flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
                     gap: { xs: 1, sm: 0 },
                   }}
                 >
@@ -562,14 +563,14 @@ useEffect(() => {
                   />
                 </Box>
 
-                <Typography variant="caption" sx={{ color: "gray", mt: 0.5 }}>
+                <Typography variant="caption" sx={{ color: "gray", mt: 0.5,display:"flex", justifyContent:isArabic?"flex-end":"flex-start" }}>
                   Budget Range: {project.budgetRange || "N/A"}
                 </Typography>
 
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
+                    flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
                     justifyContent: "space-between",
                     gap: 2,
                     mt: 2,
@@ -583,17 +584,19 @@ useEffect(() => {
                       p: 2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:isArabic?"flex-end":"flex-start" }}>
                       <AttachMoneyIcon
                         sx={{ fontSize: 18, color: theme.palette.primary.main }}
                       />
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        Your Bid Amount
+                      <Typography variant="body2" sx={{ fontWeight: 500}}>
+                        {t("YourBidAmount")}
                       </Typography>
                     </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:isArabic?"flex-end":"flex-start" }}>
                     <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
                       {bid.bidAmount || "N/A"}
                     </Typography>
+                    </Box>
                   </Box>
 
                   <Box
@@ -604,17 +607,19 @@ useEffect(() => {
                       p: 2,
                     }}
                   >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:isArabic?"flex-end":"flex-start" }}>
                       <AccessTimeIcon
                         sx={{ fontSize: 18, color: theme.palette.primary.main }}
                       />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        Timeline
+                        {t("Timeline")}
                       </Typography>
                     </Box>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1,justifyContent:isArabic?"flex-end":"flex-start" }}>
                     <Typography sx={{ ml: 3, mt: 0.5 }} variant="body2" fontWeight={600}>
                       {bid.timeline || "N/A"}
                     </Typography>
+                    </Box>
                   </Box>
                 </Box>
 
@@ -624,14 +629,21 @@ useEffect(() => {
                     backgroundColor: theme.palette.grey[100],
                     borderRadius: 2,
                     p: 2,
+                    display:"flex",
+                    // justifyContent:isArabic?"flex-end":"flex-start",
+                    flexDirection:isArabic?"row-reverse":"row"
                   }}
                 >
+                  <Box>
                   <Typography variant="body2" fontWeight={500}>
-                    Your Proposal:
+                    {t("Proposal")}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                  </Box>
+                   <Box>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                     {coverLetterPreview || "No proposal provided."}
                   </Typography>
+                  </Box>
                 </Box>
               </Box>
             );

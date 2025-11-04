@@ -190,17 +190,23 @@ updateUser(updatedFields);
     sx={{
       display: "flex",
       width: { xs: "95%", sm: "75%", md: "75%" },
-      justifyContent: "flex-start",
+      justifyContent: isArabic?"flex-end":"flex-start",
       mb: 2,
     }}
   >
     <Button
-      startIcon={<ArrowBackIcon />}
+      startIcon={<ArrowBackIcon sx={{
+        transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+          transition: "transform 0.2s ease",
+      }} />}
       onClick={() => router.push("/dashboard/buyer")}
       sx={{
         textTransform: "none",
         fontSize: { xs: "14px", sm: "16px", md: "16px" },
         fontWeight: 600,
+        display:"flex",
+        flexDirection:isArabic?"row-reverse":"row",
+        gap:isArabic?"4px":0,
         color: "black",
       }}
     >
@@ -413,7 +419,7 @@ updateUser(updatedFields);
             <Typography
                     variant="subtitle2"
                     display={"flex"}
-                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"flex-start"}` }}
+                    sx={{ fontWeight: "bold", justifyContent: isArabic?"flex-end":"flex-start" }}
                   >
               {t("BusinessInfoCategory")}
             </Typography>
@@ -421,7 +427,7 @@ updateUser(updatedFields);
             <CategorySelect isArabic={isArabic}  value={selectedCategory} onChange={setSelectedCategory} />
             </Box>
             </Box>
-         <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start"}}>
+         <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:isArabic?"flex-end":"flex-start"}}>
             <Box>
             <Typography
                     variant="subtitle2"
@@ -461,6 +467,7 @@ updateUser(updatedFields);
             maxChar={50}
             value={formData.companyName}
             onChange={handleFieldChange("companyName")}
+            isArabic={isArabic}
           />
           <CustomTextField
             fullWidth

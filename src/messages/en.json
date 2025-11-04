@@ -54,7 +54,10 @@
         "ProfileSettingsContent":"Update your account information and set your preferences.",
         "ProfileSettingsButton1":"Edit Profile",
         "ProfileSettingsButton2":"Change Password",
-        "RecentActivity":"Recent Activity"
+        "RecentActivity":"Recent Activity",
+        "Budget":"Budget",
+        "Timeline":"Timeline",
+        "Skills":"Skills"
        
     },
      "CreateProject":{
@@ -91,7 +94,10 @@
             "Header2":"My Projects",
             "Content":"View, Edit, and Manage all your Projects",
             "NotFound":"No projects found for this status.",
-            "Loading":"Loading projects..."
+            "Loading":"Loading projects...",
+            "Budget":"Budget:",
+        "Timeline":"Timeline:",
+        "Skills":"Skills:"
 
         },
         "ProfileManagement":{
@@ -131,11 +137,11 @@
             "ConfirmNewPasswordLabel":"Confirm New Password",
             "ConfirmNewPasswordPlaceholder":"Enter Confirm New Password",
             "PasswordRequirementsHeader":"Password Requirements",
-            "firstrequirement":"Minimum 8 characters",
-            "secondrequirement":"At least one uppercase letter (A-Z)",
-            "thirdrequirement":"At least one lowercase letter (a-z)",
-            "fourthrequirement":"At least one number (0-9)",
-            "fifthrequirement":"At least one special character (!@#$%^&*)",
+            "firstrequirement":"● Minimum 8 characters",
+            "secondrequirement":"● At least one uppercase letter (A-Z)",
+            "thirdrequirement":"● At least one lowercase letter (a-z)",
+            "fourthrequirement":"● At least one number (0-9)",
+            "fifthrequirement":"● At least one special character (!@#$%^&*)",
             "updatebutton":"Update Password",
             "cancelbutton":"Cancel",
             "backbutton":"Back to Dashboard"
@@ -156,7 +162,10 @@
         "ProfileSettingsContent":"Update your company information and portfolio.",
         "ProfileSettingsButton1":"Edit Profile",
         "ProfileSettingsButton2":"Change Password",
-        "AvailableProjects":"Available Projects"
+        "AvailableProjects":"Available Projects",
+        "Proposal":"Your Proposal",
+        "Timeline":"Timeline",
+        "YourBidAmount":"Your Bid Amount"
         },
         "BrowseProjects":{
             "BackDashboard":"Back to Dashboard",
@@ -235,5 +244,62 @@
         "Navbar":{
             "Dashboard":"DASHBOARD",
             "Welcome":"Welcome Back,"
+        },
+        "Landing":{
+            "NB_Home": "Home",
+            "NB_Works":"How It Works",
+            "NB_Choose":"Why Choose Us",
+            "NB_Contact":"Contact",
+            "NB_GETSTARTED":"Get Started",
+            "NB_GETSTARTED_A":"Get Started →",
+            "Home_Heading_11":"The Smart Balance Between",
+            "Home_Heading_12": "Time, Cost, and Quality",
+            "Home_Heading2":"Connect with verified tech companies. Get transparent proposals, milestone-based development, and independent quality reviews.",
+            "Works_Heading":"How CTO.sa Works",
+            "Works_Tagline":"A transparent, secure process from start to finish",
+            "Works_1_Heading":"Share Your Project",
+            "Works_1_Content":"Submit your requirements and receive detailed proposals from verified companies.",
+            "Works_2_Heading":"Choose Your Partner",
+            "Works_2_Content":"Compare proposals with clear timelines, costs, and deliverables.",
+            "Works_3_Heading":"Milestone-Based Development",
+            "Works_3_Content":"Your project is divided into stages, each verified before payment release.",
+            "Works_4_Heading":"Quality Expert Review",
+            "Works_4_Content":"Independent professionals assess each milestone against standards.",
+            "Works_5_Heading":"Fair Arbitration",
+            "Works_5_Content":"Neutral technical arbitration ensures fairness if disagreements arise.",
+            "Choose_Heading":"Why Choose CTO.sa",
+            "Choose_Tagline":"Built on trust, transparency, and technical excellence",
+            "Choose_1_Heading":"Verified Companies Only",
+            "Choose_1_Content":"All providers are officially registered companies with proven track records.",
+            "Choose_2_Heading":"Transparent Proposals",
+            "Choose_2_Content":"Receive detailed proposals with clear timelines, costs, and deliverables.",
+            "Choose_3_Heading":"Independent Quality Reviews",
+            "Choose_3_Content":"Certified experts verify each milestone before payment approval.",
+            "Choose_4_Heading":"Secure Escrow System",
+            "Choose_4_Content":"Your payments are protected and only released after milestone approval.",
+            "Choose_5_Heading":"Technical Arbitration",
+            "Choose_5_Content":"Neutral experts resolve disputes fairly for both parties.",
+            "Choose_6_Heading":"Platform Management",
+            "Choose_6_Content":"Everything documented and managed within the CTO.sa platform.",
+            "Contact_Heading_Tagline":"The smart platform for managing tech projects with balance and trust.",
+            "Contact_Platform_Heading":"Platform",
+            "Contact_Platform_1_Title":"How It Works",
+            "Contact_Platform_2_Title":"Find Companies",
+            "Contact_Platform_3_Title":"Quality Review",
+            "Contact_Platform_4_Title":"Pricing",
+            "Contact_Resources_Heading":"Resources",
+            "Contact_Resources_1_Title":"Documentation",
+            "Contact_Resources_2_Title":"Help Center",
+            "Contact_Resources_3_Title":"Blog",
+            "Contact_Resources_4_Title":"Case Studies",
+            "Contact_Company_Heading":"Company",
+            "Contact_Company_1_Title":"About Us",
+            "Contact_Company_2_Title":"Contact",
+            "Contact_Company_3_Title":"Terms of Service",
+            "Contact_Company_4_Title":"Privacy Policy",
+            "Footer_AllRightsReserved":"All rights reserved."
+
+
+         
         }
 }

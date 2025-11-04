@@ -1,12 +1,34 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Box, Typography, Button, Divider } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { LanguageContext } from "../contexts/LanguageContext";
+import { useTranslations } from "next-intl";
+import DescriptionIcon from "@mui/icons-material/Description"; // 📄
+import GroupIcon from "@mui/icons-material/Group"; // 👥
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // ✅
+import SecurityIcon from "@mui/icons-material/Security"; // 🛡️
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline"; // 💬
+import ShieldIcon from "@mui/icons-material/Shield"; // 🛡️ Verified Companies
+import VerifiedIcon from "@mui/icons-material/Verified"; // ✅ Independent Quality Reviews
+import LockIcon from "@mui/icons-material/Lock"; // 🔒 Secure Escrow System
+import GavelIcon from "@mui/icons-material/Gavel"; // ⚖️ Technical Arbitration
+import GroupsIcon from "@mui/icons-material/Groups"; // 👥 Platform Management
+import PhoneIcon from "@mui/icons-material/Phone";
+import { Tajawal } from "next/font/google";
+
+const tajawal = Tajawal({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-tajawal",
+});
+
 
 const Landing: React.FC = () => {
   const router = useRouter();
-
+  const {isArabic,toggleLanguage,locale} = useContext(LanguageContext);
+  const t = useTranslations("Landing");
   // Refs for scrolling
   const taglineRef = useRef<HTMLDivElement>(null);
   const howItWorksRef = useRef<HTMLDivElement>(null);
@@ -20,8 +42,14 @@ const Landing: React.FC = () => {
   return (
 
 
-<Box sx={{ bgcolor: "#fff", color: "#000", fontFamily: "Inter, sans-serif" }}>
+<Box className={isArabic ? tajawal.variable : ""}
+  sx={{
+    bgcolor: "#fff",
+    color: "#000",
+    fontFamily: isArabic ? "'Tajawal', sans-serif" : "Inter, sans-serif",
+  }}>
       {/* ✅ NAVBAR */}
+
       <Box
         sx={{
           position: "sticky",
@@ -31,6 +59,7 @@ const Landing: React.FC = () => {
           boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
           display: "flex",
           justifyContent: "space-between",
+          flexDirection:isArabic?"row-reverse":"row",
           alignItems: "center",
           px: { xs: 2, sm: 4, md: 8, lg: 12 },
           py: { xs: 1, sm: 1.5, md: 2 },
@@ -55,14 +84,15 @@ const Landing: React.FC = () => {
             display: "flex",
             alignItems: "center",
             flexWrap: "wrap",
+            flexDirection:isArabic?"row-reverse":"row",
             gap: { xs: 1, sm: 2, md: 3 },
           }}
         >
           {[
-            { label: "Home", ref: taglineRef },
-            { label: "How It Works", ref: howItWorksRef },
-            { label: "Why Choose Us", ref: whyChooseRef },
-            { label: "Contact", ref: footerRef },
+            { label: `${t("NB_Home")}`, ref: taglineRef },
+            { label: `${t("NB_Works")}`, ref: howItWorksRef },
+            { label: `${t("NB_Choose")}`, ref: whyChooseRef },
+            { label: `${t("NB_Contact")}`, ref: footerRef },
           ].map((item, i) => (
             <Button
               key={i}
@@ -71,12 +101,24 @@ const Landing: React.FC = () => {
                 textTransform: "none",
                 color: "#001",
                 fontSize: { xs: "0.8rem", sm: "0.9rem", md: "1rem" },
+                fontFamily:isArabic?"Tajawal":"sans-serif"
               }}
             >
               {item.label}
             </Button>
           ))}
-
+          {/* ---------- Language Toggle ---------- */}
+      <Button
+        variant="outlined"
+        onClick={toggleLanguage}
+        sx={{
+          alignSelf: "flex-end",
+          m: { xs: 1, sm: 2 },
+          fontSize: { xs: "0.8rem", sm: "1rem" },
+        }}
+      >
+        {locale === "en" ? "عربي" : "English"}
+      </Button>
           <Button
             variant="contained"
             sx={{
@@ -91,7 +133,7 @@ const Landing: React.FC = () => {
             }}
             onClick={() => router.push("/welcome")}
           >
-            Get Started
+            {t("NB_GETSTARTED")}
           </Button>
         </Box>
       </Box>
@@ -118,9 +160,10 @@ const Landing: React.FC = () => {
             fontWeight: 700,
             fontSize: { xs: "1.8rem", sm: "2.4rem", md: "3rem", lg: "3.5rem" },
             mb: 1.5,
+            fontFamily:isArabic?"Tajawal":"sans-serif"
           }}
         >
-          The Smart Balance Between
+          {t("Home_Heading_11")}
         </Typography>
 
         <Typography
@@ -130,9 +173,10 @@ const Landing: React.FC = () => {
             opacity: 0.85,
             fontSize: { xs: "2.2rem", sm: "2.8rem", md: "3.5rem", lg: "4rem" },
             mb: 3,
+            fontFamily:isArabic?"Tajawal":"sans-serif"
           }}
         >
-          Time, Cost, and Quality
+          {t("Home_Heading_12")}
         </Typography>
 
         <Typography
@@ -144,10 +188,10 @@ const Landing: React.FC = () => {
             lineHeight: 1.6,
             fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
             px: { xs: 2, sm: 0 },
+            fontFamily:isArabic?"Tajawal":"sans-serif"
           }}
         >
-          Connect with verified tech companies. Get transparent proposals,
-          milestone-based development, and independent quality reviews.
+         {t("Home_Heading2")}
         </Typography>
 
         <Button
@@ -159,13 +203,14 @@ const Landing: React.FC = () => {
             px: { xs: 3, sm: 4 },
             py: { xs: 1, sm: 1.3 },
             fontWeight: 600,
+            fontFamily:isArabic?"Tajawal":"sans-serif",
             textTransform: "none",
             boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
             "&:hover": { bgcolor: "#5459FD" },
           }}
           onClick={() => router.push("/welcome")}
         >
-          Get Started →
+          {t("NB_GETSTARTED_A")}
         </Button>
       </Box>
 
@@ -181,6 +226,7 @@ const Landing: React.FC = () => {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      
     }}
   >
     <Typography
@@ -191,9 +237,10 @@ const Landing: React.FC = () => {
         mb: 1,
         textAlign: "center",
         fontSize: { xs: "1.6rem", md: "2rem" },
+        fontFamily:isArabic?"Tajawal":"sans-serif"
       }}
     >
-      How CTO.sa Works
+      {t("Works_Heading")}
     </Typography>
     <Typography
       variant="subtitle1"
@@ -202,9 +249,10 @@ const Landing: React.FC = () => {
         mb: 6,
         textAlign: "center",
         fontSize: { xs: "0.9rem", sm: "1rem" },
+        fontFamily:isArabic?"Tajawal":"sans-serif"
       }}
     >
-      A transparent, secure process from start to finish
+      {t("Works_Tagline")}
     </Typography>
 
     {/* GRID CARDS */}
@@ -219,38 +267,41 @@ const Landing: React.FC = () => {
         gap: { xs: 3, sm: 4, md: 5 },
         width: "100%",
         maxWidth: "1100px",
+        direction: isArabic ? "rtl" : "ltr",   // 👈 flips the grid flow
+        textAlign: isArabic ? "right" : "left", // optional: aligns text inside items
+        
       }}
     >
       {[
         {
-          icon: "📄",
-          title: "Share Your Project",
-          desc: "Submit your requirements and receive detailed proposals from verified companies.",
-          step: "1",
+          icon: <DescriptionIcon color="primary" sx={{ fontSize: 40 }} />,
+          title: `${t("Works_1_Heading")}`,
+          desc: `${t("Works_1_Content")}`,
+          // step: "1",
         },
         {
-          icon: "👥",
-          title: "Choose Your Partner",
-          desc: "Compare proposals with clear timelines, costs, and deliverables.",
-          step: "2",
+          icon: <GroupIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Works_2_Heading")}`,
+          desc: `${t("Works_2_Content")}`,
+          // step: "2",
         },
         {
-          icon: "✅",
-          title: "Milestone-Based Development",
-          desc: "Your project is divided into stages, each verified before payment release.",
-          step: "3",
+          icon: <CheckCircleIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Works_3_Heading")}`,
+          desc: `${t("Works_3_Content")}`,
+          // step: "3",
         },
         {
-          icon: "🛡️",
-          title: "Quality Expert Review",
-          desc: "Independent professionals assess each milestone against standards.",
-          step: "4",
+          icon: <SecurityIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Works_4_Heading")}`,
+          desc: `${t("Works_4_Content")}`,
+          // step: "4",
         },
         {
-          icon: "💬",
-          title: "Fair Arbitration",
-          desc: "Neutral technical arbitration ensures fairness if disagreements arise.",
-          step: "5",
+          icon: <ChatBubbleOutlineIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Works_5_Heading")}`,
+          desc: `${t("Works_5_Content")}`,
+          // step: "5",
         },
       ].map((item, index) => (
         <Box
@@ -279,21 +330,22 @@ const Landing: React.FC = () => {
               fontWeight: 700,
               fontSize: "2rem",
               color: "rgba(84,89,253,0.1)",
+              fontFamily:isArabic?"Tajawal":"sans-serif"
             }}
           >
-            {item.step}
+            {/* {item.step} */}
           </Typography>
 
-          <Box sx={{ fontSize: "2.2rem", color: "#5459FD" }}>
+          <Box sx={{ fontSize: "2.2rem", color: "#5459FD",fontFamily:isArabic?"Tajawal":"sans-serif" }}>
             {item.icon}
           </Box>
 
-          <Typography variant="h6" sx={{ fontWeight: 600, color: "#111" }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, color: "#111",fontFamily:isArabic?"Tajawal":"sans-serif" }}>
             {item.title}
           </Typography>
 
           <Typography
-            sx={{ color: "#555", fontSize: { xs: "0.9rem", sm: "1rem" } }}
+            sx={{ color: "#555", fontSize: { xs: "0.9rem", sm: "1rem",fontFamily:isArabic?"Tajawal":"sans-serif" } }}
           >
             {item.desc}
           </Typography>
@@ -325,9 +377,10 @@ const Landing: React.FC = () => {
         textAlign: "center",
         color: "#001",
         fontSize: { xs: "1.6rem", md: "2rem" },
+        fontFamily:isArabic?"Tajawal":"sans-serif"
       }}
     >
-      Why Choose CTO.sa
+      {t("Choose_Heading")}
     </Typography>
 
     <Typography
@@ -337,45 +390,46 @@ const Landing: React.FC = () => {
         mb: 6,
         textAlign: "center",
         fontSize: { xs: "0.9rem", sm: "1rem" },
+        fontFamily:isArabic?"Tajawal":"sans-serif"
       }}
     >
-      Built on trust, transparency, and technical excellence
+      {t("Choose_Tagline")}
     </Typography>
 
     {/* FLEX ROWS */}
     {[
       [
         {
-          icon: "🛡️",
-          title: "Verified Companies Only",
-          desc: "All providers are officially registered companies with proven track records.",
+          icon: <ShieldIcon color="primary" sx={{ fontSize: 40 }} />,
+          title: `${t("Choose_1_Heading")}`,
+          desc: `${t("Choose_1_Content")}`,
         },
         {
-          icon: "📄",
-          title: "Transparent Proposals",
-          desc: "Receive detailed proposals with clear timelines, costs, and deliverables.",
+          icon: <DescriptionIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Choose_2_Heading")}`,
+          desc: `${t("Choose_2_Content")}`,
         },
         {
-          icon: "✅",
-          title: "Independent Quality Reviews",
-          desc: "Certified experts verify each milestone before payment approval.",
+          icon: <VerifiedIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Choose_3_Heading")}`,
+          desc: `${t("Choose_3_Content")}`,
         },
       ],
       [
         {
-          icon: "🔒",
-          title: "Secure Escrow System",
-          desc: "Your payments are protected and only released after milestone approval.",
+          icon: <LockIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Choose_4_Heading")}`,
+          desc: `${t("Choose_4_Content")}`,
         },
         {
-          icon: "⚖️",
-          title: "Technical Arbitration",
-          desc: "Neutral experts resolve disputes fairly for both parties.",
+          icon: <GavelIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Choose_5_Heading")}`,
+          desc: `${t("Choose_5_Content")}`,
         },
         {
-          icon: "👥",
-          title: "Platform Management",
-          desc: "Everything documented and managed within the CTO.sa platform.",
+          icon: <GroupsIcon color="primary" sx={{ fontSize: 40 }} />,
+           title: `${t("Choose_6_Heading")}`,
+          desc: `${t("Choose_6_Content")}`,
         },
       ],
     ].map((row, rowIndex) => (
@@ -383,7 +437,7 @@ const Landing: React.FC = () => {
         key={rowIndex}
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
+          flexDirection: { xs: "column", md: isArabic?"row-reverse":"row" },
           justifyContent: "center",
           alignItems: "stretch",
           gap: { xs: 3, md: 4 },
@@ -401,7 +455,7 @@ const Landing: React.FC = () => {
               borderRadius: 3,
               bgcolor: "#fff",
               boxShadow: "0px 4px 10px rgba(0,0,0,0.05)",
-              textAlign: "left",
+              textAlign: isArabic?"right":"left",
               transition: "0.3s",
               "&:hover": {
                 transform: "translateY(-5px)",
@@ -421,6 +475,8 @@ const Landing: React.FC = () => {
                 fontSize: 28,
                 color: "#6366F1",
                 mb: 2,
+                 ml: isArabic ? "auto" : 0, // ✅ Push icon to right if Arabic
+    mr: isArabic ? 0 : "auto", // ✅ Push icon to left if English
               }}
             >
               {item.icon}
@@ -432,12 +488,13 @@ const Landing: React.FC = () => {
                 color: "#001",
                 mb: 1,
                 fontSize: { xs: "1rem", md: "1.1rem" },
+                fontFamily:isArabic?"Tajawal":"sans-serif"
               }}
             >
               {item.title}
             </Typography>
             <Typography
-              sx={{ color: "#555", fontSize: { xs: "0.9rem", sm: "1rem" } }}
+              sx={{ color: "#555", fontSize: { xs: "0.9rem", sm: "1rem",fontFamily:isArabic?"Tajawal":"sans-serif" } }}
             >
               {item.desc}
             </Typography>
@@ -468,7 +525,7 @@ const Landing: React.FC = () => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", md: "row" },
+              flexDirection: { xs: "column", md: isArabic?"row-reverse":"row" },
               justifyContent: "space-between",
               alignItems: { xs: "flex-start", md: "flex-start" },
               width: "100%",
@@ -500,47 +557,50 @@ const Landing: React.FC = () => {
                   CTO.sa
                 </Typography>
               </Box>
-              <Typography variant="body2" sx={{ color: "#555", maxWidth: 260 }}>
-                The smart platform for managing tech projects with balance and trust.
+              <Typography variant="body2" sx={{ color: "#555", maxWidth: 260,fontFamily:isArabic?"Tajawal":"sans-serif" }}>
+                {t("Contact_Heading_Tagline")}
               </Typography>
             </Box>
 
             {/* Links */}
             {[
               {
-                title: "Platform",
-                links: ["How It Works", "Find Companies", "Quality Review", "Pricing"],
+                name: "Muhammed Alaseeri",
+                phone: "+966 50 650 8998",
               },
               {
-                title: "Resources",
-                links: ["Documentation", "Help Center", "Blog", "Case Studies"],
+                name: "Salman Saeed",
+                phone: "+966 531977403",
               },
               {
-                title: "Company",
-                links: ["About Us", "Contact", "Terms of Service", "Privacy Policy"],
+                name: "Ihsan Ullah",
+                phone: "+966 55 410 4725",
               },
             ].map((col, i) => (
               <Box key={i} sx={{ flex: 1, minWidth: 150 }}>
                 <Typography
                   variant="subtitle1"
-                  sx={{ fontWeight: 600, mb: 2, color: "#001" }}
+                  sx={{ fontWeight: 600, mb: 2, color: "#001",fontFamily:isArabic?"Tajawal":"sans-serif" }}
                 >
-                  {col.title}
+                  {col.name}
                 </Typography>
-                {col.links.map((link, j) => (
+                {/* col.phones.map if further links */}
+                <Box display={"flex"} flexDirection={"row"}>
+                                    <PhoneIcon />
+
                   <Typography
-                    key={j}
                     variant="body2"
                     sx={{
                       color: "#555",
                       mb: 1,
                       cursor: "pointer",
+                      fontFamily:isArabic?"Tajawal":"sans-serif",
                       "&:hover": { color: "#6366F1" },
                     }}
-                  >
-                    {link}
+                  > 
+                    {col.phone}
                   </Typography>
-                ))}
+                  </Box>
               </Box>
             ))}
           </Box>

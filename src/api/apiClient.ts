@@ -1,7 +1,7 @@
 // import axios from 'axios';
 
 // const apiClient = axios.create({
-//   baseURL: 'http://localhost:3005', // Backend NestJS URL
+//   baseURL: 'https://cto.sa', // Backend NestJS URL
 //   headers: {
 //     'Content-Type': 'application/json',
 //   },
@@ -15,7 +15,7 @@ import { AuthContext } from "@/app/contexts/AuthContext";
 import React from "react";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3005",
+  baseURL: "https://cto.sa",
   headers: { "Content-Type": "application/json" },
 });
 
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
       if (refreshToken) {
         try {
           const parsedUser = user ? JSON.parse(user) : null;
-          const res = await axios.post("http://localhost:3005/auth/refresh", {
+          const res = await axios.post("https://cto.sa/auth/refresh", {
             userId: parsedUser?.id,
             refreshToken,
           });

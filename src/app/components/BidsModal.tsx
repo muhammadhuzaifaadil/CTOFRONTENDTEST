@@ -69,7 +69,7 @@
 //       return;
 //     }
 
-//     await axios.patch(`http://localhost:3005/bids/${bidId}/accept`);
+//     await axios.patch(`https://cto.sa/bids/${bidId}/accept`);
 //     const updated = bids.map((b) =>
 //       b.id === bidId ? { ...b, status: "Accepted" } : { ...b, status: "Rejected" }
 //     );
@@ -77,7 +77,7 @@
 //   };
 
 //   const handleReject = async (bidId: number) => {
-//     await axios.patch(`http://localhost:3005/bids/${bidId}/reject`);
+//     await axios.patch(`https://cto.sa/bids/${bidId}/reject`);
 //     const updated = bids.map((b) =>
 //       b.id === bidId ? { ...b, status: "Rejected" } : b
 //     );

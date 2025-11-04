@@ -101,7 +101,7 @@ const handleOpen = (id: number) => {
 //       const token = localStorage.getItem("accessToken");
 //       if (!token) return;
 
-//       let url = `http://localhost:3005/projects/paginated/all?page=${page}&limit=5`;
+//       let url = `https://cto.sa/projects/paginated/all?page=${page}&limit=5`;
 
 //       // ✅ Add filter if user has typed something
 //       if (searchTerm.trim()) {
@@ -138,7 +138,7 @@ useEffect(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      let url = `http://localhost:3005/projects/paginated/all?page=${page}&limit=5`;
+      let url = `https://cto.sa/projects/paginated/all?page=${page}&limit=5`;
 
       // ✅ Use backend search (multi-field) when user types
       if (searchTerm.trim()) {
@@ -291,12 +291,13 @@ useEffect(() => {
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >
-  {/* Back Button */}
+  {/* Back Button
   <Box
     sx={{
       display: "flex",
       width: { xs: "95%", sm: "90%", md: "75%" },
-      justifyContent: "flex-start",
+      justifyContent: isArabic?"flex-end":"flex-start",
+      flexDirection:isArabic?"row-reverse":"row",
       mb: 2,
     }}
   >
@@ -311,6 +312,39 @@ useEffect(() => {
       }}
     >
       {t("BackDashboard")}
+    </Button>
+  </Box> */}
+
+  {/* Back Button */}
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: isArabic ? "row-reverse" : "row", // 👈 flips layout
+      justifyContent: isArabic ? "flex-start" : "flex-start", // 👈 Arabic aligns left, English stays left
+      width: { xs: "95%", sm: "75%", md: "75%" },
+      mb: 2,
+    }}
+  >
+    <Button
+      startIcon={
+        <ArrowBackIcon
+          sx={{
+            transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+            transition: "transform 0.2s ease",
+          }}
+        />
+      }
+      onClick={() => router.push("/dashboard/seller")}
+      sx={{
+        textTransform: "none",
+        fontSize: { xs: "14px", sm: "16px" },
+        fontWeight: 600,
+        color: "black",
+        flexDirection: isArabic ? "row-reverse" : "row", // 👈 ensures icon on right, text on left in Arabic
+        gap: 1,
+      }}
+    >
+       {t("BackDashboard")}
     </Button>
   </Box>
 

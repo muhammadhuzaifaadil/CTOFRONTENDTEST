@@ -11,7 +11,7 @@ export default getRequestConfig(async () => {
   const supportedLocales = ['en', 'ar'];
   const locale = supportedLocales.includes(cookieLocale || '')
     ? cookieLocale!
-    : 'en';
+    : 'ar';
 
   return {
     locale,

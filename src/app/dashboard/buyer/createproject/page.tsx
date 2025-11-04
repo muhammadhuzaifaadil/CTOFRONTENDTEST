@@ -221,7 +221,9 @@ return (
   sx={{
     display: "flex",
     width: { xs: "100%", sm: "100%",md:"60%" },
-    justifyContent: "flex-start",
+    // justifyContent: "flex-start",
+    flexDirection: isArabic ? "row-reverse" : "row", // 👈 flips layout
+    justifyContent: isArabic ? "flex-start" : "flex-start", // 👈 Arabic aligns left, English stays left
     px: { xs: 2, sm: 2,md:0 },
     mt: { xs: 2, sm: 3, md: 2 },
     position: { xs: "static", sm: "static" }, // only sticky on mobile
@@ -232,13 +234,18 @@ return (
   }}
 >
   <Button
-    startIcon={<ArrowBackIcon />}
+    startIcon={<ArrowBackIcon sx={{
+          transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+          transition: "transform 0.2s ease",
+        }} />}
     onClick={() => router.push("/dashboard/buyer")}
     sx={{
       textTransform: "none",
       fontSize: { xs: "14px", sm: "14px" },
       fontWeight: 600,
       color: "black",
+      flexDirection: isArabic ? "row-reverse" : "row", // 👈 ensures icon on right, text on left in Arabic
+      gap: 1,
       px: { xs: 1, sm: 1 },
       backgroundColor: "transparent",
       "&:hover": {
@@ -530,7 +537,7 @@ return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
         gap: { xs: 1, sm: 2 },
         justifyContent: "space-between",
         width: "100%",
@@ -567,13 +574,19 @@ return (
       </Button>
 
       <Button
-        startIcon={<SendIcon sx={{ fontSize: 18, color: "white" }} />}
+        startIcon={<SendIcon sx={{ fontSize: 18, color: "white",
+          transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+          transition: "transform 0.2s ease",
+         }} />}
         onClick={() => handleSubmit("Published")}
         sx={{
           borderRadius: 3,
           backgroundColor: theme.palette.primary.main,
           color: "white",
           width: "100%",
+          display:"flex",
+          // flexDirection:isArabic?"row-reverse":"row",
+          // gap:`${isArabic?1:0}`,
           height: { xs: "36px", sm: "42px" },
           fontSize: { xs: "12px", sm: "14px" },
         }}

@@ -27,34 +27,6 @@ const Login: React.FC = () => {
   };
   const {isArabic,locale,toggleLanguage} = useContext(LanguageContext)
   const t = useTranslations("Login");
-    // const [locale, setLocale] = useState<string>("en");
-    //  // Load locale from cookie or browser
-    // useEffect(() => {
-    //   const cookieLocale = document.cookie
-    //     .split("; ")
-    //     .find((row) => row.startsWith("CTONEXTAPP_LOCALE="))
-    //     ?.split("=")[1];
-  
-    //   if (cookieLocale) setLocale(cookieLocale);
-    //   else {
-    //     const browserLocale = navigator.language.slice(0, 2);
-    //     document.cookie = `CTONEXTAPP_LOCALE=${browserLocale}; path=/;`;
-    //     setLocale(browserLocale);
-    //     router.refresh();
-    //   }
-    // }, [router]);
-  
-    // const toggleLanguage = () => {
-    //   const newLocale = locale === "en" ? "ar" : "en";
-    //   document.cookie = `CTONEXTAPP_LOCALE=${newLocale}; path=/;`;
-    //   setLocale(newLocale);
-    //   router.refresh();
-    //     // router.replace(window.location.pathname); // replaces without full reload
-
-    // };
-  
-    // const isArabic = locale === "ar";
-
   return (
     <Box
       sx={{
@@ -62,7 +34,7 @@ const Login: React.FC = () => {
         flexDirection: {
       xs: "column", // 📱 For mobile (xs & sm)
       sm: "column", // optional, but explicit
-      md: "row",    // 💻 For tablets & desktops
+      md: isArabic?"row-reverse":"row",    // 💻 For tablets & desktops
     },
         height: {
           md:"100vh",
@@ -307,7 +279,7 @@ const Login: React.FC = () => {
           </Typography>
           <Button
             variant="contained"
-            onClick={()=>router.push("/")}
+            onClick={()=>router.push("/welcome")}
             fullWidth
             sx={{
               backgroundColor: "#3d3bf3",

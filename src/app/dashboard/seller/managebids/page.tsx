@@ -37,7 +37,7 @@ const ManageBids: React.FC = () => {
       if (!token) return;
 
       try {
-        const res = await apiClient.get("http://localhost:3005/bids/paginated/all?page=1&limit=10");
+        const res = await apiClient.get("https://cto.sa/bids/paginated/all?page=1&limit=10");
         const bidsData = res.data?.Data?.bids;
 
         if (res.data?.Success && Array.isArray(bidsData)) {
@@ -119,14 +119,21 @@ const ManageBids: React.FC = () => {
   }}
 >
   {/* Back Button */}
-  <Box sx={{ display: "flex", width: { xs: "95%", sm: "90%", md: "75%" }, justifyContent: "flex-start", mb: 2 }}>
+  <Box sx={{ display: "flex", width: { xs: "95%", sm: "90%", md: "75%" }, justifyContent:isArabic? "flex-end":"flex-start", mb: 2 }}>
     <Button
-      startIcon={<ArrowBackIcon />}
+      startIcon={<ArrowBackIcon 
+      sx={{
+        transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+        transition: "transform 0.2s ease",
+      }}/>}
       onClick={() => router.push("/dashboard/seller")}
       sx={{
         textTransform: "none",
         fontSize: { xs: "14px", sm: "16px" },
         fontWeight: "600",
+        display:"flex",
+        flexDirection:isArabic?"row-reverse":"row",
+        gap:isArabic?"4px":0,
         color: "black",
       }}
     >
@@ -172,13 +179,14 @@ const ManageBids: React.FC = () => {
 <Box
   sx={{
     display: "flex",
-    flexDirection: "row",
+    flexDirection: isArabic?"row-reverse":"row",
     width: "100%",
     justifyContent: "space-between",
     mt: 3,
     mb: 2,
     flexWrap: { xs: "nowrap", sm: "nowrap", md: "nowrap" }, // allow wrapping only on very small screens if needed
     gap: { xs: 1, sm: 2 }, // spacing for smaller screens
+    
   }}
 >
   {(["Pending", "Accepted", "Rejected", "Withdrawn"] as const).map((status) => (
@@ -216,7 +224,7 @@ const ManageBids: React.FC = () => {
         sx={{
           fontWeight: "bold",
           color: theme.palette.primary.main,
-          textAlign: "left",
+          textAlign: isArabic?"right":"left",
           fontSize: { xs: "1rem", sm: "1.25rem" },
         }}
       >

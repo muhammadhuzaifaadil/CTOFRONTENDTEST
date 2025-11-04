@@ -69,7 +69,7 @@ useEffect(() => {
   const token = localStorage.getItem("accessToken");
   if (!token) return; // ⛔ Skip if logged out
     try {
-      const res = await apiClient.get("http://localhost:3005/projects");
+      const res = await apiClient.get("https://cto.sa/projects");
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
@@ -92,7 +92,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`http://localhost:3005/projects/buyersummary/${user.id}`);
+      const res = await apiClient.get(`https://cto.sa/projects/buyersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setProjectSummary(res.data.Data);
@@ -212,6 +212,7 @@ const muiTheme = useTheme();
             // flex:1,
             gap: 2,
             flexWrap: "wrap",
+            flexDirection:isArabic?"row-reverse":"row",
             mb: 4,
           }}
         >
@@ -251,7 +252,7 @@ const muiTheme = useTheme();
   sx={{
     display: "flex",
     gap: 5,
-    flexDirection: { xs: "column", sm: "column", md: "row" }, // 👈 only changes on small screens
+    flexDirection: { xs: "column", sm: "column", md: isArabic?"row-reverse":"row" }, // 👈 only changes on small screens
     mb: 4,
     width: "100%",
     justifyContent: "space-between",
@@ -497,6 +498,8 @@ const muiTheme = useTheme();
     >
       <Typography
         variant="h6"
+        display={"flex"}
+        justifyContent={isArabic?"flex-end":"flex-start"}
         sx={{ fontWeight: 600, color: theme.palette.primary.main, mb: 2 }}
       >
         {t("RecentActivity")}
@@ -595,7 +598,7 @@ const muiTheme = useTheme();
                     justifyContent: "flex-start",
                     alignItems: isMobile ? "flex-start" : "center",
                     width: "100%",
-                    flexDirection: isMobile ? "column" : "row",
+                    flexDirection: isMobile ? "column" :(isArabic?"row-reverse":"row"),
                     gap: isMobile ? 1 : 0,
                   }}
                 >
@@ -604,6 +607,9 @@ const muiTheme = useTheme();
                     sx={{
                       fontWeight: 600,
                       width: isMobile ? "100%" : "40%",
+                      display:"flex",
+                      flexDirection:isArabic?"row":"row-reverse",
+                      justifyContent:"flex-end"
                     }}
                   >
                     {project.title}
@@ -628,7 +634,7 @@ const muiTheme = useTheme();
                 </Box>
 
                 {/* Outline */}
-                <Typography variant="body2" color="gray">
+                <Typography variant="body2" color="gray" sx={{display:"flex", justifyContent:isArabic?"flex-end":"flex-start"}}>
                   {outlinePreview}
                 </Typography>
 
@@ -638,7 +644,7 @@ const muiTheme = useTheme();
                     display: "flex",
                     gap: 3,
                     mt: 1,
-                    flexDirection: isMobile ? "column" : "row",
+                    flexDirection: isMobile ? "column" : (isArabic?"row-reverse":"row"),
                   }}
                 >
                   <Box sx={{ width: isMobile ? "100%" : "25%" }}>
@@ -647,7 +653,7 @@ const muiTheme = useTheme();
                       color="gray"
                       sx={{ fontWeight: 600 }}
                     >
-                      Budget
+                      {t("Budget")}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {project.budgetRange || "N/A"}
@@ -660,7 +666,7 @@ const muiTheme = useTheme();
                       color="gray"
                       sx={{ fontWeight: 600 }}
                     >
-                      Timeline
+                       {t("Timeline")}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {project.timeline || "N/A"}
@@ -673,7 +679,7 @@ const muiTheme = useTheme();
                       color="gray"
                       sx={{ fontWeight: 600 }}
                     >
-                      Skills
+                       {t("Skills")}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {project.skillsRequired?.join(", ") || "N/A"}

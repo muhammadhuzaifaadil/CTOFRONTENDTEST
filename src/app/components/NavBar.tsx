@@ -24,8 +24,7 @@ if(!user) return <div></div>;
       position="fixed"
       elevation={2}
       sx={{
-        background: (theme) =>
-          `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+        background: theme.palette.primary.main,
       }}
     >
       <Toolbar
@@ -36,10 +35,11 @@ if(!user) return <div></div>;
           // alignItems: isSmallScreen ? "flex-start" : "center",
           // gap: isSmallScreen ? 1.5 : 0,
           // py: isSmallScreen ? 1 : 0,
-          flexDirection:"row",
+          flexDirection:isArabic ? "row-reverse" : "row",
           alignItems:"center",
           gap:0,
-          py:0
+          py:0,
+          // direction: isArabic ? "rtl" : "ltr",
         }}
       >
         {/* Logo + Name */}
@@ -49,6 +49,7 @@ if(!user) return <div></div>;
             alignItems: "center",
             gap: 1,
             cursor: "pointer",
+            direction: isArabic?"rtl":"ltr",
           }}
           onClick={() => console.log("/")}
         >
@@ -59,25 +60,45 @@ if(!user) return <div></div>;
             height={isSmallScreen?"30":"60"}
           />
           <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Typography sx={{ fontWeight: "bold", textTransform: "uppercase",fontSize: {xs:"12px",sm:"auto"}, }}>
-              {user?.role} {t("Dashboard")}
-            </Typography>
-            <Typography variant="caption" sx={{fontSize:{xs:"10px",sm:"auto"}}}>
-              {isArabic ? (
-                <>
-                  {user?.role === "seller"
-                    ? user?.companyName
-                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}، مرحباً بعودتك
-                </>
-              ) : (
-                <>
-                  Welcome Back,{" "}
-                  {user?.role === "seller"
-                    ? user?.companyName
-                    : `${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
-                </>
-              )}
-            </Typography>
+            <Typography
+  sx={{
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: { xs: "12px", sm: "auto" },
+  }}
+>
+  {isArabic ? (
+    user?.role === "buyer" ? "المشتري" : "البائع"
+  ) : (
+    user?.role === "buyer" ? "Buyer" : "Seller"
+  )}{" "}
+  {t("Dashboard")}
+</Typography>
+
+            <Typography
+  variant="caption"
+  sx={{
+    fontSize: { xs: "10px", sm: "auto" },
+    textAlign: isArabic ? "right" : "left", // 👈 aligns text properly
+    direction: isArabic ? "rtl" : "ltr",    // 👈 ensures punctuation & words flow correctly
+  }}
+>
+  {isArabic ? (
+    <>
+      {user?.role === "seller"
+        ? user?.companyName
+        : `،مرحباً بعودتك ${user?.firstName ?? ""} ${user?.lastName.slice(0,7) ?? ""}`} 
+    </>
+  ) : (
+    <>
+      Welcome Back,{" "}
+      {user?.role === "seller"
+        ? user?.companyName
+        : `${user?.firstName ?? ""} ${user?.lastName.slice(0,7) ?? ""}`}
+    </>
+  )}
+</Typography>
+
           </Box>
         </Box>
 
@@ -90,6 +111,7 @@ if(!user) return <div></div>;
             alignItems:  "center",
             width:  "auto",
             mt:  0,
+            direction: isArabic?"rtl":"ltr",
           }}
         >
           {/* Language Toggle */}
@@ -113,7 +135,9 @@ if(!user) return <div></div>;
             <Button
               color="inherit"
               onClick={handleLogout}
-              startIcon={<LogoutIcon sx={{ color: "white" }} />}
+              startIcon={<LogoutIcon sx={{ color: "white",transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips horizontally
+      transition: "transform 0.2s ease",
+     }} />}
               sx={{
                 fontWeight: 600,
                 textTransform: "none",
@@ -123,9 +147,12 @@ if(!user) return <div></div>;
                 px: 2,
                 "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
                 width: isSmallScreen ? "100%" : "auto",
+                 display: "flex",
+                 
+    flexDirection: isArabic ? "row-reverse" : "row",
               }}
             >
-              Logout
+              {isArabic ? "تسجيل الخروج" : "Logout"}
             </Button>
           )}
         </Box>

@@ -161,17 +161,21 @@ const ManageProjects: React.FC = () => {
     py: { xs: 2, sm: 4, md: 6 },
   }}
 >
-  {/* Back Button */}
+  {/* Back Button
   <Box
     sx={{
       display: "flex",
+      flexDirection:isArabic?"row-reverse":"row",
       width: { xs: "95%", sm: "75%", md: "75%" },
-      justifyContent: "flex-start",
+      justifyContent: isArabic?"flex-end":"flex-start",
       mb: 2,
     }}
   >
     <Button
-      startIcon={<ArrowBackIcon />}
+      startIcon={<ArrowBackIcon sx={{
+      transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips the arrow to point right
+      transition: "transform 0.2s ease",
+    }} />}
       onClick={() => router.push("/dashboard/buyer")}
       sx={{
         textTransform: "none",
@@ -182,7 +186,39 @@ const ManageProjects: React.FC = () => {
     >
       {t("BackButton")}
     </Button>
-  </Box>
+  </Box> */}
+{/* Back Button */}
+<Box
+  sx={{
+    display: "flex",
+    flexDirection: isArabic ? "row-reverse" : "row", // 👈 flips layout
+    justifyContent: isArabic ? "flex-start" : "flex-start", // 👈 Arabic aligns left, English stays left
+    width: { xs: "95%", sm: "75%", md: "75%" },
+    mb: 2,
+  }}
+>
+  <Button
+    startIcon={
+      <ArrowBackIcon
+        sx={{
+          transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+          transition: "transform 0.2s ease",
+        }}
+      />
+    }
+    onClick={() => router.push("/dashboard/buyer")}
+    sx={{
+      textTransform: "none",
+      fontSize: { xs: "14px", sm: "16px" },
+      fontWeight: 600,
+      color: "black",
+      flexDirection: isArabic ? "row-reverse" : "row", // 👈 ensures icon on right, text on left in Arabic
+      gap: 1,
+    }}
+  >
+     {t("BackButton")}
+  </Button>
+</Box>
 
   <Container
     maxWidth={false}
@@ -202,7 +238,7 @@ const ManageProjects: React.FC = () => {
     }}
   >
     {/* Filter Chips */}
-    <Stack direction="row" spacing={1} sx={{ width: "100%", overflowX: { xs: "auto", sm: "auto", md: "visible" } }} mb={3}>
+    <Stack direction={isArabic?"row-reverse":"row"} spacing={1} sx={{ width: "100%", overflowX: { xs: "auto", sm: "auto", md: "visible" } }} mb={3}>
       {statusFilters.map((status) => (
         <Chip
           key={status.value}
@@ -260,6 +296,8 @@ const ManageProjects: React.FC = () => {
         width: "100%",
         fontWeight: "bold",
         borderBottom: `2px solid #f5b400`,
+        display:"flex",
+        justifyContent:isArabic?"flex-end":"flex-start",
         mb: 2,
       }}
     >
@@ -316,7 +354,7 @@ const ManageProjects: React.FC = () => {
           >
             <CardContent sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
               {/* Project Header */}
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1, flexWrap: "wrap" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1, flexWrap: "wrap",flexDirection:isArabic?"row-reverse":"row" }}>
                 <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: "#333" }}>
                   {project.title}
                 </Typography>
@@ -333,7 +371,7 @@ const ManageProjects: React.FC = () => {
                 />
               </Box>
 
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2, display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
                 {project.outline
                   ? project.outline.split(" ").slice(0, 50).join(" ") +
                     (project.outline.split(" ").length > 50 ? "..." : "")
@@ -342,16 +380,16 @@ const ManageProjects: React.FC = () => {
 
               <Divider sx={{ my: 1 }} />
 
-              <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 2 }}>
-                <Typography variant="body2">
-                  <strong>Budget:</strong> {project.budgetRange || "Not Specified"}
+              <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 2,flexDirection:isArabic?"row-reverse":"row" }}>
+                <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                  <strong>{t("Budget")}</strong> {project.budgetRange || "Not Specified"}
                 </Typography>
-                <Typography variant="body2">
-                  <strong>Timeline:</strong>{" "}
+                <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                  <strong>{t("Timeline")}</strong>{" "}
                   <span style={{ color: theme.palette.primary.main }}>{project.timeline}</span>
                 </Typography>
-                <Typography variant="body2">
-                  <strong>Skills:</strong>{" "}
+                <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                  <strong>{t("Skills")}</strong>{" "}
                   <span style={{ color: theme.palette.primary.main }}>
                     {(project.skillsRequired || []).join(", ") || "0 required"}
                   </span>

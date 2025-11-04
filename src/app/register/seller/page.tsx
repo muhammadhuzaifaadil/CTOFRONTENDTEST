@@ -34,9 +34,9 @@ const SellerRegister: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
 type FormDataType = {
-  firstName: string;
-  middleName: string;
-  lastName: string;
+  // firstName: string;
+  // middleName: string;
+  // lastName: string;
   email: string;
   phoneCode: string;
   phoneNumber: string;
@@ -54,9 +54,9 @@ type FormDataType = {
   [key: string]: string; // <-- Add this line
 };
    const [formData, setFormData] = useState<FormDataType>({
-     firstName: "",
-     middleName: "",
-     lastName: "",
+    //  firstName: "",
+    //  middleName: "",
+    //  lastName: "",
      email: "",
      phoneCode: "",
      phoneNumber: "",
@@ -202,9 +202,9 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     const payload = {
       role: "seller",
       user: {
-        firstName: formData.firstName,
-        middleName: formData.middleName || null,
-        lastName: formData.lastName,
+        // firstName: formData.firstName ||null,
+        // middleName: formData.middleName || null,
+        // lastName: formData.lastName || null,
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
@@ -454,6 +454,7 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
               placeholder="5.0"
               value={formData.experience}
               onChange={handleFieldChange("experience")}
+              isArabic={isArabic}
             />
             </Box>
           </Box>

@@ -152,17 +152,24 @@ const handleSubmit = async (e: React.FormEvent) => {
     sx={{
       display: "flex",
       width: { xs: "95%", sm: "75%", md: "75%" },
-      justifyContent: "flex-start",
+      justifyContent: isArabic?"flex-end":"flex-start",
       mb: 2,
     }}
   >
     <Button
-      startIcon={<ArrowBackIcon />}
+      startIcon={<ArrowBackIcon 
+      sx={{
+        transform: isArabic ? "scaleX(-1)" : "none", // 👈 flips arrow direction
+            transition: "transform 0.2s ease",
+      }}/>}
       onClick={() => router.push("/dashboard/seller")}
       sx={{
         textTransform: "none",
         fontSize: { xs: "14px", sm: "16px", md: "16px" },
         fontWeight: 600,
+        display:"flex",
+        flexDirection:isArabic?"row-reverse":"row",
+        gap:isArabic?"4px":0,
         color: "black",
       }}
     >
@@ -303,8 +310,47 @@ const handleSubmit = async (e: React.FormEvent) => {
       <Divider sx={{ mt: 1, borderBottomWidth: 3, borderColor: theme.palette.primary.main, opacity: 0.7, width: "100%" }} />
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
-          <CategorySelect label={t("BusinessInfoCategory")} value={selectedCategory} onChange={setSelectedCategory} />
-          <CustomTextField fullWidth label={t("BusinessInfoExp")} isArabic={isArabic} placeholder="5.0" value={formData.experience} onChange={handleFieldChange("experience")} />
+          {/* <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} /> */}
+          <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start", mt:"15px"}}>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"flex-start"}` }}
+                  >
+              {t("BusinessInfoCategory")}
+            </Typography>
+            <Box sx={{position:"relative"}}>
+            <CategorySelect isArabic={isArabic}  value={selectedCategory} onChange={setSelectedCategory} />
+            </Box>
+            </Box>
+         <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start"}}>
+            <Box>
+            <Typography
+                    variant="subtitle2"
+                    display={"flex"}
+                    
+                    sx={{ fontWeight: "bold", justifyContent: `${isArabic?"flex-end":"left"}` }}
+                  >
+                    {t("BusinessInfoExp")}
+                  </Typography>
+            </Box>
+            <Box>
+            <CustomTextField
+              fullWidth
+              placeholder="5.0"
+              value={formData.experience}
+              onChange={handleFieldChange("experience")}
+            />
+            </Box>
+          </Box>
+          {/* <CustomTextField
+            fullWidth
+            label={`${t("BusinessInfoExp")}`}
+            isArabic={isArabic}
+            placeholder="5.0"
+            value={formData.experience}
+            onChange={handleFieldChange("experience")}
+          /> */}
         </Box>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
           <CustomTextField fullWidth label={t("BusinessInfoCompanyName")} isArabic={isArabic} placeholder="Your Company Ltd." required minChar={3} maxChar={50} value={formData.companyName} onChange={handleFieldChange("companyName")} />

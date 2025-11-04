@@ -14,24 +14,55 @@ export const LanguageContext = createContext<LanguageContextType>({
   toggleLanguage: () => {},
 });
 
+// export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
+//   const router = useRouter();
+//   const [locale, setLocale] = useState<string>("en");
+
+//   // Load locale from cookie or browser
+//   useEffect(() => {
+//     const cookieLocale = document.cookie
+//       .split("; ")
+//       .find((row) => row.startsWith("CTONEXTAPP_LOCALE="))
+//       ?.split("=")[1];
+
+//     if (cookieLocale) {
+//       setLocale(cookieLocale);
+//     } else {
+//       const browserLocale = navigator.language.slice(0, 2);
+//       document.cookie = `CTONEXTAPP_LOCALE=${browserLocale}; path=/;`;
+//       setLocale(browserLocale);
+//     }
+//   }, []);
+
+//   const toggleLanguage = useCallback(() => {
+//     const newLocale = locale === "en" ? "ar" : "en";
+//     document.cookie = `CTONEXTAPP_LOCALE=${newLocale}; path=/;`;
+//     setLocale(newLocale);
+//     router.refresh();
+//   }, [locale, router]);
+
+//   const isArabic = locale === "ar";
+
+//   return (
+//     <LanguageContext.Provider value={{ locale, isArabic, toggleLanguage }}>
+//       {children}
+//     </LanguageContext.Provider>
+//   );
+// };
+
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [locale, setLocale] = useState<string>("en");
+  const [locale, setLocale] = useState<string | null>(null);
 
-  // Load locale from cookie or browser
   useEffect(() => {
     const cookieLocale = document.cookie
       .split("; ")
       .find((row) => row.startsWith("CTONEXTAPP_LOCALE="))
       ?.split("=")[1];
 
-    if (cookieLocale) {
-      setLocale(cookieLocale);
-    } else {
-      const browserLocale = navigator.language.slice(0, 2);
-      document.cookie = `CTONEXTAPP_LOCALE=${browserLocale}; path=/;`;
-      setLocale(browserLocale);
-    }
+    const initialLocale = cookieLocale || "ar";
+    document.cookie = `CTONEXTAPP_LOCALE=${initialLocale}; path=/;`;
+    setLocale(initialLocale);
   }, []);
 
   const toggleLanguage = useCallback(() => {
@@ -41,6 +72,8 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     router.refresh();
   }, [locale, router]);
 
+  if (!locale) return null; // ✅ wait until locale is ready
+
   const isArabic = locale === "ar";
 
   return (
@@ -49,3 +82,4 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     </LanguageContext.Provider>
   );
 };
+
