@@ -53,7 +53,7 @@ useEffect(() => {
     if (!token) return;
 
     try {
-      const res = await apiClient.get("https://cto.sa/bids/paginated/all?page=1&limit=3");
+      const res = await apiClient.get("/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
       console.log(res);
       console.log(bids);
@@ -85,7 +85,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`https://cto.sa/projects/sellersummary/${user.id}`);
+      const res = await apiClient.get(`/projects/sellersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setBidSummary(res.data.Data);
@@ -430,9 +430,9 @@ useEffect(() => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", md: "row" },
+            flexDirection: { xs: "column",sm: "column", md: "row" },
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
             gap: 1.5,
           }}
         >
@@ -441,7 +441,7 @@ useEffect(() => {
             sx={{
               fontWeight: 600,
               borderRadius: 3,
-              width: { xs: "100%", md: "40%" },
+              width: { xs: "100%", md: "max-content" },
             }}
             onClick={() => router.push("/dashboard/seller/profilemanagement")}
           >

@@ -101,7 +101,7 @@ const handleOpen = (id: number) => {
 //       const token = localStorage.getItem("accessToken");
 //       if (!token) return;
 
-//       let url = `https://cto.sa/projects/paginated/all?page=${page}&limit=5`;
+//       let url = `process.env.NEXT_PUBLIC_API_URL/projects/paginated/all?page=${page}&limit=5`;
 
 //       // ✅ Add filter if user has typed something
 //       if (searchTerm.trim()) {
@@ -138,7 +138,7 @@ useEffect(() => {
       const token = localStorage.getItem("accessToken");
       if (!token) return;
 
-      let url = `https://cto.sa/projects/paginated/all?page=${page}&limit=5`;
+      let url = `${process.env.NEXT_PUBLIC_API_URL}/projects/paginated/all?page=${page}&limit=5`;
 
       // ✅ Use backend search (multi-field) when user types
       if (searchTerm.trim()) {
@@ -455,31 +455,31 @@ useEffect(() => {
             backgroundColor: "white",
           }}
         >
-          <Typography variant="h6" fontSize={{ xs: "1rem", sm: "1.25rem" }}>
+          <Typography variant="h6" fontSize={{ xs: "1rem", sm: "1.25rem",display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
             {project.title}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             mt={1}
-            fontSize={{ xs: "0.75rem", sm: "0.875rem" }}
+            fontSize={{ xs: "0.75rem", sm: "0.875rem",display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}
           >
             {project.outline}
           </Typography>
 
-          <Box display="flex" flexWrap="wrap" gap={1} mt={1}>
+          <Box display="flex" flexWrap="wrap" gap={1} mt={1} justifyContent={isArabic?"flex-end":"flex-start"}>
             {project.skillsRequired.map((skill: string, i: number) => (
               <Chip
                 key={i}
                 label={skill}
-                sx={{ backgroundColor: "#f4f4f4", fontSize: "0.75rem" }}
+                sx={{ backgroundColor: "#f4f4f4", fontSize: "0.75rem"}}
               />
             ))}
           </Box>
 
           <Box
             display="flex"
-            flexDirection={{ xs: "column", sm: "row" }}
+            flexDirection={{ xs: "column", sm: isArabic?"row-reverse":"row" }}
             justifyContent="space-between"
             alignItems={{ xs: "flex-start", sm: "center" }}
             mt={2}
@@ -487,22 +487,22 @@ useEffect(() => {
           >
             <Box display="flex" alignItems="center" gap={1}>
               <MonetizationOnIcon sx={{ color: theme.palette.primary.main }} />
-              <Typography variant="body2">
-                <strong>Budget:</strong> {project.budgetRange}
+              <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                <strong>{t("Budget")}</strong> {project.budgetRange}
               </Typography>
             </Box>
 
             <Box display="flex" alignItems="center" gap={1}>
               <AccessTimeIcon sx={{ color: theme.palette.primary.main }} />
-              <Typography variant="body2">
-                <strong>Timeline:</strong> {project.timeline}
+              <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                <strong>{t("Timeline")}</strong> {project.timeline}
               </Typography>
             </Box>
 
             <Box display="flex" alignItems="center" gap={1}>
               <PeopleAltIcon sx={{ color: theme.palette.primary.main }} />
-              <Typography variant="body2">
-                <strong>Bids:</strong> {project.bidCount}
+              <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                <strong>{t("Bids")}</strong> {project.bidCount}
               </Typography>
             </Box>
           </Box>
@@ -518,7 +518,7 @@ useEffect(() => {
             }}
             onClick={() => handleOpen(project.id)}
           >
-            View Project & Submit Bid
+            {t("ViewBidsButton")}
           </Button>
         </Box>
       ))}

@@ -180,8 +180,9 @@ const BudgetSelect: React.FC<BudgetSelectProps> = ({
         sx={{
           fontWeight: "bold",
           mb: 0.5,
-          textAlign: "left",
+          textAlign: "right",
           display: "flex",
+          justifyContent:isArabic?"flex-end":"flex-start"
         }}
       >
         {label} {required && <span style={{ color: "red" }}>*</span>}

@@ -12,14 +12,22 @@ interface DurationSelectProps {
   onChange: (value: string) => void;
   label?: string; // 👈 optional label prop
   required?: boolean;
+  isArabic?:boolean;
 }
 
 const duration = [
   "Days",
   "Weeks",
   "Months",
-  "Hours",
-  "Years",
+  // "Hours",
+  // "Years",
+];
+const durationArabic = [
+  "أيام",
+  "أسابيع",
+  "أشهر",
+  // "ساعات",
+  // "سنوات",
 ];
 
 const DurationSelect: React.FC<DurationSelectProps> = ({
@@ -27,6 +35,7 @@ const DurationSelect: React.FC<DurationSelectProps> = ({
   onChange,
   label = "Duration",
   required = false,
+  isArabic = false
 }) => {
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value);
@@ -65,11 +74,11 @@ const DurationSelect: React.FC<DurationSelectProps> = ({
             },
           }}
         >
-          <MenuItem value="" disabled>
-            Select Duration
+          <MenuItem value="" disabled sx={{display:"flex",justifyContent:isArabic?"flex-end":"flex-start"}}>
+            {isArabic?"اختر المدة":"Select Duration"}
           </MenuItem>
-          {duration.map((item:any) => (
-            <MenuItem key={item} value={item}>
+          {(isArabic?durationArabic:duration).map((item:any) => (
+            <MenuItem key={item} value={item} sx={{display:"flex",justifyContent:isArabic?"flex-end":"flex-start"}}>
               {item}
             </MenuItem>
           ))}

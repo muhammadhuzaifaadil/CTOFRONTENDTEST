@@ -87,14 +87,14 @@ if(!user) return <div></div>;
     <>
       {user?.role === "seller"
         ? user?.companyName
-        : `،مرحباً بعودتك ${user?.firstName ?? ""} ${user?.lastName.slice(0,7) ?? ""}`} 
+        : `،مرحباً بعودتك ${user?.firstName.slice(0,7) ?? ""} ${user?.lastName.slice(0,7) ?? ""}`} 
     </>
   ) : (
     <>
       Welcome Back,{" "}
       {user?.role === "seller"
         ? user?.companyName
-        : `${user?.firstName ?? ""} ${user?.lastName.slice(0,7) ?? ""}`}
+        : `${user?.firstName.slice(0,7) ?? ""} ${user?.lastName.slice(0,7) ?? ""}`}
     </>
   )}
 </Typography>

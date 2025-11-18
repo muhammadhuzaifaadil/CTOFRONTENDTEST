@@ -22,6 +22,7 @@ const Welcome: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
+        height:{md:"100vh"},
         backgroundColor: "#fff",
         px: { xs: 1.5, sm: 2, md: 3,xl:2 }, // responsive padding
         py: { xs: 3, sm: 4 },

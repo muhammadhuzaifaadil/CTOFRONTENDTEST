@@ -11,7 +11,7 @@ import {
   type Theme
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import { getAllCountries } from "./countryList";
 // Temporary country data
 const countryData = [
   { name: "United States", code: "US", phoneCode: "+001", flag: "🇺🇸" },
@@ -46,6 +46,8 @@ interface CustomTextFieldProps {
   isPhoneCode?: boolean; // 👈 for phone code dropdown
   sx?: SxProps<Theme>;
   isArabic?:boolean;
+  isNumbersOnly?:boolean;
+  isAlphabetOnly?:boolean;
 }
 
 const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -68,19 +70,19 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   phoneFormat = false,
   isCountry = false,
   isPhoneCode = false,
-  isArabic = false
+  isArabic = false,
+  isNumbersOnly = false,
+  isAlphabetOnly = false,
 }) => {
-  // const [inputValue, setInputValue] = useState(value || "");
-  // 👇 Default values based on field type
-  // const defaultCountry = "Saudi Arabia";
-  // const defaultPhoneCode = "+966";
+ 
   
   const [inputValue, setInputValue] = useState(
     value
   );
   const [error, setError] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const [countries] = useState(getAllCountries());
+const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.code === "PK") || countries[0]);
   useEffect(() => {
     if ((type === "password"||type ==="كلمة المرور" )&& (fieldName?.toLowerCase().includes("confirm")||fieldName?.toLowerCase().includes("تأكيد")) &&
     inputValue) {
@@ -89,79 +91,22 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [confirmValue]);
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const val = e.target.value;
-  //   setInputValue(val);
-  //   if (onChange) onChange(e);
-  //   validateInput(val);
-  // };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const val = e.target.value;
+    let val = e.target.value;
+ // 🔹 Block unwanted characters
+  if (isNumbersOnly) {
+    val = val.replace(/[^0-9]/g, ""); // only digits allowed
+  } else if (isAlphabetOnly) {
+    val = val.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, ""); // only letters (supports Arabic & English)
+  }
+
+
     if (maxChar && val.length > maxChar) return; // prevent typing beyond limit
     setInputValue(val);
     if (onChange) onChange(e);
     validateInput(val);
   };
-  // const validateInput = (val: string) => {
-  //   // let newError = "";
-  //   if (maxChar && val.length > maxChar) {
-  //     setError(`Max ${maxChar} characters allowed.`);
-  //     return;
-  //   } else if (minChar && val.length < minChar) {
-  //     setError(`Min ${minChar} characters required.`);
-  //     return;
-  //   }
-
-  //   if (label.toLowerCase().includes("email") && val && !val.includes("@")) {
-  //     setError("Email must contain '@'");
-  //     return;
-  //   }
-
-  //   // ✅ Phone number validation (no +966 auto)
-  //   if (phoneFormat && !isPhoneCode) {
-  //     const onlyDigits = val.replace(/\D/g, "");
-  //     if (onlyDigits.length !== 9) {
-  //       setError("Phone number must be exactly 9 digits.");
-  //       return;
-  //     }
-  //   }
-
-  //   // ✅ Password validation
-  //   if (type === "password" && fieldName?.toLowerCase().includes("password")) {
-  //     const passwordRegex =
-  //       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]).{8,}$/;
-
-  //     if (!passwordRegex.test(val)) {
-  //       setError(
-  //         "Password must contain uppercase, lowercase, number & special character."
-  //       );
-  //       return;
-  //     }
-      
-  //     if (fieldName?.toLowerCase().includes("confirm") && confirmValue !== val) {
-  //       setError("Passwords do not match.");
-  //       return;
-  //     }
-  //     //remove if not working
-  //     const isConfirmField =
-  //       fieldName?.toLowerCase().includes("confirm") ||
-  //       fieldName?.toLowerCase().includes("confirmnew");
-
-  //     if (isConfirmField && confirmValue !== val) {
-  //       setError("Passwords do not match.");
-  //       return;
-  //     }
-  //   }
-
-  //   if (unique && val === "123456") {
-  //     setError("Value too common. Please choose another.");
-  //     return;
-  //   }
-
-  //   setError("");
-    
-  // };
-
 
   const validateInput = (val: string) => {
   let newError = "";
@@ -170,12 +115,23 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
     newError = `Max ${maxChar} characters allowed.`;
   } else if (minChar && val.length < minChar) {
     newError = `Min ${minChar} characters required.`;
-  } else if ((label?.toLowerCase().includes("email") || label?.toLowerCase().includes("البريد الإلكتروني")) && val && !val.includes("@")) {
-    newError = isArabic?"يجب أن يحتوي البريد الإلكتروني على '@'":"Email must contain '@'";
-  } else if (phoneFormat && !isPhoneCode) {
+  } 
+  // else if ((label?.toLowerCase().includes("email") || label?.toLowerCase().includes("البريد الإلكتروني")) && val && !val.includes("@")) {
+  //   newError = isArabic?"يجب أن يحتوي البريد الإلكتروني على '@'":"Email must contain '@'";
+  // } 
+  else if ((label?.toLowerCase().includes("email") || label?.toLowerCase().includes("البريد الإلكتروني")) && val) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!emailRegex.test(val)) {
+    newError = isArabic
+      ? "الرجاء إدخال بريد إلكتروني صالح."
+      : "Please enter a valid email address.";
+  }
+}
+
+  else if (phoneFormat && !isPhoneCode) {
     const onlyDigits = val.replace(/\D/g, "");
     if (onlyDigits.length !== 9) {
-      newError = isArabic?"يجب أن يحتوي رقم الهاتف على 9 أرقام بالضبط.":"Phone number must be exactly 9 digits.";
+      // newError = isArabic?"يجب أن يحتوي رقم الهاتف على 9 أرقام بالضبط.":"Phone number must be exactly 9 digits.";
     }
   } 
   
@@ -227,6 +183,9 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
   setError(newError);
   if (onErrorChange && fieldName) onErrorChange(fieldName, !!newError);
 };
+useEffect(() => {
+  setInputValue(value);
+}, [value]);
 
   return (
 <div style={{ width: fullWidth ? "100%" : "auto" }}>
@@ -254,7 +213,7 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           <MenuItem value="" disabled>
             Select Country
           </MenuItem>
-          {countryData.map((c) => (
+          {countries.map((c) => (
             <MenuItem key={c.code} value={c.name}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <span>{c.flag}</span>
@@ -264,50 +223,60 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
           ))}
         </TextField>
       ) : isPhoneCode ? (
-        <TextField
-          select
-          name={fieldName || label?.replace(/\s+/g, "")}
-          label={label}
-          value={inputValue}
-          onChange={handleChange}
-          margin={margin}
-          helperText={error}
-          error={!!error}
-          sx={{width:"135px"}}
-          
-        >
-          <MenuItem value="" disabled>
-            Select Phone Code
-          </MenuItem>
-          {/* {countryData.map((c) => (
-            <MenuItem key={c.code} value={c.phoneCode}>
-              {c.flag} {c.phoneCode}
-            </MenuItem>
-          ))} */}
-          {countryData.map((c) => {
-  // Remove leading zeros just for display
-  const displayCode = c.phoneCode.replace(/\+0+/, '+');
-  
-  return (
-    <MenuItem key={c.code} value={c.phoneCode}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-          fontFamily: "monospace", // keeps widths aligned
-          minWidth: "80px", // adjust as needed for fixed width look
-        }}
-      >
-        <span>{c.flag}</span>
-        <span>{displayCode}</span>
-      </Box>
-    </MenuItem>
-  );
-})}
-
-        </TextField>
-      ) : (
+            <TextField
+      select
+      value={selectedCountry.phoneCode}
+      onChange={(e) => {
+        const country = countries.find((c) => c.phoneCode === e.target.value);
+        if (country) setSelectedCountry(country);
+        // Also update main inputValue with the phone code only if needed
+        setInputValue(country?.phoneCode || "");
+        if (onChange)
+          onChange({
+            target: {
+              value: country?.phoneCode || "",
+              name: fieldName,
+            },
+          } as React.ChangeEvent<HTMLInputElement>);
+      }}
+      sx={{ width: "135px" }}
+      margin={margin}
+    >
+           {countries.map((c) => (
+        <MenuItem key={c.code} value={c.phoneCode}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <span>{c.flag}</span>
+            {c.phoneCode}
+          </Box>
+        </MenuItem>
+      ))}
+    </TextField>
+      )
+      : isNumbersOnly ?
+      (<TextField
+    fullWidth={fullWidth}
+    name={fieldName || label?.replace(/\s+/g, "")}
+    placeholder={placeholder}
+    margin={margin}
+    value={inputValue}
+    onChange={handleChange}
+    error={!!error}
+    helperText={error}
+    type="number"
+    inputProps={{
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+       style: {
+      MozAppearance: "textfield",
+    },
+      maxLength: maxChar,
+      dir: "ltr",
+    }}
+    onKeyDown={(e) => {
+    if (e.key === '-' || e.key === 'e') e.preventDefault();
+  }}
+  />)
+      : (
         <Box sx={{ position: "relative" }}>
           <TextField
             fullWidth={fullWidth}
@@ -385,24 +354,57 @@ const CustomTextField: React.FC<CustomTextFieldProps> = ({
 export default CustomTextField;
 
 
+// "use client";
+// import React, { useState, useEffect } from "react";
+// import {
+//   TextField,
+//   Typography,
+//   InputAdornment,
+//   IconButton,
+//   MenuItem,
+//   Box,
+//   type SxProps,
+//   type Theme,
+// } from "@mui/material";
+// import { Visibility, VisibilityOff } from "@mui/icons-material";
+// import { parsePhoneNumberFromString, AsYouType, CountryCode } from "libphonenumber-js";
+// import "country-flag-icons/react/3x2"; // optional SVG flags
+// import { getAllCountries } from "./countryList";
+
+// const countryData = [
+//   { name: "United States", code: "US", phoneCode: "+1", flag: "🇺🇸" },
+//   { name: "United Kingdom", code: "GB", phoneCode: "+44", flag: "🇬🇧" },
+//   { name: "Saudi Arabia", code: "SA", phoneCode: "+966", flag: "🇸🇦" },
+//   { name: "Pakistan", code: "PK", phoneCode: "+92", flag: "🇵🇰" },
+//   { name: "India", code: "IN", phoneCode: "+91", flag: "🇮🇳" },
+//   { name: "United Arab Emirates", code: "AE", phoneCode: "+971", flag: "🇦🇪" },
+// ];
+
 // interface CustomTextFieldProps {
 //   fullWidth?: boolean;
-//   label: string;
+//   label?: string;
 //   placeholder?: string;
 //   margin?: "none" | "dense" | "normal";
 //   required?: boolean;
-//   unique?: boolean;
 //   maxChar?: number;
 //   minChar?: number;
-//   multiline?: boolean;
-//   rows?: number;
+//   unique?: boolean;
 //   type?: string;
 //   value?: string;
-//   phoneFormat?: boolean;
-//   isCountry?: boolean; // 👈 for country dropdown
-//   isPhoneCode?: boolean; // 👈 for phone code dropdown
+//   confirmValue?: string;
+//   multiline?: boolean;
+//   rows?: number;
+//   fieldName?: string;
 //   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-//   sx?: any;
+  
+//   onErrorChange?: (fieldName: string, hasError: boolean) => void;
+//   phoneFormat?: boolean;
+//   isCountry?: boolean;
+//   isPhoneCode?: boolean;
+//   sx?: SxProps<Theme>;
+//   isArabic?: boolean;
+//   isNumbersOnly?: boolean;
+//   isAlphabetOnly?: boolean;
 // }
 
 // const CustomTextField: React.FC<CustomTextFieldProps> = ({
@@ -414,99 +416,253 @@ export default CustomTextField;
 //   maxChar,
 //   minChar,
 //   unique,
+//   type = "text",
+//   value,
+//   confirmValue,
 //   multiline = false,
 //   rows = 1,
-//   type = "text",
-//   value = "",
+//   fieldName,
+//   onChange,
+//   onErrorChange,
 //   phoneFormat = false,
 //   isCountry = false,
 //   isPhoneCode = false,
-//   onChange,
-//   sx,
+//   isArabic = false,
+//   isNumbersOnly = false,
+//   isAlphabetOnly = false,
 // }) => {
-//   const [inputValue, setInputValue] = useState(value);
-//   const [error, setError] = useState("");
+//   const [inputValue, setInputValue] = useState(value || "");
+//   const [error, setError] = useState<string>("");
 //   const [showPassword, setShowPassword] = useState(false);
 
+//   // new states for phone code
+//   const [countries] = useState(getAllCountries());
+// const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.code === "PK") || countries[0]);
+
+//   // const [selectedCountry, setSelectedCountry] = useState(countryData[0]);
+//   const [phoneNumber, setPhoneNumber] = useState("");
+
+//   useEffect(() => {
+//     if (
+//       (type === "password" || type === "كلمة المرور") &&
+//       (fieldName?.toLowerCase().includes("confirm") ||
+//         fieldName?.toLowerCase().includes("تأكيد")) &&
+//       inputValue
+//     ) {
+//       validateInput(inputValue);
+//     }
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//   }, [confirmValue]);
+
 //   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-//     const val = e.target.value;
-//     if (maxChar && val.length > maxChar) return; // prevent typing beyond limit
+//     let val = e.target.value;
+//     if (isNumbersOnly) val = val.replace(/[^0-9]/g, "");
+//     else if (isAlphabetOnly) val = val.replace(/[^a-zA-Z\u0600-\u06FF\s]/g, "");
+//     if (maxChar && val.length > maxChar) return;
 //     setInputValue(val);
 //     if (onChange) onChange(e);
-//     validate(val);
+//     validateInput(val);
 //   };
 
-//   const validate = (val: string) => {
-//     if (minChar && val.length < minChar) {
-//       setError(`Minimum ${minChar} characters required.`);
-//       return;
+//   // 📱 Handle phone number change (with libphonenumber-js)
+//   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const val = e.target.value;
+//     const formatted = new AsYouType(selectedCountry.code as CountryCode).input(val);
+//     setPhoneNumber(formatted);
+
+//     // Validate number
+//     const parsed = parsePhoneNumberFromString(val, selectedCountry.code as CountryCode);
+//     if (parsed && !parsed.isValid()) {
+//       setError("Invalid phone number for " + selectedCountry.name);
+//       if (onErrorChange && fieldName) onErrorChange(fieldName, true);
+//     } else {
+//       setError("");
+//       if (onErrorChange && fieldName) onErrorChange(fieldName, false);
 //     }
-//         if (unique && val === "123456") {
-//       setError("Value too common. Please choose another.");
-//       return;
+
+//     if (onChange)
+//       onChange({
+//         ...e,
+//         target: {
+//           ...e.target,
+//           value: `${selectedCountry.phoneCode}${val}`,
+//         },
+//       } as React.ChangeEvent<HTMLInputElement>);
+//   };
+
+//   const validateInput = (val: string) => {
+//     let newError = "";
+//     if (maxChar && val.length > maxChar) newError = `Max ${maxChar} characters allowed.`;
+//     else if (minChar && val.length < minChar) newError = `Min ${minChar} characters required.`;
+//     else if (
+//       (label?.toLowerCase().includes("email") ||
+//         label?.toLowerCase().includes("البريد الإلكتروني")) &&
+//       val
+//     ) {
+//       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+//       if (!emailRegex.test(val))
+//         newError = isArabic
+//           ? "الرجاء إدخال بريد إلكتروني صالح."
+//           : "Please enter a valid email address.";
 //     }
-//     //     // ✅ Phone number validation (no +966 auto)
-//     if (phoneFormat && !isPhoneCode) {
-//       const onlyDigits = val.replace(/\D/g, "");
-//       if (onlyDigits.length !== 9) {
-//         setError("Phone number must be exactly 9 digits.");
-//         return;
-//       }
+//     else if (
+//       (type === "password" || type === "كلمة المرور") &&
+//       (fieldName?.toLowerCase() === "password" ||
+//         fieldName?.toLowerCase() === "newpassword" ||
+//         fieldName?.toLowerCase() === "كلمة المرور" ||
+//         fieldName?.toLowerCase() === "كلمة المرور الجديدة")
+//     ) {
+//       const passwordRegex =
+//         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]).{8,}$/;
+//       if (!passwordRegex.test(val))
+//         newError = isArabic
+//           ? "يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص."
+//           : "Password must contain uppercase, lowercase, number & special character.";
 //     }
-//     setError("");
+
+//     else if (
+//       (type === "password" || type === "كلمة المرور") &&
+//       (fieldName?.toLowerCase().includes("confirm") ||
+//         fieldName?.toLowerCase().includes("confirmnew") ||
+//         fieldName?.toLowerCase().includes("تأكيد") ||
+//         fieldName?.toLowerCase().includes("تأكيد جديد"))
+//     ) {
+//       if (confirmValue && confirmValue !== val)
+//         newError = isArabic ? "كلمات المرور غير متطابقة." : "Passwords do not match.";
+//     }
+
+//     else if (unique && val === "123456") {
+//       newError = isArabic
+//         ? "القيمة شائعة جدًا. يرجى اختيار قيمة أخرى."
+//         : "Value too common. Please choose another.";
+//     }
+
+//     setError(newError);
+//     if (onErrorChange && fieldName) onErrorChange(fieldName, !!newError);
 //   };
 
 //   return (
-//     <Box sx={{ width: fullWidth ? "100%" : "auto", ...sx }}>
-//       <Typography variant="subtitle2" sx={{ fontWeight: "bold", mb: 0.5 }}>
+//     <div style={{ width: fullWidth ? "100%" : "auto" }}>
+//       <Typography
+//         variant="subtitle2"
+//         sx={{
+//           fontWeight: "bold",
+//           mb: 0.5,
+//           textAlign: `${isArabic ? "right" : "left"}`,
+//         }}
+//       >
 //         {label} {required && <span style={{ color: "red" }}>*</span>}
 //       </Typography>
-
-//       <TextField
-//         fullWidth={fullWidth}
-//         placeholder={placeholder}
-//         required={required}
-//         multiline={multiline}
-//         rows={rows}
-//         value={inputValue}
-//         onChange={handleChange}
-//         error={!!error}
-//         helperText={error}
-//         inputProps={{ maxLength: maxChar }}
-//         margin={margin}
-//         type={type === "password" && !showPassword ? "password" : "text"}
-//         InputProps={{
-//           endAdornment:
-//             type === "password" ? (
-//               <InputAdornment position="end">
-//                 <IconButton onClick={() => setShowPassword(!showPassword)}>
-//                   {showPassword ? <VisibilityOff /> : <Visibility />}
-//                 </IconButton>
-//               </InputAdornment>
-//             ) : undefined,
-//         }}
-//         sx={{
-//           "& .MuiOutlinedInput-root": {
-//             backgroundColor: "#f9f9f9",
-//           },
-//         }}
-//       />
-
-//       {/* Character counter */}
-//       {maxChar && (
-//         <Typography
-//           variant="caption"
-//           sx={{
-//             display: "flex",
-//             justifyContent: "flex-end",
-//             color: "#888",
-//             mt: 0.3,
-//           }}
+//        {/* 👇 Conditional Rendering */}
+//        {isCountry ? (
+//         <TextField
+//           name={fieldName || label?.replace(/\s+/g, "")}
+//           select
+//           fullWidth={fullWidth}
+//           value={inputValue}
+//           onChange={handleChange}
+//           margin={margin}
+//           helperText={error}
+//           error={!!error}
+//           label="Country"
 //         >
-//           {inputValue.length}/{maxChar}
-//         </Typography>
+//           <MenuItem value="" disabled>
+//             Select Country
+//           </MenuItem>
+//           {countryData.map((c) => (
+//             <MenuItem key={c.code} value={c.name}>
+//               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+//                 <span>{c.flag}</span>
+//                 {c.name}
+//               </Box>
+//             </MenuItem>
+//           ))}
+//         </TextField>
+//       ) :
+//       {/* 📞 Phone Code + Number Combo */}
+//       {isPhoneCode ? (
+//          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+//     <TextField
+//       select
+//       value={selectedCountry.phoneCode}
+//       onChange={(e) => {
+//         const country = countries.find((c) => c.phoneCode === e.target.value);
+//         if (country) setSelectedCountry(country);
+//         // Also update main inputValue with the phone code only if needed
+//         setInputValue(country?.phoneCode || "");
+//         if (onChange)
+//           onChange({
+//             target: {
+//               value: country?.phoneCode || "",
+//               name: fieldName,
+//             },
+//           } as React.ChangeEvent<HTMLInputElement>);
+//       }}
+//       sx={{ width: "135px" }}
+//       margin={margin}
+//     >
+//       {countries.map((c) => (
+//         <MenuItem key={c.code} value={c.phoneCode}>
+//           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+//             <span>{c.flag}</span>
+//             {c.phoneCode}
+//           </Box>
+//         </MenuItem>
+//       ))}
+//     </TextField>
+//   </Box>
+//       ) : (
+//         // 🔹 Other fields remain unchanged
+//         <Box sx={{ position: "relative" }}>
+//           <TextField
+//             fullWidth={fullWidth}
+//             name={fieldName || label?.replace(/\s+/g, "")}
+//             placeholder={placeholder}
+//             margin={margin}
+//             multiline={multiline}
+//             rows={rows}
+//             required={required}
+//             type={type === "password" && !showPassword ? "password" : "text"}
+//             value={inputValue}
+//             onChange={handleChange}
+//             error={!!error}
+//             helperText={error}
+//             inputProps={{
+//               maxLength: maxChar,
+//               minLength: minChar,
+//               dir: "ltr",
+//             }}
+//             sx={{
+//               "& .MuiInputBase-input": {
+//                 textAlign: isArabic ? "right" : "left",
+//               },
+//             }}
+//             InputProps={{
+//               endAdornment:
+//                 type === "password" ? (
+//                   <InputAdornment position="end">
+//                     <IconButton onClick={() => setShowPassword((p) => !p)} edge="end">
+//                       {showPassword ? <VisibilityOff /> : <Visibility />}
+//                     </IconButton>
+//                   </InputAdornment>
+//                 ) : undefined,
+//             }}
+//           />
+//           {multiline && (
+//             <Typography
+//               variant="caption"
+//               sx={{
+//                 color: "#888",
+//                 display: "flex",
+//                 justifyContent: "flex-end",
+//               }}
+//             >
+//               {inputValue?.length}/{maxChar}
+//             </Typography>
+//           )}
+//         </Box>
 //       )}
-//     </Box>
+//     </div>
 //   );
 // };
 

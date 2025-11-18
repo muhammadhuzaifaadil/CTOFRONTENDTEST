@@ -34,9 +34,9 @@ const SellerRegister: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
 type FormDataType = {
-  // firstName: string;
-  // middleName: string;
-  // lastName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
   email: string;
   phoneCode: string;
   phoneNumber: string;
@@ -49,14 +49,15 @@ type FormDataType = {
   confirmPassword: string;
   experience: string;
   companyName: string;
+  crNumber:string;
   companyUrl: string;
   category: string;
   [key: string]: string; // <-- Add this line
 };
    const [formData, setFormData] = useState<FormDataType>({
-    //  firstName: "",
-    //  middleName: "",
-    //  lastName: "",
+     firstName: "",
+     middleName: "",
+     lastName: "",
      email: "",
      phoneCode: "",
      phoneNumber: "",
@@ -69,6 +70,7 @@ type FormDataType = {
      confirmPassword: "",
      experience: "",
      companyName: "",
+     crNumber:"",
      companyUrl: "",
      category: "",
    });
@@ -91,7 +93,7 @@ const uploadFile = async (file: File): Promise<string | null> => {
     const res = await apiClient.post('/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return res.data.url;
+    return res.data.Data.url;
   } catch (err) {
     console.error('File upload failed:', err);
     alert('File upload failed. Please try again.');
@@ -141,70 +143,101 @@ const handleFieldError = (field: string, hasError: boolean) => {
     else setPortfolio(null);
   };
 
+
+// const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+//   event.preventDefault();
+//   if (isSubmitting) return;
+
+//   // ✅ basic validations
+//   if (formData.password !== formData.confirmPassword) {
+//     alert("Passwords do not match!");
+//     return;
+//   }
+//   if (!acceptedTerms) {
+//     alert("Please accept Terms & Conditions.");
+//     return;
+//   }
+
+//   setIsSubmitting(true);
+
+//   try {
+//     const form = new FormData();
+
+//     // User fields
+//     form.append("role", "seller");
+//     form.append("user[firstName]", formData.firstName || "");
+//     form.append("user[middleName]", formData.middleName || "");
+//     form.append("user[lastName]", formData.lastName || "");
+//     form.append("user[email]", formData.email);
+//     form.append("user[password]", formData.password);
+//     form.append("user[confirmPassword]", formData.confirmPassword);
+
+//     // Contact fields
+//     form.append("contact[phoneCode]", formData.phoneCode);
+//     form.append("contact[phoneNumber]", formData.phoneNumber);
+//     form.append("contact[city]", formData.city);
+//     form.append("contact[country]", formData.country);
+
+//     // Company fields
+//     form.append("company[name]", formData.companyName);
+//     form.append("company[websiteUrl]", formData.companyUrl || "");
+//     form.append("company[businessCategory]", selectedCategory);
+
+//     // Files for seller
+//     if (profilePhoto) form.append("companyLogo", profilePhoto);
+//     if (businessLicense) form.append("businessLicense", businessLicense);
+//     if (portfolio) form.append("portfolio", portfolio);
+
+//     // Accepted terms
+//     form.append("acceptedTerms", String(acceptedTerms));
+
+//     const res = await apiClient.post("/auth/register", form, {
+//       headers: { "Content-Type": "multipart/form-data" },
+//     });
+
+//     console.log("✅ Seller registration successful:", res.data);
+//     setAlertSuccess({ type: "success", text: "Registered successfully." });
+//     router.push("/login");
+
+//   } catch (error: any) {
+//     console.error("❌ Registration Error:", error.response?.data || error.message);
+//     setAlertSuccess({
+//       type: "error",
+//       text: error.response?.data?.message || "Registration failed. Try again.",
+//     });
+//   } finally {
+//     setIsSubmitting(false);
+//   }
+// };
 const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   if (isSubmitting) return;
 
-  // 🔍 Required fields check
-  // 🔍 Check for missing required fields
-  const requiredFields = [
-     "email", "phoneCode", "phoneNumber",
-    "city", "country", "password", "confirmPassword"
-  ];
-
-  const missing = requiredFields.filter((f) => !formData[f]);
-  if (missing.length > 0) {
-    alert(`Please fill all required fields: ${missing.join(", ")}`);
-    return;
-  }
-
-  // 🔍 Check fieldErrors (from input validations)
-  const hasErrors = Object.values(fieldErrors).some((err:any) => err === true);
-  if (hasErrors) {
-    alert("Please fix the highlighted errors before submitting.");
-    return;
-  }
-
-
-  // 🔒 Password match validation
+  // Basic validations
   if (formData.password !== formData.confirmPassword) {
     alert("Passwords do not match!");
     return;
   }
-
-  // ✅ Accept Terms
   if (!acceptedTerms) {
-    alert("Please accept the Terms & Conditions.");
+    alert("Please accept Terms & Conditions.");
     return;
   }
-
-  // 🏢 Company category validation
-  if (!formData.companyName || !selectedCategory) {
-    alert("Please fill in all required company fields and select a category.");
-    return;
-  }
-
-  // 📄 Optional file validation
-  if (profilePhoto && !validateFile(profilePhoto, ["jpg", "jpeg", "png"], 2)) return;
-  if (businessLicense && !validateFile(businessLicense, ["pdf", "doc", "jpg", "jpeg", "png"], 10)) return;
-  if (portfolio && !validateFile(portfolio, ["pdf", "doc"], 10)) return;
 
   setIsSubmitting(true);
 
   try {
-    // Upload optional files
-    let logoUrl = null, licenseUrl = null, portfolioUrl = null;
-    if (profilePhoto) logoUrl = await uploadFile(profilePhoto);
-    if (businessLicense) licenseUrl = await uploadFile(businessLicense);
-    if (portfolio) portfolioUrl = await uploadFile(portfolio);
+    // 1️⃣ Upload files first (if present)
+    const logoUrl = profilePhoto ? await uploadFile(profilePhoto) : "";
+    const licenseUrl = businessLicense ? await uploadFile(businessLicense) : "";
+    const portfolioUrl = portfolio ? await uploadFile(portfolio) : "";
 
-    // Payload
+    // 2️⃣ Prepare JSON payload
     const payload = {
       role: "seller",
       user: {
-        // firstName: formData.firstName ||null,
-        // middleName: formData.middleName || null,
-        // lastName: formData.lastName || null,
+        firstName: formData.firstName,
+        middleName: formData.middleName || "",
+        lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
@@ -212,36 +245,42 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
       contact: {
         phoneCode: formData.phoneCode,
         phoneNumber: formData.phoneNumber,
+        address: formData.address,
         city: formData.city,
         country: formData.country,
       },
       company: {
         name: formData.companyName,
-        websiteUrl: formData.companyUrl,
+        crNumber: formData.crNumber || "",
+        logoUrl: logoUrl || "",
         businessCategory: selectedCategory,
+        experience: Number(formData.experience) || 0,
+        websiteUrl: formData.companyUrl || "",
+        businessLicenseUrl: licenseUrl || "",
+        portfolioUrl: portfolioUrl || "",
       },
       acceptedTerms: acceptedTerms,
-      documents: { logoUrl, licenseUrl, portfolioUrl },
     };
 
+    // 3️⃣ Send JSON payload
     const res = await apiClient.post("/auth/register", payload, {
       headers: { "Content-Type": "application/json" },
     });
 
     console.log("✅ Seller registration successful:", res.data);
-    setAlertSuccess({ type: "success", text: "You have been registered successfully." });
+    setAlertSuccess({ type: "success", text: "Registered successfully." });
     router.push("/login");
+
   } catch (error: any) {
     console.error("❌ Registration Error:", error.response?.data || error.message);
     setAlertSuccess({
       type: "error",
-      text: error.response?.data?.message || "Registration failed. Please try again.",
+      text: error.response?.data?.message || "Registration failed. Try again.",
     });
   } finally {
     setIsSubmitting(false);
   }
 };
-
 
 
   return (
@@ -274,7 +313,7 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
 >
   {/* Back Button */}
   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-    <Button onClick={() => router.push("/")} sx={{ minWidth: "auto", p: 0.5 }}>
+    <Button onClick={() => router.push("/welcome")} sx={{ minWidth: "auto", p: 0.5 }}>
       <ArrowBackIcon sx={{ color: "white" }} />
     </Button>
     <Typography
@@ -410,7 +449,7 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
               placeholder="CR No"
               required
               unique
-              value={formData.email}
+              value={formData.crNumber}
               onChange={handleFieldChange("email")}
             />
           </Box>
@@ -514,7 +553,7 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
               onErrorChange={handleFieldError}
               fieldName="email"
             />
-            <CustomTextField
+            {/* <CustomTextField
     sx={{width:"50%"}}
     label={t("CompanyInfoPhoneCode")}
     isArabic={isArabic}
@@ -522,7 +561,19 @@ const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     isPhoneCode
     value={formData.phoneCode}
     onChange={handleFieldChange("phoneCode")}
-  />
+  /> */}
+   <CustomTextField
+      label={t("CompanyInfoPhoneCode")}
+      isArabic={isArabic}
+      placeholder="phone code"
+      required
+      isPhoneCode
+      value={formData.phoneCode}
+      onChange={handleFieldChange("phoneCode")}
+      onErrorChange={handleFieldError}
+      fieldName="phoneCode"
+      sx={{width:"50%"}}
+    />
 
   <CustomTextField
     fullWidth

@@ -17,6 +17,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter,usePathname } from "next/navigation";
 import { AuthContext } from "../contexts/AuthContext";
+import { Group } from "@mui/icons-material";
 
 const Sidebar: React.FC = () => {
   const { user, logout } = useContext(AuthContext);
@@ -48,6 +49,11 @@ const pathname = usePathname();
       icon: <PaymentsIcon />,
       path: "/dashboard/admin/payment",
     },
+    {
+      text:"View Users",
+      icon: <Group />,
+      path:"/dashboard/admin/viewusers"
+    }
   ];
  return (
     <Drawer

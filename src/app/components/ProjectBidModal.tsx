@@ -60,7 +60,7 @@
 //     //   const token = localStorage.getItem("accessToken");
 //       const token = accessToken
 //       const res = await axios.get(
-//         `https://cto.sa/projects/${projectId}`,
+//         `process.env.NEXT_PUBLIC_API_URL/projects/${projectId}`,
 //         {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }
@@ -80,7 +80,7 @@
 //   formData.append('file', file);
 
 //   try {
-//     const res = await axios.post('https://cto.sa/upload', formData, {
+//     const res = await axios.post('process.env.NEXT_PUBLIC_API_URL/upload', formData, {
 //       headers: { 'Content-Type': 'multipart/form-data' },
 //     });
 //     return res.data.url; // ✅ file URL from backend
@@ -113,7 +113,7 @@
 //       attachment: attachmentUrl || null,
 //     };
 
-//     await axios.post("https://cto.sa/bids", payload, {
+//     await axios.post("process.env.NEXT_PUBLIC_API_URL/bids", payload, {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
 //         "Content-Type": "application/json",
@@ -138,7 +138,7 @@
 // //       if (attachment) formData.append("attachment", attachment);
 
 // //       await axios.post(
-// //         `https://cto.sa/bids`,
+// //         `process.env.NEXT_PUBLIC_API_URL/bids`,
 // //         formData,
 // //         {
 // //           headers: { Authorization: `Bearer ${token}` },
@@ -353,7 +353,7 @@
 // export default ProjectBidModal;
 
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Modal,
@@ -367,6 +367,12 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useAuth } from "@/hooks/useAuth";
+import { LanguageContext } from "../contexts/LanguageContext";
+import { useTranslations } from "next-intl";
+import InputFileUpload from "./InputFileUpload";
+import apiClient from "@/api/apiClient";
+import DurationSelect from "./DaysSelect";
+import CustomTextField from "./CustomTextField";
 
 interface BuyerInfo {
   id: number;
@@ -408,11 +414,72 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
 
   const [attachment, setAttachment] = useState<File | null>(null);
   const [attachmentUrl, setAttachmentUrl] = useState<string | null>(null);
-
+  const [timeline, setTimeline] = useState("");
+  const [timelineNumber,setTimelineNumber] = useState("");
+  const [timelineString,setTimeLineString] = useState("");
+  
   // ✅ new: success and error states
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+      const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+  const {isArabic} = useContext(LanguageContext)
+  const t = useTranslations("ProjectBidModal")
 
+
+  const resetFields = () => {
+  setProposalText("");
+  setBidTimeline("");
+  setBidAmount("");
+  setAttachment(null);
+  setAttachmentUrl(null);
+  setTimeline("");
+  setTimelineNumber("");
+  setTimeLineString("");
+  setProfilePhoto(null);
+  setErrorMsg(null);
+  setShowSuccess(false);
+};
+const handleClose = () => {
+  resetFields();
+  onClose();
+};
+
+
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const res = await apiClient.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return res.data.Data.url;
+    } catch (err) {
+      console.error('File upload failed:', err);
+      alert('File upload failed. Please try again.');
+      return null;
+    }
+  };
+const validateFile = (file: File, allowed: string[], maxMB: number) => {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!ext || !allowed.includes(ext)) {
+      alert("Invalid file format. Allowed: " + allowed.join(", ").toUpperCase());
+      return false;
+    }
+    if (file.size > maxMB * 1024 * 1024) {
+      alert(`File size exceeds maximum limit of ${maxMB}MB.`);
+      return false;
+    }
+    return true;
+  };
+
+ const handleProfilePhotoSelect = (file: File | null) => {
+  if (file && validateFile(file, ["jpg", "jpeg", "png"], 2)) {
+    setProfilePhoto(file);
+  } else {
+    setProfilePhoto(null);
+  }
+};
   useEffect(() => {
     if (open && projectId) fetchProjectData();
   }, [open, projectId]);
@@ -421,7 +488,7 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     try {
       setLoading(true);
       const token = accessToken;
-      const res = await axios.get(`https://cto.sa/projects/${projectId}`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/projects/${projectId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data.Data);
@@ -432,32 +499,34 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     }
   };
 
-  const uploadFile = async (file: File): Promise<string | null> => {
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      const res = await axios.post("https://cto.sa/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return res.data.url;
-    } catch (err) {
-      console.error("File upload failed:", err);
-      return null;
-    }
-  };
+  // const uploadFile = async (file: File): Promise<string | null> => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   try {
+  //     const res = await axios.post("process.env.NEXT_PUBLIC_API_URL/upload", formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //     return res.data.url;
+  //   } catch (err) {
+  //     console.error("File upload failed:", err);
+  //     return null;
+  //   }
+  // };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) setAttachment(e.target.files[0]);
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) setAttachment(e.target.files[0]);
+  // };
 
-  const handleAttachmentChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = await uploadFile(file);
-      if (url) setAttachmentUrl(url);
-    }
-  };
-
+  // const handleAttachmentChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const url = await uploadFile(file);
+  //     if (url) setAttachmentUrl(url);
+  //   }
+  // };
+useEffect(()=>{
+setTimeline(`${timelineNumber} ${timelineString}`);
+},[timelineString,timelineString]);
   const handleSubmit = async () => {
     try {
       setErrorMsg(null);
@@ -465,12 +534,12 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
       const payload = {
         ProjectId: projectId,
         proposalText,
-        timeline: bidTimeline,
+        timeline: timeline,
         bidAmount: bidAmount,
         attachment: attachmentUrl || null,
       };
 
-      const result:any = await axios.post("https://cto.sa/bids", payload, {
+      const result:any = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/bids`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -492,12 +561,17 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
     } catch (error) {
       console.error("Error submitting bid:", error);
       setErrorMsg("Something went wrong while submitting your bid. Please try again.");
+
     }
+    // finally{
+    //   setErrorMsg(null);
+      
+    // }
   };
 
   return (
     <>
-      <Modal open={open} onClose={onClose}>
+      <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
             position: "absolute",
@@ -538,11 +612,10 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
             <>
               <Box textAlign="center" mb={3}>
                 <Typography variant="h5" fontWeight="bold" color="primary">
-                  Submit Your Bid
+                  {t("Header")}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Complete the form below to submit your bid. Showcase your expertise and
-                  win this project.
+                  {t("Tagline")}
                 </Typography>
               </Box>
 
@@ -563,68 +636,102 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
                   backgroundColor: "#fafafa",
                 }}
               >
-                <Box display="flex"  gap={2} mb={1}>
-                  <Box flex={2}>
-                    <Typography fontWeight="bold">Title</Typography>
-                    <Typography>{data.title}</Typography>
+                <Box display="flex"  gap={2} mb={1} >
+                  <Box flex={2} >
+                    <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("Title")}</Typography>
+                    <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.title}</Typography>
                   </Box>
                 </Box>
 
                 <Box mb={1}>
-                  <Typography fontWeight="bold">Outline</Typography>
-                  <Typography>{data.outline}</Typography>
+                  <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("Outline")}</Typography>
+                  <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.outline}</Typography>
                 </Box>
 
                 <Box mb={1}>
-                  <Typography fontWeight="bold">Requirements</Typography>
-                  <Typography>{data.requirements}</Typography>
+                  <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("Requirements")}</Typography>
+                  <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.requirements}</Typography>
                 </Box>
 
                 <Box mb={1}>
-                  <Typography fontWeight="bold">Skills Required</Typography>
-                  <Typography>{data.skillsRequired.join(", ")}</Typography>
+                  <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("SkillsRequired")}</Typography>
+                  <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.skillsRequired.join(", ")}</Typography>
                 </Box>
 
                 <Box display="flex" gap={2} mb={1}>
                   <Box flex={1}>
-                    <Typography fontWeight="bold">Budget Range</Typography>
-                    <Typography>{data.budgetRange}</Typography>
+                    <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("BudgetRange")}</Typography>
+                    <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.budgetRange}</Typography>
                   </Box>
                   <Box flex={1}>
-                    <Typography fontWeight="bold">Timeline</Typography>
-                    <Typography>{data.timeline}</Typography>
+                    <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("Timeline")}</Typography>
+                    <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.timeline}</Typography>
                   </Box>
                 </Box>
 
                 {/* <Box display="flex" gap={2}> */}
                   <Box mb={1}>
-                    <Typography fontWeight="bold">Buyer Name</Typography>
-                    <Typography>{data.buyerInfo?.name}</Typography>
+                    <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("BuyerName")}</Typography>
+                    <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.buyerInfo?.name}</Typography>
                   </Box>
                   <Box mb={1}>
-                    <Typography fontWeight="bold">Buyer Email</Typography>
-                    <Typography>{data.buyerInfo?.email}</Typography>
+                    <Typography fontWeight="bold" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{t("BuyerEmail")}</Typography>
+                    <Typography display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>{data.buyerInfo?.email}</Typography>
                   </Box>
                 {/* </Box> */}
               </Box>
 
               <Divider sx={{ mb: 2 }} />
 
-              <Typography variant="h6" fontWeight="bold" mb={2}>
-                Submit Your Bid
+              <Typography variant="h6" fontWeight="bold" mb={2} sx={{display:"flex",justifyContent:isArabic?"flex-end":"flex-start"}}>
+                {t("SubmitYourBid")}
               </Typography>
 
-              <TextField
+              {/* <TextField
                 label="Bid Amount ($)"
                 type="number"
                 value={bidAmount}
                 onChange={(e) => setBidAmount(e.target.value)}
                 fullWidth
+                
                 margin="normal"
                 required
-              />
-
+                
+              /> */}
               <TextField
+  label={!isArabic ? "Bid Amount ($)" : "قيمة العرض ($)"}
+  type="number"
+  value={bidAmount}
+  onChange={(e) => setBidAmount(e.target.value)}
+  fullWidth
+  margin="normal"
+  required
+  InputProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      direction: isArabic ? "rtl" : "ltr",
+    },
+  }}
+  InputLabelProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      right: isArabic ? 14 : "auto",
+      left: isArabic ? "auto" : 14,
+      transition: "opacity 0.3s ease",
+      opacity: bidAmount ? 0 : 1, // hide label when value exists
+    },
+    shrink: false, // prevent label floating on focus
+  }}
+  onFocus={(e:any) => {
+    e.target.labels[0].style.opacity = "0"; // hide label on focus
+  }}
+  onBlur={(e:any) => {
+    if (!e.target.value) e.target.labels[0].style.opacity = "1"; // show again if empty
+  }}
+/>
+
+
+              {/* <TextField
                 label="Estimated Timeline"
                 placeholder="e.g., 3 weeks, 2 months"
                 value={bidTimeline}
@@ -644,19 +751,141 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
                 rows={4}
                 margin="normal"
                 required
-              />
+              /> */}
+
+              {/* Estimated Timeline Field */}
+{/* <TextField
+  label={!isArabic ? "Estimated Timeline" : "المدة المتوقعة"}
+  placeholder={!isArabic ? "e.g., 3 weeks, 2 months" : "مثلاً: ٣ أسابيع، شهرين"}
+  value={bidTimeline}
+  onChange={(e) => setBidTimeline(e.target.value)}
+  fullWidth
+  margin="normal"
+  required
+  InputProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      direction: isArabic ? "rtl" : "ltr",
+    },
+  }}
+  InputLabelProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      right: isArabic ? 14 : "auto",
+      left: isArabic ? "auto" : 14,
+      transition: "opacity 0.3s ease",
+      opacity: bidTimeline ? 0 : 1,
+    },
+    shrink: false,
+  }}
+  onFocus={(e:any) => {
+    e.target.labels[0].style.opacity = "0";
+  }}
+  onBlur={(e:any) => {
+    if (!e.target.value) e.target.labels[0].style.opacity = "1";
+  }}
+/> */}
+  {/* Timeline */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
+        justifyContent: "space-between",
+        width: "100%",
+        gap: { xs: 2, sm: 1 },
+      }}
+    >
+      <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
+        <CustomTextField
+          label={!isArabic ? "Estimated Timeline" : "المدة المتوقعة"}
+          placeholder={!isArabic ? "e.g., 3 weeks, 2 months" : "مثلاً: ٣ أسابيع، شهرين"}
+          required
+          fullWidth
+          value={bidTimeline}
+          onChange={(e) => setBidTimeline(e.target.value)}
+          isArabic={isArabic}
+          isNumbersOnly={true}
+        />
+        {/* <TextField
+          label={!isArabic ? "Estimated Timeline" : "المدة المتوقعة"}
+          placeholder={!isArabic ? "e.g., 3 weeks, 2 months" : "مثلاً: ٣ أسابيع، شهرين"}
+          required
+          fullWidth
+          value={bidTimeline}
+          onChange={(e) => setBidTimeline(e.target.value)}
+          type="number"
+        /> */}
+      </Box>
+
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "50%" },
+          mt: { xs: 0, sm: 4.4 },
+        }}
+      >
+        <DurationSelect
+          label=""
+          value={timelineString}
+          onChange={setTimeLineString}
+          isArabic={isArabic}
+          
+        />
+      </Box>
+    </Box>
+
+
+
+{/* Proposal Text Field */}
+<TextField
+  label={!isArabic ? "Your Proposal" : "اقتراحك"}
+  placeholder={
+    !isArabic
+      ? "Describe your approach, experience, and why you're a perfect fit..."
+      : "اشرح طريقتك وخبرتك ولماذا أنت الأنسب..."
+  }
+  value={proposalText}
+  onChange={(e) => setProposalText(e.target.value)}
+  fullWidth
+  multiline
+  rows={4}
+  margin="normal"
+  required
+  InputProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      direction: isArabic ? "rtl" : "ltr",
+    },
+  }}
+  InputLabelProps={{
+    sx: {
+      textAlign: isArabic ? "right" : "left",
+      right: isArabic ? 14 : "auto",
+      left: isArabic ? "auto" : 14,
+      transition: "opacity 0.3s ease",
+      opacity: proposalText ? 0 : 1,
+    },
+    shrink: false,
+  }}
+  onFocus={(e:any) => {
+    e.target.labels[0].style.opacity = "0";
+  }}
+  onBlur={(e:any) => {
+    if (!e.target.value) e.target.labels[0].style.opacity = "1";
+  }}
+/>
+
 
               <Box mt={2}>
-                <Typography fontWeight="bold" mb={1}>
-                  Attachment (Optional)
+                <Typography fontWeight="bold" mb={1} display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}>
+                  {t("Attachment")}
                 </Typography>
-                <Button
+                {/* <Button
                   variant="outlined"
                   component="label"
                   fullWidth
                   sx={{ textTransform: "none" }}
                 >
-                  Click to upload file (PDF, DOCX, TXT)
+                  {t("Upload")}
                   <input
                     type="file"
                     hidden
@@ -664,21 +893,31 @@ const ProjectBidModal: React.FC<ProjectBidModalProps> = ({
                     onChange={handleFileChange}
                   />
                 </Button>
-                {attachment && (
+                
+                  
+                  */}
+                  <InputFileUpload 
+                   sx={{display:"flex",width:"100%",textAlign:"center"}}
+                                // text={t("Logo")}
+                                text = "file"
+                                onFileSelect={handleProfilePhotoSelect}
+                                isArabic={isArabic}
+                      // initialUrl={userDetail?.profile?.company?.logoUrl}
+                  />
+               {attachment && (
                   <Typography mt={1} fontSize={14}>
                     {attachment.name}
-                  </Typography>
-                )}
+                  </Typography>  )}
               </Box>
 
-              <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
-                <Button variant="outlined" onClick={onClose}>
-                  Cancel
+              <Box display="flex" justifyContent={isArabic?"flex-start":"flex-end"}  gap={2} mt={4}>
+                <Button variant="outlined" onClick={handleClose}>
+                  {t("Cancel")}
                 </Button>
                 <Button variant="contained" color="primary" onClick={handleSubmit}>
-                  Submit Bid
+                  {t("SubmitBid")}
                 </Button>
-              </Box>
+                </Box>
             </>
           ) : (
             <Typography align="center">No project data found.</Typography>

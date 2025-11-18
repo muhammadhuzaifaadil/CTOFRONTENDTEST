@@ -1,5 +1,5 @@
 "use client"
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import DashBoardLayout from "@/app/layouts/DashboardLayout";
 import { Box, Button, CircularProgress, Container, Divider, TextField, Typography, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import CategorySelect from '@/app/components/CategorySelect';
 import apiClient from '@/api/apiClient';
 import { LanguageContext } from '@/app/contexts/LanguageContext';
 import { useTranslations } from 'next-intl';
+import InputFileUpload from '@/app/components/InputFileUpload';
 
 const ProfileManagement:React.FC = ()=>{
     const theme = useTheme()
@@ -18,7 +19,61 @@ const ProfileManagement:React.FC = ()=>{
     const { user, isAuthenticated, logout,updateUser } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState("");
     const {isArabic,locale} = useContext(LanguageContext)
+    const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+    const [userDetail,setUserDetail] = useState<any>();
     const t = useTranslations("ProfileManagement")
+
+         const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const res = await apiClient.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return res.data.Data.url;
+    } catch (err) {
+      console.error('File upload failed:', err);
+      alert('File upload failed. Please try again.');
+      return null;
+    }
+  };
+const validateFile = (file: File, allowed: string[], maxMB: number) => {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!ext || !allowed.includes(ext)) {
+      alert("Invalid file format. Allowed: " + allowed.join(", ").toUpperCase());
+      return false;
+    }
+    if (file.size > maxMB * 1024 * 1024) {
+      alert(`File size exceeds maximum limit of ${maxMB}MB.`);
+      return false;
+    }
+    return true;
+  };
+
+ const handleProfilePhotoSelect = (file: File | null) => {
+  if (file && validateFile(file, ["jpg", "jpeg", "png"], 2)) {
+    setProfilePhoto(file);
+  } else {
+    setProfilePhoto(null);
+  }
+};
+const getUser = async (id:any) =>{
+  try{
+    const res = await apiClient.get(`/users/${id}`)
+    const response = res.data.Data;
+    setUserDetail(response);
+    console.log(response);
+  }
+  catch(e:any)
+  {
+    console.log(e);
+  }
+}
+useEffect(()=>{
+getUser(user?.id);
+
+},[user]);
      // Form state
   type FormDataType = {
   firstName: string;
@@ -60,6 +115,31 @@ const ProfileManagement:React.FC = ()=>{
         category: "",
       });
 
+useEffect(() => {
+  if (userDetail && userDetail.id) {
+    setFormData({
+      firstName: userDetail.firstName || "",
+      middleName: userDetail.middleName || "",
+      lastName: userDetail.lastName || "",
+      email: userDetail.email || "",
+      phoneCode: userDetail.profile?.contact?.phoneCode || "",
+      phoneNumber: userDetail.profile?.contact?.phoneNumber || "",
+      phone: userDetail.profile?.contact?.phoneNumber || "",
+      gender: "", // or userDetail.gender if available
+      address: userDetail.profile?.contact?.address || "",
+      city: userDetail.profile?.contact?.city || "",
+      country: userDetail.profile?.contact?.country || "",
+      companyName: userDetail.profile?.company?.name || "",
+      companyUrl: userDetail.profile?.company?.websiteUrl || "",
+      category: userDetail.profile?.company?.businessCategory || "",
+      experience: userDetail.profile?.company?.companyDetail || "",
+      password: "",
+      confirmPassword: "",
+      logoUrl:""
+    });
+  }
+}, [userDetail]);
+
       const handleFieldChange =
       (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const value = e.target.value;
@@ -73,6 +153,10 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     // Construct raw payload
+    let logoUrl:any=null;
+    if(profilePhoto){
+      logoUrl = await uploadFile(profilePhoto)
+    }
     const rawPayload = {
       FirstName: formData.firstName,
       MiddleName: formData.middleName,
@@ -87,6 +171,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       CompanyName: formData.companyName,
       websiteUrl: formData.companyUrl,
       businessCategory: selectedCategory,
+      logoUrl:logoUrl||""
     };
 
     // ✅ Remove empty ("") or undefined/null fields
@@ -275,11 +360,11 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
         {/* Name Fields */}
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
+        {/* <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
           <CustomTextField fullWidth label={t("PersonalInfoFirstName")} placeholder="John" isArabic={isArabic} required minChar={3} maxChar={50} value={formData.firstName} onChange={handleFieldChange("firstName")} />
           <CustomTextField fullWidth label={t("PersonalInfoMiddleName")} placeholder="Optional" isArabic={isArabic} minChar={3} maxChar={50} value={formData.middleName} onChange={handleFieldChange("middleName")} />
           <CustomTextField fullWidth label={t("PersonalInfoLastName")} placeholder="Doe" isArabic={isArabic} required minChar={3} maxChar={50} value={formData.lastName} onChange={handleFieldChange("lastName")} />
-        </Box>
+        </Box> */}
 
         {/* Phone Fields */}
         <Box sx={{ display: "flex", flexDirection: { xs: "row", md: "row" }, gap: 1, width: "100%" }}>
@@ -356,6 +441,25 @@ const handleSubmit = async (e: React.FormEvent) => {
           <CustomTextField fullWidth label={t("BusinessInfoCompanyName")} isArabic={isArabic} placeholder="Your Company Ltd." required minChar={3} maxChar={50} value={formData.companyName} onChange={handleFieldChange("companyName")} />
           <CustomTextField fullWidth label={t("BusinessInfoCompanyURL")} isArabic={isArabic} placeholder="https://example.com" value={formData.companyUrl} onChange={handleFieldChange("companyUrl")} />
         </Box>
+        <InputFileUpload
+                                sx={{display:"flex",width:"100%",textAlign:"center"}}
+                                text={t("Logo")}
+                                onFileSelect={handleProfilePhotoSelect}
+                                isArabic={isArabic}
+                                initialUrl={userDetail?.profile?.company?.logoUrl}
+                              />
+               {/* <Typography
+                                    variant="h6"
+                                    sx={{
+                                      fontWeight: "bold",
+                                      color: theme.palette.primary.main,
+                                      textAlign: isArabic?"right":"left",
+                                    }}
+                                  >
+                                   Required Documents
+                                  </Typography>
+              <Divider sx={{ mt: 1, borderBottomWidth: 3, borderColor: theme.palette.primary.main, opacity: 0.7, width: "100%" }} /> */}
+
       </Box>
     </Box>
 

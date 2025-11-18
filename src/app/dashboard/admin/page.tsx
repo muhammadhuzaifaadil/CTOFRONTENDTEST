@@ -16,9 +16,18 @@ import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import WorkIcon from '@mui/icons-material/Work';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 const AdminDashboard: React.FC = () => {
   const theme = useTheme();
+  const { user, isAuthenticated, logout,isLoading } = useAuth();
+  const router = useRouter();
 
+    useEffect(() => {
+      if (!isLoading &&!isAuthenticated) router.push("/login");
+    }, [isAuthenticated,isLoading]);
+    
   return (
     <Box sx={{ display: "flex", width: "100%", backgroundColor: "#fafafa" }}>
       {/* Sidebar */}

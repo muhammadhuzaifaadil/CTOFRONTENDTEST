@@ -97,7 +97,8 @@
             "Loading":"Loading projects...",
             "Budget":"Budget:",
         "Timeline":"Timeline:",
-        "Skills":"Skills:"
+        "Skills":"Skills:",
+        "ViewBids":"View Bids"
 
         },
         "ProfileManagement":{
@@ -124,7 +125,8 @@
             "BusinessInfoExp":"Experience in Years",
             "BusinessInfoCompanyName":"Company Name",
             "BusinessInfoCompanyURL":"Company Domain URL",
-            "EditProfileButton":"Edit Profile"
+            "EditProfileButton":"Edit Profile",
+            "Logo":"Company Logo"
         },
         "UpdatePassword":{
             "Header":"Security Settings",
@@ -172,7 +174,11 @@
             "Header":"Find Opportunities",
             "Header2":"BROWSE PROJECTS",
             "Content":"projects available",
-            "NotFound":"No projects match your search or selected filters."
+            "NotFound":"No projects match your search or selected filters.",
+            "Budget":"Budget:",
+            "Timeline":"Timeline:",
+            "Bids":"Bids:",
+            "ViewBidsButton":"View Project & Submit Bid"
         },
         "BidManagement":{
             "BackDashboard":"Back to Dashboard",
@@ -184,7 +190,11 @@
             "Status3":"Rejected",
             "Status4":"Withdrawn",
             "No":"No",
-            "BidsFound":"bids found."
+            "BidsFound":"bids found.",
+            "SubmittedOn":"Submitted On:",
+            "ProposedBudget":"Your Proposed Budget",
+            "ProposedTimeline":"Your Proposed Timeline",
+            "CoverLetter":"Your Cover Letter:"
         },
         "BuyerRegister":{
             "BackButton":"Back To Welcome",
@@ -209,7 +219,8 @@
             "RegisterButton":"Register / SignUp",
             "CancelButton":"Cancel",
             "AcceptTerms":"I Accept the",
-            "Terms&Conditions":"TERMS & CONDITIONS"
+            "Terms&Conditions":"TERMS & CONDITIONS",
+            "Logo":"Company Logo"
         },
         "SellerRegister":{
             "BackButton":"Back To Welcome",
@@ -252,9 +263,9 @@
             "NB_Contact":"Contact",
             "NB_GETSTARTED":"Get Started",
             "NB_GETSTARTED_A":"Get Started →",
-            "Home_Heading_11":"The Smart Balance Between",
-            "Home_Heading_12": "Time, Cost, and Quality",
-            "Home_Heading2":"Connect with verified tech companies. Get transparent proposals, milestone-based development, and independent quality reviews.",
+            "Home_Heading_11":"Transform Your",
+            "Home_Heading_12": "Project Delivery with CTO",
+            "Home_Heading2":"A digital ecosystem connecting Buyers, Sellers, and Quality Experts for transparent, milestone-driven project execution in Saudi Arabia.",
             "Works_Heading":"How CTO.sa Works",
             "Works_Tagline":"A transparent, secure process from start to finish",
             "Works_1_Heading":"Share Your Project",
@@ -297,9 +308,57 @@
             "Contact_Company_2_Title":"Contact",
             "Contact_Company_3_Title":"Terms of Service",
             "Contact_Company_4_Title":"Privacy Policy",
-            "Footer_AllRightsReserved":"All rights reserved."
+            "Footer_AllRightsReserved":"All rights reserved.",
+            "Trusted":"Trusted Project Delivery Platform in Saudi Arabia",
+            "Tagline":"A digital ecosystem connecting Buyers, Sellers, and Quality Experts for transparent, milestone-driven project execution in Saudi Arabia.",
+            "LearnMore":"Learn More",
+            "BoxHeading1":"Three User Types",
+            "BoxContent1":"Buyers, Sellers & Quality Experts",
+            "BoxHeading2":"Milestone Based",
+            "BoxContent2":"Quality-Verified Delivery",
+            "BoxHeading3":"100% Secure",
+            "BoxContent3":"Protected Escrow System"
 
 
          
+        },
+
+        "BidsModal":{
+            "Heading":"Project Details & Bids",
+            "Loading":"Loading...",
+            "Outline":"Outline:",
+            "Requirements":"Requirements:",
+            "Budget":"Budget:",
+            "Timeline":"Timeline:",
+            "Skills":"Skills:",
+            "Bids":"Bids",
+            "NoBidsFound":"No bids found.",
+            "Name":"Name:",
+            "BidAmount":"Bid Amount:",
+            "Accept":"Accept",
+            "Reject":"Reject",
+            "Accepted":"Accepted",
+            "Rejected":"Rejected"
+        },
+        "ProjectBidModal":{
+            "Header":"Submit Your Bid",
+            "Tagline":"Complete the form below to submit your bid. Showcase your expertise and win this project.",
+            "Title":"Title",
+            "Outline":"Outline",
+            "Requirements":"Requirements",
+            "SkillsRequired":"Skills Required",
+            "BudgetRange":"Budget Range",
+            "Timeline":"Timeline",
+            "BuyerName":"Buyer Name",
+            "BuyerEmail":"Buyer Email",
+            "SubmitYourBid":"Submit Your Bid",
+            "Attachment":"Attachment (Optional)",
+            "Upload":"Click to upload file (PDF, DOCX, TXT)",
+            "Cancel":"Cancel",
+            "SubmitBid":"Submit Bid",
+            "NoProject":"No project data found.",
+            "BidSubmitted":"Bid submitted successfully!"
         }
-}
+    
+    
+    }

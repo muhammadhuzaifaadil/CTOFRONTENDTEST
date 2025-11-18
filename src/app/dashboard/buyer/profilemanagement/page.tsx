@@ -1,5 +1,5 @@
 "use client"
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import DashBoardLayout from "@/app/layouts/DashboardLayout";
 import { Box, Button, CircularProgress, Container, Divider, TextField, Typography, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -11,15 +11,69 @@ import CategorySelect from '@/app/components/CategorySelect';
 import apiClient from '@/api/apiClient';
 import { LanguageContext } from '@/app/contexts/LanguageContext';
 import { useTranslations } from 'next-intl';
+import InputFileUpload from '@/app/components/InputFileUpload';
 
 const ProfileManagement:React.FC = ()=>{
     const theme = useTheme()
     const router = useRouter()
     const { user, isAuthenticated, logout,updateUser } = useAuth();
-    
+    const [userDetail,setUserDetail] = useState<any>();
     const [selectedCategory, setSelectedCategory] = useState("");
     const {isArabic,locale} = useContext(LanguageContext)
+    const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
     const t = useTranslations("ProfileManagement")
+     const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const res = await apiClient.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return res.data.Data.url;
+    } catch (err) {
+      console.error('File upload failed:', err);
+      alert('File upload failed. Please try again.');
+      return null;
+    }
+  };
+const validateFile = (file: File, allowed: string[], maxMB: number) => {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!ext || !allowed.includes(ext)) {
+      alert("Invalid file format. Allowed: " + allowed.join(", ").toUpperCase());
+      return false;
+    }
+    if (file.size > maxMB * 1024 * 1024) {
+      alert(`File size exceeds maximum limit of ${maxMB}MB.`);
+      return false;
+    }
+    return true;
+  };
+
+ const handleProfilePhotoSelect = (file: File | null) => {
+  if (file && validateFile(file, ["jpg", "jpeg", "png"], 2)) {
+    setProfilePhoto(file);
+  } else {
+    setProfilePhoto(null);
+  }
+};
+const getUser = async (id:any) =>{
+  try{
+    const res = await apiClient.get(`/users/${id}`)
+    const response = res.data.Data;
+    setUserDetail(response);
+    console.log(response);
+  }
+  catch(e:any)
+  {
+    console.log(e);
+  }
+}
+useEffect(()=>{
+getUser(user?.id);
+
+},[user]);
+
      // Form state
   type FormDataType = {
   firstName: string;
@@ -39,9 +93,10 @@ const ProfileManagement:React.FC = ()=>{
   companyName: string;
   companyUrl: string;
   category: string;
+  logoUrl:string;
   [key: string]: string; // <-- Add this line
 };
-     const [formData, setFormData] = useState<FormDataType>({
+const [formData, setFormData] = useState<FormDataType>({
         firstName: "",
         middleName: "",
         lastName: "",
@@ -59,7 +114,33 @@ const ProfileManagement:React.FC = ()=>{
         companyName: "",
         companyUrl: "",
         category: "",
+        logoUrl:""
       });
+useEffect(() => {
+  if (userDetail && userDetail.id) {
+    setFormData({
+      firstName: userDetail.firstName || "",
+      middleName: userDetail.middleName || "",
+      lastName: userDetail.lastName || "",
+      email: userDetail.email || "",
+      phoneCode: userDetail.profile?.contact?.phoneCode || "",
+      phoneNumber: userDetail.profile?.contact?.phoneNumber || "",
+      phone: userDetail.profile?.contact?.phoneNumber || "",
+      gender: "", // or userDetail.gender if available
+      address: userDetail.profile?.contact?.address || "",
+      city: userDetail.profile?.contact?.city || "",
+      country: userDetail.profile?.contact?.country || "",
+      companyName: userDetail.profile?.company?.name || "",
+      companyUrl: userDetail.profile?.company?.websiteUrl || "",
+      category: userDetail.profile?.company?.businessCategory || "",
+      experience: userDetail.profile?.company?.companyDetail || "",
+      password: "",
+      confirmPassword: "",
+      logoUrl:""
+    });
+  }
+}, [userDetail]);
+
 
       const handleFieldChange =
       (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -67,49 +148,15 @@ const ProfileManagement:React.FC = ()=>{
         setFormData((prev) => ({ ...prev, [field]: value }));
       };
 
-
-      // ------------------- HANDLE SUBMIT LOGIC -------------------
-// const handleSubmit = async (e: React.FormEvent) => {
-//   e.preventDefault();
-
-//   try {
-//     // Construct payload
-//     const payload = {
-//       firstName: formData.firstName,
-//       middleName: formData.middleName,
-//       lastName: formData.lastName,
-//       email: user?.email, // not editable but sent
-//       phoneCode: formData.phoneCode,
-//       phoneNumber: formData.phoneNumber,
-//       address: formData.address,
-//       city: formData.city,
-//       country: formData.country,
-//       experience: formData.experience,
-//       companyName: formData.companyName,
-//       companyUrl: formData.companyUrl,
-//       category: selectedCategory,
-//     };
-
-//     console.log("📤 Submitting updated profile:", payload);
-
-//     // Send to backend (assuming PUT endpoint)
-//     const res = await apiClient.put(`/users/${user?.id}`, payload);
-
-//     if (res.data?.Success) {
-//       alert("✅ Profile updated successfully!");
-//     } else {
-//       alert("⚠️ Failed to update profile. Please try again.");
-//     }
-//   } catch (err: any) {
-//     console.error("❌ Error updating profile:", err);
-//     alert("Error updating profile. Check console for details.");
-//   }
-// };
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   try {
     // Construct raw payload
+    let logoUrl:any=null;
+    if(profilePhoto){
+      logoUrl = await uploadFile(profilePhoto)
+    }
     const rawPayload = {
       FirstName: formData.firstName,
       MiddleName: formData.middleName,
@@ -124,6 +171,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       CompanyName: formData.companyName,
       websiteUrl: formData.companyUrl,
       businessCategory: selectedCategory,
+      logoUrl:logoUrl||""
     };
 
     // ✅ Remove empty ("") or undefined/null fields
@@ -367,7 +415,7 @@ updateUser(updatedFields);
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
         {/* Surface Address */}
-        <CustomTextField
+        {/* <CustomTextField
           fullWidth
           label={`${t("AddressSurfaceAdd")}`}
           isArabic={isArabic}
@@ -376,7 +424,7 @@ updateUser(updatedFields);
           maxChar={50}
           value={formData.address}
           onChange={handleFieldChange("address")}
-        />
+        /> */}
 
         {/* City & Country */}
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
@@ -413,9 +461,9 @@ updateUser(updatedFields);
       <Divider sx={{ mt: 1, borderBottomWidth: 3, borderColor: theme.palette.primary.main, opacity: 0.7, width: "100%" }} />
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, width: "100%" }}>
-        <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
+        {/* <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}> */}
           {/* <CategorySelect label={`${t("BusinessInfoCategory")}`} value={selectedCategory} onChange={setSelectedCategory} /> */}
-          <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start", mt:"15px"}}>
+          {/* <Box display={"flex"} width={"100%"} flexDirection={"column"} sx={{justifyContent:"flex-start", mt:"15px"}}>
             <Typography
                     variant="subtitle2"
                     display={"flex"}
@@ -446,7 +494,7 @@ updateUser(updatedFields);
               onChange={handleFieldChange("experience")}
             />
             </Box>
-          </Box>
+          </Box> */}
           {/* <CustomTextField
             fullWidth
             label={`${t("BusinessInfoExp")}`}
@@ -455,7 +503,7 @@ updateUser(updatedFields);
             value={formData.experience}
             onChange={handleFieldChange("experience")}
           /> */}
-        </Box>
+        {/* </Box> */}
 
         <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1, width: "100%" }}>
           <CustomTextField
@@ -478,6 +526,13 @@ updateUser(updatedFields);
             onChange={handleFieldChange("companyUrl")}
           />
         </Box>
+        <InputFileUpload
+                        sx={{display:"flex",width:"100%",textAlign:"center"}}
+                        text={t("Logo")}
+                        onFileSelect={handleProfilePhotoSelect}
+                        isArabic={isArabic}
+                        initialUrl={userDetail?.profile?.company?.logoUrl}
+                      />
       </Box>
     </Box>
 

@@ -4,6 +4,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import apiClient from "@/api/apiClient";
+import { initFCM } from "../hooks/useFCM";
 
 interface User {
   id: number;
@@ -67,6 +68,10 @@ const [isLoading, setIsLoading] = useState(true);
     setIsLoading(false);
   }, []);
 
+
+  
+    // useFCM(user?.id ?? null);
+
   // Login method
   const login = async (email: string, password: string) => {
     console.log("trying to login in login method");
@@ -77,11 +82,13 @@ const [isLoading, setIsLoading] = useState(true);
     setUser(user);
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
-
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
-
+    // useFCM(user.id);
+if (user?.id) {
+      await initFCM(user.id); // call explicitly after login
+    }
     // Redirect by role
     if (user.role === "buyer") router.push("/dashboard/buyer");
     else if (user.role === "seller") router.push("/dashboard/seller");

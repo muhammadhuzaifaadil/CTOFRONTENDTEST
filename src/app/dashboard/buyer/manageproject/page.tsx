@@ -22,25 +22,31 @@ import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import BidsModal from "@/app/components/BidsModal";
 import { useAuth } from "@/hooks/useAuth";
+import ProjectModal from "@/app/components/ProjectModal";
 
 const ManageProjects: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
   const {user} = useAuth();
   const [projects, setProjects] = useState<any[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState("In Progress");
+    const { isArabic, locale } = useContext(LanguageContext);
+    const t = useTranslations("ManageProject");
+  const [selectedStatus, setSelectedStatus] = useState(isArabic?"قيد التنفيذ":"In Progress"); //check and fix why arabic at default not occuring in status
   const [selectedStatusArabic,setSelectedStatusArabic]= useState("")
   const [pagination, setPagination] = useState({ page: 1, limit: 10, totalPages: 1 });
   const [loading, setLoading] = useState(false);
-  const { isArabic, locale } = useContext(LanguageContext);
-    const t = useTranslations("ManageProject");
+
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
-
+  const [openProjectModal , setOpenProjectModal] = useState(false);
   const handleOpenModal = (projectId: number) => {
     setSelectedProjectId(projectId);
     setOpenModal(true);
   };
+  const handleOpenProjectModal = (projectId:number) =>{
+    setSelectedProjectId(projectId);
+    setOpenProjectModal(true);
+  }
   // const recentProjects = [
   //   {
   //     Title: "Restaurant Menu and Promotional Materials",
@@ -396,20 +402,35 @@ const ManageProjects: React.FC = () => {
                 </Typography>
               </Box>
 
-              <Box display={"flex"} justifyContent={"center"} sx={{ mt: 1 }}>
+              <Box display={"flex"} justifyContent={"space-between"} sx={{ mt: 1 }}>
                 <Button
-                  fullWidth
+                  
                   variant="contained"
                   sx={{
                     borderRadius: "12px",
                     textTransform: "none",
+                    width:"45%",
+                    py: 1.2,
+                  }}
+                  onClick={() => handleOpenProjectModal(project.id)}
+                >
+                  View Project
+                </Button>
+                <Button
+                  
+                  variant="contained"
+                  sx={{
+                    borderRadius: "12px",
+                    textTransform: "none",
+                    width:"45%",
                     py: 1.2,
                   }}
                   onClick={() => handleOpenModal(project.id)}
                 >
-                  View Bids
+                  {t("ViewBids")}
                 </Button>
               </Box>
+              
             </CardContent>
           </Card>
         ))
@@ -438,6 +459,8 @@ const ManageProjects: React.FC = () => {
     </Box>
 
     <BidsModal open={openModal} onClose={() => setOpenModal(false)} projectId={selectedProjectId} />
+
+    <ProjectModal open={openProjectModal} onClose={()=>setOpenProjectModal(false)} projectId={selectedProjectId}/>
   </Container>
 </Box>
           )}

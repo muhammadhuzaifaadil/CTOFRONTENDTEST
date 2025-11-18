@@ -94,7 +94,9 @@
     "Loading": "جاري تحميل المشاريع...",
      "Budget": ":الميزانية",
 "Timeline": ":المدة الزمنية",
-"Skills": ":المهارات"
+"Skills": ":المهارات",
+"ViewBids": "عرض العطاءات"
+
   },
   "ProfileManagement": {
     "BackButton": "العودة إلى لوحة التحكم",
@@ -120,7 +122,8 @@
     "BusinessInfoExp": "سنوات الخبرة",
     "BusinessInfoCompanyName": "اسم الشركة",
     "BusinessInfoCompanyURL": "رابط موقع الشركة",
-    "EditProfileButton": "تعديل الملف الشخصي"
+    "EditProfileButton": "تعديل الملف الشخصي",
+     "Logo": "شعار الشركة"
   },
   "UpdatePassword": {
     "Header": "إعدادات الأمان",
@@ -167,7 +170,11 @@
     "Header": "ابحث عن الفرص",
     "Header2": "تصفح المشاريع",
     "Content": "المشاريع المتاحة",
-    "NotFound": "لا توجد مشاريع مطابقة للبحث أو الفلاتر."
+    "NotFound": "لا توجد مشاريع مطابقة للبحث أو الفلاتر.",
+    "Budget": " :الميزانية",
+"Timeline": " :المدة الزمنية",
+"Bids": " :العروض",
+"ViewBidsButton": "عرض المشروع وتقديم عرض"
   },
   "BidManagement": {
     "BackDashboard": "العودة إلى لوحة التحكم",
@@ -179,7 +186,12 @@
     "Status3": "مرفوض",
     "Status4": "مسحوب",
     "No": "لا توجد",
-    "BidsFound": "عروض مطابقة."
+    "BidsFound": "عروض مطابقة.",
+    "SubmittedOn": ":تم الإرسال في ",
+"ProposedBudget": "ميزانيتك المقترحة ",
+"ProposedTimeline": "المدة الزمنية المقترحة ",
+"CoverLetter": ":خطاب التغطية "
+
   },
   "BuyerRegister": {
     "BackButton": "العودة إلى صفحة الترحيب",
@@ -204,7 +216,8 @@
     "RegisterButton": "تسجيل / إنشاء حساب",
     "CancelButton": "إلغاء",
     "AcceptTerms": "أوافق على",
-    "Terms&Conditions": "الشروط والأحكام"
+    "Terms&Conditions": "الشروط والأحكام",
+        "Logo": "شعار الشركة"
   },
   "SellerRegister": {
     "BackButton": "العودة إلى صفحة الترحيب",
@@ -246,8 +259,8 @@
   "NB_Contact": "تواصل معنا",
   "NB_GETSTARTED": "ابدأ الآن",
 "NB_GETSTARTED_A": "← ابدأ الآن",
-  "Home_Heading_11": "التوازن الذكي بين",
-"Home_Heading_12": "الوقت والتكلفة والجودة",
+  "Home_Heading_11": "حوّل طريقتك في",
+"Home_Heading_12": "تسليم المشاريع مع CTO",
 
   "Home_Heading2": " تواصل مع شركات تقنية معتمدة، واحصل على عروض شفافة، تطوير بمراحل محددة، ومراجعات جودة مستقلة ",
 
@@ -309,7 +322,56 @@
   "Contact_Company_3_Title": "شروط الاستخدام",
   "Contact_Company_4_Title": "سياسة الخصوصية",
 
-  "Footer_AllRightsReserved": "جميع الحقوق محفوظة."
+  "Footer_AllRightsReserved": "جميع الحقوق محفوظة.",
+
+  "Trusted":"منصة موثوقة لتنفيذ المشاريع في السعودية ",
+  "Tagline": "منظومة رقمية تربط المشترين والبائعين وخبراء الجودة لتنفيذ المشاريع بشفافية واحترافية قائمة على المراحل في المملكة العربية السعودية.",
+  "LearnMore": "اعرف المزيد",
+  "BoxHeading1": "ثلاثة أنواع من المستخدمين",
+  "BoxContent1": "المشترون، البائعون وخبراء الجودة",
+  "BoxHeading2": "قائم على المراحل",
+  "BoxContent2": "تسليم معتمد على الجودة",
+  "BoxHeading3": "آمن بنسبة %100 ",
+  "BoxContent3": "نظام ضمان مالي محمي"
+},
+"BidsModal": {
+  "Heading": "تفاصيل المشروع والعروض",
+  "Loading": "...جارٍ التحميل",
+  "Outline": " :الملخص",
+  "Requirements": " :المتطلبات",
+  "Budget": " :الميزانية",
+  "Timeline": " :المدة الزمنية",
+  "Skills": " :المهارات",
+  "Bids": "العروض",
+  "NoBidsFound": ".لم يتم العثور على أي عروض",
+  "Name": " :الاسم",
+  "BidAmount": " :قيمة العرض",
+  "Accept": "قبول",
+  "Reject": "رفض",
+  "Accepted": "مقبول",
+"Rejected": "مرفوض"
+
+},
+"ProjectBidModal": {
+  "Header": "قدّم عرضك",
+  "Tagline": " .أكمل النموذج أدناه لتقديم عرضك. أظهر خبرتك واربح هذا المشروع ",
+  "Title": " العنوان",
+  "Outline": " الملخص",
+  "Requirements": " المتطلبات",
+  "SkillsRequired": " المهارات المطلوبة",
+  "BudgetRange": " نطاق الميزانية",
+  "Timeline": " المدة الزمنية",
+  "BuyerName": " اسم المشتري",
+  "BuyerEmail": " بريد المشتري الإلكتروني",
+  "SubmitYourBid": "قدّم عرضك",
+  "Attachment": " (اختياري) :المرفق",
+  "Upload": "(PDF، DOCX، TXT) اضغط لرفع الملف",
+  "Cancel": "إلغاء",
+  "SubmitBid": "تقديم العرض",
+  "NoProject": ".لم يتم العثور على بيانات المشروع",
+  "BidSubmitted": "!تم إرسال العرض بنجاح"
 }
+
+
 
 }

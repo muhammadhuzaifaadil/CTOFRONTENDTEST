@@ -37,7 +37,7 @@ const ManageBids: React.FC = () => {
       if (!token) return;
 
       try {
-        const res = await apiClient.get("https://cto.sa/bids/paginated/all?page=1&limit=10");
+        const res = await apiClient.get("/bids/paginated/all?page=1&limit=10");
         const bidsData = res.data?.Data?.bids;
 
         if (res.data?.Success && Array.isArray(bidsData)) {
@@ -272,14 +272,14 @@ const ManageBids: React.FC = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: { xs: "row", sm: "row" },
+                  flexDirection: { xs: "row", sm: isArabic?"row-reverse":"row" },
                   alignItems: { xs: "flex-start", sm: "center" },
                   justifyContent: "space-between",
                   width: "100%",
                   gap: 1,
                 }}
               >
-                <Typography variant="subtitle1" sx={{ fontWeight: 600, width: { xs: "100%", sm: "40%" }, fontSize: { xs: "0.9rem", sm: "1rem" } }}>
+                <Typography variant="subtitle1" display={"flex"} justifyContent={isArabic?"flex-end":"flex-start"}  sx={{ fontWeight: 600, width: { xs: "100%", sm: "100%" }, fontSize: { xs: "0.9rem", sm: "1rem" } }}>
                   {project.Title}
                 </Typography>
                 <Typography
@@ -302,9 +302,9 @@ const ManageBids: React.FC = () => {
                 </Typography>
               </Box>
 
-              <Box sx={{ display: "flex", justifyContent: "flex-start", width: "100%" }}>
-                <Typography variant="caption" sx={{ color: "gray", fontSize: { xs: "0.65rem", sm: "0.75rem" } }}>
-                  Submitted On {project.SubmittedOn}
+              <Box sx={{ display: "flex", justifyContent: isArabic?"flex-end":"flex-start", width: "100%" }}>
+                <Typography variant="caption" sx={{ color: "gray", fontSize: { xs: "0.65rem", sm: "0.75rem" },display:"flex",flexDirection:isArabic?"row-reverse":"row" }}>
+                  <strong>{t("SubmittedOn")}</strong> {project.SubmittedOn}
                 </Typography>
               </Box>
 
@@ -312,7 +312,7 @@ const ManageBids: React.FC = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
+                  flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
                   justifyContent: "space-between",
                   gap: 2,
                   mt: 2,
@@ -327,13 +327,13 @@ const ManageBids: React.FC = () => {
                     p: { xs: 1.5, sm: 2 },
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <AttachMoneyIcon sx={{ fontSize: 16, color: theme.palette.primary.main }} />
-                    <Typography variant="body2" sx={{ fontWeight: 500, fontSize: { xs: "0.75rem", sm: "0.875rem" } }}>
-                      Your Proposed Budget
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1,flexDirection:isArabic?"row-reverse":"row" }}>
+                    <AttachMoneyIcon sx={{ fontSize: 16, color: theme.palette.primary.main,display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }} />
+                    <Typography variant="body2" sx={{ fontWeight: 500, fontSize: { xs: "0.75rem", sm: "0.875rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
+                      {t("ProposedBudget")}
                     </Typography>
                   </Box>
-                  <Typography sx={{ ml: 3, mt: 0.5, fontWeight: 600, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
+                  <Typography sx={{ ml: 3, mt: 0.5, fontWeight: 600, fontSize: { xs: "0.85rem", sm: "0.95rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
                     {project.Budget}
                   </Typography>
                 </Box>
@@ -346,13 +346,13 @@ const ManageBids: React.FC = () => {
                     p: { xs: 1.5, sm: 2 },
                   }}
                 >
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <AccessTimeIcon sx={{ fontSize: 16, color: theme.palette.primary.main }} />
-                    <Typography variant="body2" sx={{ fontWeight: 500, fontSize: { xs: "0.75rem", sm: "0.875rem" } }}>
-                      Your Proposed Timeline
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1,flexDirection:isArabic?"row-reverse":"row" }}>
+                    <AccessTimeIcon sx={{ fontSize: 16, color: theme.palette.primary.main,display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }} />
+                    <Typography variant="body2" sx={{ fontWeight: 500, fontSize: { xs: "0.75rem", sm: "0.875rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
+                      {t("ProposedTimeline")}
                     </Typography>
                   </Box>
-                  <Typography sx={{ ml: 3, mt: 0.5, fontWeight: 600, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
+                  <Typography sx={{ ml: 3, mt: 0.5, fontWeight: 600, fontSize: { xs: "0.85rem", sm: "0.95rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
                     {project.Timeline}
                   </Typography>
                 </Box>
@@ -368,10 +368,10 @@ const ManageBids: React.FC = () => {
                   width: "100%",
                 }}
               >
-                <Typography variant="body2" fontWeight={500} sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" } }}>
-                  Your Cover Letter:
+                <Typography variant="body2" fontWeight={500} sx={{ fontSize: { xs: "0.8rem", sm: "0.875rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
+                  {t("CoverLetter")}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: "0.75rem", sm: "0.825rem" } }}>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: "0.75rem", sm: "0.825rem" },display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
                   {coverLetterPreview}
                 </Typography>
               </Box>

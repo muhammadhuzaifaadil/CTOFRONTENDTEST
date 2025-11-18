@@ -69,7 +69,7 @@ useEffect(() => {
   const token = localStorage.getItem("accessToken");
   if (!token) return; // ⛔ Skip if logged out
     try {
-      const res = await apiClient.get("https://cto.sa/projects");
+      const res = await apiClient.get("/projects");
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
@@ -92,7 +92,7 @@ useEffect(() => {
     if (!token || !user?.id) return;
 
     try {
-      const res = await apiClient.get(`https://cto.sa/projects/buyersummary/${user.id}`);
+      const res = await apiClient.get(`/projects/buyersummary/${user.id}`);
 
       if (res.data?.Success && res.data?.Data) {
         setProjectSummary(res.data.Data);

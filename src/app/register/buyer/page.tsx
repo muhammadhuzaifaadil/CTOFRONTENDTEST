@@ -24,6 +24,8 @@ import RegisterLayout from "@/app/layouts/RegisterLayout";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import TermsAndConditionsModal from "@/app/components/TermsandConditions";
+import PhoneNumberFields from "@/app/components/PhoneNumberField";
+import InputFileUpload from "@/app/components/InputFileUpload";
 const BuyerRegister: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
@@ -71,9 +73,45 @@ const BuyerRegister: React.FC = () => {
   const {isArabic,toggleLanguage,locale} = useContext(LanguageContext)
   const t = useTranslations("BuyerRegister")
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [alertSuccess, setAlertSuccess] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const res = await apiClient.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return res.data.Data.url;
+    } catch (err) {
+      console.error('File upload failed:', err);
+      alert('File upload failed. Please try again.');
+      return null;
+    }
+  };
+const validateFile = (file: File, allowed: string[], maxMB: number) => {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!ext || !allowed.includes(ext)) {
+      alert("Invalid file format. Allowed: " + allowed.join(", ").toUpperCase());
+      return false;
+    }
+    if (file.size > maxMB * 1024 * 1024) {
+      alert(`File size exceeds maximum limit of ${maxMB}MB.`);
+      return false;
+    }
+    return true;
+  };
+
+ const handleProfilePhotoSelect = (file: File | null) => {
+  if (file && validateFile(file, ["jpg", "jpeg", "png"], 2)) {
+    setProfilePhoto(file);
+  } else {
+    setProfilePhoto(null);
+  }
+};
 const handleFieldError = (field: string, hasError: boolean) => {
   setFieldErrors((prev) => ({ ...prev, [field]: hasError }));
 };
@@ -96,15 +134,16 @@ const handleFieldError = (field: string, hasError: boolean) => {
 
   // 🔍 Check for missing required fields
   const requiredFields = [
-    "firstName", "lastName", "email", "phoneCode", "phoneNumber",
+    "firstName", "lastName", "email", 
+    "phoneCode", "phoneNumber",
     "city", "country", "password", "confirmPassword"
   ];
  const requiredFieldsArabic = [
   "الاسم الأول",
   "اسم العائلة",
   "البريد الإلكتروني",
-  "رمز الهاتف",
-  "رقم الهاتف",
+  // "رمز الهاتف",
+  // "رقم الهاتف",
   "المدينة",
   "الدولة",
   "كلمة المرور",
@@ -115,13 +154,16 @@ const handleFieldError = (field: string, hasError: boolean) => {
 
   const missing = requiredFields.filter((f) => !formData[f]);
   if (missing.length > 0) {
+    console.log("missing",missing)
     alert(`Please fill all required fields: ${missing.join(", ")}`);
+    
     return;
   }
 
   // 🔍 Check if any field has validation errors
   const hasErrors = Object.values(fieldErrors).some((err) => err === true);
   if (hasErrors) {
+    console.log(hasErrors)
     alert("Please fix the highlighted errors before submitting.");
     return;
   }
@@ -135,6 +177,9 @@ const handleFieldError = (field: string, hasError: boolean) => {
   setIsSubmitting(true);
 
   try {
+
+    const logoUrl = profilePhoto ? await uploadFile(profilePhoto) : "";
+
     const payload = {
       role: "buyer", // or "seller"
       user: {
@@ -156,6 +201,7 @@ const handleFieldError = (field: string, hasError: boolean) => {
             name: formData.companyName,
             websiteUrl: formData.companyUrl,
             businessCategory: formData.category,
+            logoUrl: logoUrl || "",
           }
         : undefined,
       acceptedTerms: acceptedTerms,
@@ -214,7 +260,7 @@ const handleFieldError = (field: string, hasError: boolean) => {
 >
   {/* Back Button */}
   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-    <Button onClick={() => router.push("/")} sx={{ minWidth: "auto", p: 0.5 }}>
+    <Button onClick={() => router.push("/welcome")} sx={{ minWidth: "auto", p: 0.5 }}>
       <ArrowBackIcon sx={{ color: "white" }} />
     </Button>
     <Typography
@@ -431,9 +477,26 @@ const handleFieldError = (field: string, hasError: boolean) => {
       fieldName="phoneCode"
       sx={{width:"120px"}}
     />
+   {/* <PhoneNumberFields
+  isArabic={isArabic}
+  t={t}
+  phoneCode={formData.phoneCode}
+  phoneNumber={formData.phoneNumber}
+  onPhoneCodeChange={(value) =>
+    setFormData((prev) => ({ ...prev, phoneCode: value }))
+  }
+  onPhoneNumberChange={(value) =>
+    setFormData((prev) => ({ ...prev, phoneNumber: value }))
+  }
+  onPhoneError={(field, hasError) =>
+    setFieldErrors((prev) => ({ ...prev, [field]: hasError }))
+  }
+/> */}
+
+
   </Box>
 
-  <Box sx={{ flexBasis: { xs: "100%", md: "70%" } }}>
+  <Box sx={{ flexBasis: { xs: "100%", md: "70%" } }}> 
     <CustomTextField
       label={t("PersonalInfoPhoneNumber")}
       isArabic={isArabic}
@@ -446,6 +509,8 @@ const handleFieldError = (field: string, hasError: boolean) => {
       fieldName="phoneNumber"
     />
   </Box>
+
+  
 </Box>
 
            
@@ -461,8 +526,9 @@ const handleFieldError = (field: string, hasError: boolean) => {
               isArabic={isArabic}
               placeholder = "Riyadh"
               required
-              minChar={5}
+              minChar={3}
               maxChar={50}
+              isAlphabetOnly={true}
               unique
               value={formData.city}
               onChange={handleFieldChange("city")}
@@ -473,6 +539,7 @@ const handleFieldError = (field: string, hasError: boolean) => {
     fullWidth
     label={t("PersonalInfoCountry")}
     isArabic={isArabic}
+    required
     isCountry
     placeholder="Select Country"
     value={formData.country}
@@ -582,7 +649,6 @@ const handleFieldError = (field: string, hasError: boolean) => {
               label={t("CompanyName")}
               isArabic={isArabic}
               placeholder="Your Company Ltd."
-              required
               value={formData.companyName}
               onChange={handleFieldChange("companyName")}
             />
@@ -594,7 +660,15 @@ const handleFieldError = (field: string, hasError: boolean) => {
               value={formData.companyUrl}
               onChange={handleFieldChange("companyUrl")}
             />
+            
           </Box>
+
+             <InputFileUpload
+                sx={{display:"flex",width:"100%",textAlign:"center"}}
+                text={t("Logo")}
+                onFileSelect={handleProfilePhotoSelect}
+                isArabic={isArabic}
+              />
            {/* Terms */}
            <Box sx={{backgroundColor:theme.palette.grey[200],borderRadius:3,mt:1}}>
           

@@ -16,7 +16,10 @@ import LockIcon from "@mui/icons-material/Lock"; // 🔒 Secure Escrow System
 import GavelIcon from "@mui/icons-material/Gavel"; // ⚖️ Technical Arbitration
 import GroupsIcon from "@mui/icons-material/Groups"; // 👥 Platform Management
 import PhoneIcon from "@mui/icons-material/Phone";
+import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined';
 import { Tajawal } from "next/font/google";
+import { Group, WorkOutlineOutlined } from "@mui/icons-material";
+import theme from "../theme/theme";
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
@@ -139,7 +142,7 @@ const Landing: React.FC = () => {
       </Box>
 
       {/* ✅ TAGLINE SECTION */}
-      <Box
+      {/* <Box
         ref={taglineRef}
         sx={{
           display: "flex",
@@ -151,9 +154,18 @@ const Landing: React.FC = () => {
           color: "#fff",
           px: { xs: 2, sm: 4, md: 8 },
           py: { xs: 6, md: 10 },
-          background: "linear-gradient(135deg, #4C5EFF 0%, #6A7CFF 100%)",
+          // background: "linear-gradient(135deg, #4C5EFF 0%, #6A7CFF 100%)",
+          backgroundImage: `url('/cto/tagbg.jpg')`, // 👈 path to your image
+    backgroundSize: "cover",                       // makes it cover the full area
+    backgroundPosition: "fixed",                  // centers the image
+    backgroundRepeat: "no-repeat",                 // prevents tiling
+    backgroundAttachment: "fixed",  
         }}
       >
+        <Box display={"flex"} flexDirection={"row"} sx={{borderRadius:2,backgroundColor:"black"}}>
+          <ShieldIcon sx={{width:"5", height:"3"}} />
+          <Typography>Trusted Project Delivery Platform in Saudi Arabia</Typography>
+        </Box>
         <Typography
           variant="h3"
           sx={{
@@ -194,6 +206,7 @@ const Landing: React.FC = () => {
          {t("Home_Heading2")}
         </Typography>
 
+        <Box display={"flex"} flexDirection={"row"}>
         <Button
           variant="contained"
           sx={{
@@ -212,7 +225,226 @@ const Landing: React.FC = () => {
         >
           {t("NB_GETSTARTED_A")}
         </Button>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: "#6970FF",
+            color: "#fff",
+            borderRadius: "30px",
+            px: { xs: 3, sm: 4 },
+            py: { xs: 1, sm: 1.3 },
+            fontWeight: 600,
+            fontFamily:isArabic?"Tajawal":"sans-serif",
+            textTransform: "none",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            "&:hover": { bgcolor: "#5459FD" },
+          }}
+          onClick={() => router.push("/welcome")}
+        >
+          Learn More
+        </Button>
+        </Box>
+        <Box display={"flex"} flexDirection={"row"} gap={3}>
+        <Box display={"flex"} flexDirection={"column"}>
+          <Group />
+          <Typography>Three User Types</Typography>
+          <Typography>Buyer, Sellers and Quality Experts</Typography>
+
+        </Box>
+
+<Box display={"flex"} flexDirection={"column"}>
+          <Group />
+          <Typography>Three User Types</Typography>
+          <Typography>Buyer, Sellers and Quality Experts</Typography>
+
+        </Box>
+        <Box display={"flex"} flexDirection={"column"}>
+          <Group sx={{display:"flex", justifyContent:"center",alignItems:"center"}}/>
+          <Typography>Three User Types</Typography>
+          <Typography>Buyer, Sellers and Quality Experts</Typography>
+
+        </Box>  
+        </Box>
+      </Box> */}
+<Box
+  ref={taglineRef}
+  sx={{
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: { xs: "80vh", md: "100vh" },
+    textAlign: "center",
+    color: "#fff",
+    px: { xs: 2, sm: 4, md: 8 },
+    py: { xs: 6, md: 10 },
+    backgroundImage: `url('/cto/tagbg.jpg')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    backgroundAttachment: "fixed",
+    
+  }}
+>
+  {/* Trusted badge */}
+  <Box
+    sx={{
+      display: "flex",
+      alignItems: "center",
+      gap: 1,
+      bgcolor: "rgba(255, 255, 255, 0)",
+          backdropFilter: "blur(6px)",
+      px: 2.5,
+      py: 0.8,
+      borderRadius: 50,
+      mb: 3,
+    }}
+  >
+    <ShieldOutlinedIcon sx={{ fontSize: 20 }} />
+    <Typography sx={{ fontSize: "1.2rem"}}>
+      {t("Trusted")}
+    </Typography>
+  </Box>
+
+  {/* Headings */}
+  <Typography
+    variant="h3"
+    sx={{
+      fontWeight: 700,
+      fontSize: { xs: "1.8rem", sm: "2.4rem", md: "3rem", lg: "3.5rem" },
+      mb: 1,
+      fontFamily: isArabic ? "Tajawal" : "sans-serif",
+    }}
+  >
+    {t("Home_Heading_11")}
+  </Typography>
+
+  <Typography
+    variant="h2"
+    sx={{
+      fontWeight: 700,
+      fontSize: { xs: "2.2rem", sm: "2.8rem", md: "3.5rem", lg: "4rem" },
+      mb: 3,
+      fontFamily: isArabic ? "Tajawal" : "sans-serif",
+    }}
+  >
+    {t("Home_Heading_12")}
+  </Typography>
+
+  {/* Subtext */}
+  <Typography
+    variant="subtitle1"
+    sx={{
+      color: "#f1f1f1",
+      maxWidth: "700px",
+      mb: 4,
+      lineHeight: 1.6,
+      fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.55rem" },
+      fontFamily: isArabic ? "Tajawal" : "sans-serif",
+      opacity: 1.8,
+    }}
+  >
+    {t("Tagline")}
+  </Typography>
+
+  {/* Buttons */}
+  <Box sx={{ display: "flex", gap: 2, mb: 6,flexDirection:isArabic?"row-reverse":"row" }}>
+    <Button
+      variant="contained"
+      sx={{
+        bgcolor: "#6970FF",
+        color: "#fff",
+        borderRadius: "30px",
+        px: { xs: 3, sm: 4 },
+        py: { xs: 1, sm: 1.3 },
+        fontWeight: 600,
+        fontFamily: isArabic ? "Tajawal" : "sans-serif",
+        textTransform: "none",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+        "&:hover": { bgcolor: "#5459FD" },
+      }}
+      onClick={() => router.push("/welcome")}
+    >
+      {t("NB_GETSTARTED_A")}
+    </Button>
+
+    <Button
+      variant="outlined"
+      sx={{
+        borderRadius: "30px",
+        px: { xs: 3, sm: 4 },
+        py: { xs: 1, sm: 1.3 },
+        fontWeight: 600,
+        fontFamily: isArabic ? "Tajawal" : "sans-serif",
+        textTransform: "none",
+        borderColor: "#fff",
+        backgroundColor:"#fff",
+        color: "#5459FD",
+        // "&:hover": { bgcolor: "rgba(255,255,255,0.1)" },
+      }}
+    >
+      {t("LearnMore")}
+    </Button>
+  </Box>
+
+  {/* Feature boxes */}
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
+      gap: 3,
+      justifyContent: "center",
+      alignItems: "center",
+      mt: 2,
+    }}
+  >
+    {[
+      {
+        icon: <Group sx={{fontSize:50}}/>,
+        title: `${t("BoxHeading1")}`,
+        subtitle: `${t("BoxContent1")}`,
+      },
+      {
+        icon: <WorkOutlineOutlined  sx={{color: "#15ef74ff",fontSize:50}}/>,
+        title: `${t("BoxHeading2")}`,
+        subtitle: `${t("BoxContent2")}`,
+      },
+      {
+        icon:     <ShieldOutlinedIcon sx={{ color: "#FFD700", fontSize: 50 }} />,
+        title: `${t("BoxHeading3")}`,
+        subtitle: `${t("BoxContent3")}`,
+      },
+    ].map((item, index) => (
+      <Box
+        key={index}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 1,
+          p: 3,
+          borderRadius: 3,
+          bgcolor: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(6px)",
+          minWidth: { xs: "80%", sm: 220 },
+        }}
+      >
+        {item.icon}
+        <Typography
+          sx={{ fontWeight: 600, color: "#fff", fontSize: "1rem", mt: 1 }}
+        >
+          {item.title}
+        </Typography>
+        <Typography sx={{ color: "#ddd", fontSize: "0.9rem" }}>
+          {item.subtitle}
+        </Typography>
       </Box>
+    ))}
+  </Box>
+</Box>
+
+
 
       <Divider />
 

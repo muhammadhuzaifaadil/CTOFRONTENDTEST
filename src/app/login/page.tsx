@@ -1,10 +1,11 @@
 "use client"
-import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslations } from "next-intl";
 import { LanguageContext } from "../contexts/LanguageContext";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 const Login: React.FC = () => {
     const router = useRouter();
@@ -12,12 +13,15 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    
     const handleLogin = async () => {
     if (!email || !password) return alert("Enter email and password");
     setLoading(true);
     try {
       console.log("trying",email,password);
       await login(email, password);
+      // useFCM(user?.id ?? null);
       // Redirect handled inside login based on role
     } catch (err: any) {
       alert(err.response?.data?.message || "Login failed");
@@ -25,6 +29,7 @@ const Login: React.FC = () => {
       setLoading(false);
     }
   };
+
   const {isArabic,locale,toggleLanguage} = useContext(LanguageContext)
   const t = useTranslations("Login");
   return (
@@ -168,10 +173,11 @@ const Login: React.FC = () => {
 />
 
 
-          <TextField
+          {/* <TextField
             label={`${t("Password")}`}
             type="password"
             variant="outlined"
+            
             required
             fullWidth
             value={password}
@@ -203,7 +209,51 @@ const Login: React.FC = () => {
       },
     },
   }}
-          />
+          /> */}
+
+      <TextField
+  label={t("Password")}
+  type={showPassword ? "text" : "password"}
+  variant="outlined"
+  required
+  fullWidth
+  value={password}
+  onChange={(e) => setPassword(e.target.value)}
+  sx={{
+    direction: isArabic ? "rtl" : "ltr", // flip entire field for RTL
+  }}
+  InputLabelProps={{
+    sx: {
+      right: isArabic ? 18 : "auto",
+      left: isArabic ? "auto" : 1,
+      transformOrigin: isArabic ? "top right" : "top left",
+      textAlign: isArabic ? "right" : "left",
+    },
+  }}
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position={isArabic ? "start" : "end"}>
+        <IconButton sx={{display:'flex',ml:isArabic?"2px":0}}
+          onClick={() => setShowPassword((prev) => !prev)}
+          edge={isArabic ? "start" : "end"}
+        >
+          {showPassword ? <VisibilityOff /> : <Visibility />}
+        </IconButton>
+      </InputAdornment>
+    ),
+    sx: {
+      "& .MuiOutlinedInput-input": {
+        paddingLeft: isArabic ? "40px" : undefined, // space for icon on left
+        paddingRight: !isArabic ? "40px" : undefined, // space for icon on right
+        textAlign: isArabic ? "right" : "left",
+      },
+    },
+  }}
+/>
+
+
+
+
 
           <Box
             sx={{

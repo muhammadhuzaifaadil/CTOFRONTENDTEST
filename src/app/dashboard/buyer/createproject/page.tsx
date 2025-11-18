@@ -68,7 +68,7 @@ const [skillsRequired, setSkillsRequired] = useState<string[]>([]);
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log(res.data)
-      return res.data.url;
+      return res.data.Data.url;
     } catch (err) {
       console.error('File upload failed:', err);
       alert('File upload failed. Please try again.');
@@ -88,7 +88,7 @@ const [skillsRequired, setSkillsRequired] = useState<string[]>([]);
     return true;
   };
 const handleUpload = (file: File | null) => {
-  if (file && validateFile(file, ["jpg", "jpeg", "png"], 2)) {
+  if (file && validateFile(file, ["jpg", "jpeg", "png","pdf","docx","doc"], 2)) {
     setProfilePhoto(file);
   } else {
     setProfilePhoto(null);
@@ -98,41 +98,11 @@ useEffect(()=>{
 setTimeline(`${timelineNumber} ${timelineString}`);
 },[timelineString,timelineString]);
 
-// const handleSubmit = async (status: "Draft" | "Published") => {
-//   if (!user) return alert("You must be logged in");
-  
-//   try {
-    
-//     const formData = new FormData();
-//     formData.append("title", title);
-//     formData.append("outline", outline);
-//     formData.append("requirements", requirements);
-//     formData.append("budgetRange", budgetRange);
-//     formData.append("timeline", timeline);
-//     formData.append("status", status);
-
-//     // ✅ stringify the skills array properly
-//     formData.append("skillsRequired", JSON.stringify(skillsRequired));
-
-//     if (profilePhoto) formData.append("attachment", profilePhoto);
-
-//     const res = await apiClient.post(`/projects`, formData, {
-//       headers: { "Content-Type": "multipart/form-data" },
-//     });
-
-//     alert("✅ Project created successfully!");
-//     router.push("/dashboard/buyer");
-//   } catch (err: any) {
-//     console.error(err);
-//     alert("❌ Failed to create project: " + (err.response?.data?.message || err.message));
-//   }
-// };
-
 const handleSubmit = async (status: "Draft" | "Published") => {
   if (!user) return alert("You must be logged in");
 
   try {
-    let attachmentUrl: string | null = null;
+    let attachmentUrl: any = null;
 
     // ✅ If there's a file, upload first
     if (profilePhoto) {
@@ -141,6 +111,7 @@ const handleSubmit = async (status: "Draft" | "Published") => {
         alert("File upload failed. Please try again.");
         return;
       }
+      
     }
 
     const formData = new FormData();
@@ -387,7 +358,7 @@ return (
       label={`${t("BudgetLabel")}`}
       value={budgetRange}
       onChange={setBudgetRange}
-      isArabic
+      isArabic={isArabic}
     />
 
     {/* Skills Required */}
@@ -482,7 +453,7 @@ return (
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
+        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
         justifyContent: "space-between",
         width: "100%",
         gap: { xs: 2, sm: 1 },
@@ -496,6 +467,7 @@ return (
           fullWidth
           value={timelineNumber}
           onChange={(e) => setTimelineNumber(e.target.value)}
+          isArabic={isArabic}
         />
       </Box>
 
@@ -509,6 +481,8 @@ return (
           label=""
           value={timelineString}
           onChange={setTimeLineString}
+          isArabic={isArabic}
+          
         />
       </Box>
     </Box>
@@ -518,7 +492,7 @@ return (
       <InputFileUpload
         text={t("UploadButtonLabel")}
         sx={{ width: "100%" }}
-        isArabic
+        isArabic={isArabic}
         onFileSelect={handleUpload}
       />
       <Typography
@@ -546,9 +520,11 @@ return (
       }}
     >
       <Button
+      onClick={()=>router.push("/dashboard/buyer")}
         sx={{
           borderRadius: 3,
           backgroundColor: "#f1f1f1",
+          
           width: "100%",
           color: "black",
           height: { xs: "36px", sm: "42px" },
