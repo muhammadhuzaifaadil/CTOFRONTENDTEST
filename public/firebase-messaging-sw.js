@@ -2,13 +2,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDwGJSizAVJ0Ms2TjyJNZFId37YySw0lzk",
-  authDomain: "cto-pushnotifications.firebaseapp.com",
-  projectId: "cto-pushnotifications",
-  storageBucket: "cto-pushnotifications.firebasestorage.app",
-  messagingSenderId: "924786648860",
-  appId: "1:924786648860:web:68b4c7675a2266011d7cd9",
-  measurementId: "G-NHZ9BLBM4V"
+  apiKey: "AIzaSyB6QNlcUWzaVkrA2IKB8hPl5KqRC-R-MbI",
+  authDomain: "ctoasservice-265b4.firebaseapp.com",
+  projectId: "ctoasservice-265b4",
+  storageBucket: "ctoasservice-265b4.firebasestorage.app",
+  messagingSenderId: "928213608236",
+  appId: "1:928213608236:web:3d6a899b0ed7da1bbfae89",
+  measurementId: "G-F2P34SPDE6"
 });
 
 const messaging = firebase.messaging();
@@ -21,4 +21,9 @@ messaging.onBackgroundMessage(function(payload) {
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
-});
+}
+
+
+);
+
+

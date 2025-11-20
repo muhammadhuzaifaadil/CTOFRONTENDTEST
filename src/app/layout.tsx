@@ -5,6 +5,9 @@ import ClientLayout from "./authclientlayout";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from "next-intl/server";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import FirebaseNotifications from "./components/firebasenotifications";
+import { Toaster } from "sonner";
+import FirebaseNotificationProvider from "./contexts/notificationsprovider";
 
 export const metadata: Metadata = {
   title: "CTO",
@@ -27,6 +30,8 @@ export default async function RootLayout({
     <html lang={locale} >
            {/* <html lang="en"> */}
       <body suppressHydrationWarning={true}>
+      <Toaster richColors position="top-right" />
+        <FirebaseNotificationProvider /> 
         <LanguageProvider>
         <ThemeRegistry>
           <ClientLayout>

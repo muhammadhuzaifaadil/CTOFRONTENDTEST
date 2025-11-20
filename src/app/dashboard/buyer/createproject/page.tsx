@@ -10,6 +10,10 @@ import {
   useTheme,
   Container,
   CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Navbar from "../../../components/NavBar";
 import { useAuth } from "@/hooks/useAuth";
@@ -26,6 +30,9 @@ import SendIcon from '@mui/icons-material/Send';
 import apiClient from "@/api/apiClient";
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
+import MobileApp from "@/app/components/createprojectforms/MobileApp";
+import WebsiteApp from "@/app/components/createprojectforms/WebApp";
+
 
 const skills = [
   "Coding",
@@ -39,14 +46,19 @@ const skills = [
   "UI",
   "Web Experts",
 ];
+const formTypes = [
+  { id: 1, type: "MobileApp" },
+  { id: 2, type: "WebApp" },
+  { id: 3, type: "ERP" },
+];
 const CreateProject: React.FC = () => {
 const theme = useTheme();
 const router = useRouter();
 const { user, isAuthenticated } = useAuth();
 const [selectedCategory, setSelectedCategory] = useState("");
 const [selectedDuration, setSelectedDuration] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
-
+const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
+const [formType, setFormType] = useState("");
 // api states
 
 const [title, setTitle] = useState("");
@@ -98,48 +110,85 @@ useEffect(()=>{
 setTimeline(`${timelineNumber} ${timelineString}`);
 },[timelineString,timelineString]);
 
+// const handleSubmit = async (status: "Draft" | "Published") => {
+//   if (!user) return alert("You must be logged in");
+
+//   try {
+//     let attachmentUrl: any = null;
+
+//     // ✅ If there's a file, upload first
+//     if (profilePhoto) {
+//       attachmentUrl = await uploadFile(profilePhoto);
+//       if (!attachmentUrl) {
+//         alert("File upload failed. Please try again.");
+//         return;
+//       }
+      
+//     }
+
+//     const formData = new FormData();
+//     formData.append("title", title);
+//     formData.append("outline", outline);
+//     formData.append("requirements", requirements);
+//     formData.append("budgetRange", budgetRange);
+//     formData.append("timeline", timeline);
+//     formData.append("status", status);
+//     formData.append("skillsRequired", JSON.stringify(skillsRequired));
+
+//     // ✅ Use uploaded URL instead of raw file
+//     if (attachmentUrl) {
+//       formData.append("attachment", attachmentUrl);
+//     }
+
+//     const res = await apiClient.post(`/projects`, formData, {
+//       headers: { "Content-Type": "multipart/form-data" },
+//     });
+
+//     alert("✅ Project created successfully!");
+//     router.push("/dashboard/buyer");
+//   } catch (err: any) {
+//     console.error(err);
+//     alert(
+//       "❌ Failed to create project: " +
+//         (err.response?.data?.message || err.message)
+//     );
+//   }
+// };
 const handleSubmit = async (status: "Draft" | "Published") => {
   if (!user) return alert("You must be logged in");
 
   try {
-    let attachmentUrl: any = null;
+    let attachmentUrl: string | null = null;
 
-    // ✅ If there's a file, upload first
     if (profilePhoto) {
       attachmentUrl = await uploadFile(profilePhoto);
       if (!attachmentUrl) {
         alert("File upload failed. Please try again.");
         return;
       }
-      
     }
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("outline", outline);
-    formData.append("requirements", requirements);
-    formData.append("budgetRange", budgetRange);
-    formData.append("timeline", timeline);
-    formData.append("status", status);
-    formData.append("skillsRequired", JSON.stringify(skillsRequired));
+    const payload = {
+      title,
+      outline,
+      requirements,
+      budgetRange,
+      timeline,
+      status,
+      skillsRequired,
+      attachment: attachmentUrl, // now just string URL
+    };
 
-    // ✅ Use uploaded URL instead of raw file
-    if (attachmentUrl) {
-      formData.append("attachment", attachmentUrl);
-    }
-
-    const res = await apiClient.post(`/projects`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+    const res = await apiClient.post(`/projects`, payload, {
+      headers: { "Content-Type": "application/json" },
     });
 
     alert("✅ Project created successfully!");
     router.push("/dashboard/buyer");
+
   } catch (err: any) {
     console.error(err);
-    alert(
-      "❌ Failed to create project: " +
-        (err.response?.data?.message || err.message)
-    );
+    alert("❌ Failed to create project: " + (err.response?.data?.message || err.message));
   }
 };
 
@@ -506,6 +555,39 @@ return (
         {t("DocCheck")}
       </Typography>
     </Box>
+
+    {/* Dropdown */}
+      <FormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel id="form-type-label">Select Form Type</InputLabel>
+        <Select
+          labelId="form-type-label"
+          value={formType}
+          label="Select Form Type"
+          onChange={(e) => setFormType(e.target.value)}
+        >
+          {formTypes.map((item) => (
+            <MenuItem key={item.id} value={item.type}>
+              {item.type}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+{/* Blue Divider */}
+              <Box>
+                <Divider
+                  sx={{
+                    mt: 1,
+                    borderBottomWidth: 3,
+                    borderColor: theme.palette.primary.main,
+                    opacity: 0.7,
+                    width: "100%",
+                  }}
+                />
+              </Box>   
+{/* Conditional Rendering of Forms */}
+      {formType === "MobileApp" && <MobileApp />}
+      {formType === "WebApp" && <WebsiteApp />}
+      {/* {formType === "ERP" && <ERPApp />} */}
 
     {/* Buttons */}
     <Box
