@@ -32,6 +32,8 @@ import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import MobileApp from "@/app/components/createprojectforms/MobileApp";
 import WebsiteApp from "@/app/components/createprojectforms/WebApp";
+import { AiMlDetailsForm, DigitalMarketingDetailsForm, ErpSystemDetailsForm, MobileAppDetailsForm, UiUxDesignDetailsForm, WebsiteAppDetailsForm } from "@/app/components/createprojectforms/AIML";
+import useTemplateQuestions from "@/app/contexts/useTemplateQuestion";
 
 
 const skills = [
@@ -46,11 +48,39 @@ const skills = [
   "UI",
   "Web Experts",
 ];
-const formTypes = [
-  { id: 1, type: "MobileApp" },
-  { id: 2, type: "WebApp" },
-  { id: 3, type: "ERP" },
-];
+
+
+// Put these near the top of the file
+const sectionHeaderSx = {
+  display: "flex",
+  width: "100%",
+  borderRadius: "12px",
+  px: 2,
+  py: 1.5,
+  mb: 2,
+  background:
+    "linear-gradient(90deg, rgba(68,76,247,0.1) 0%, rgba(91,95,255,0.1) 100%)",
+};
+
+const pillSelectSx = {
+  borderRadius: "999px",
+  bgcolor: "#F3F3F7", // <-- Match your screenshot's grey
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: "transparent",
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "transparent",
+  },
+  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "transparent",
+    boxShadow: "0 0 0 2px rgba(68,76,247,0.18)",
+  },
+  "& .MuiSelect-select": {
+    py: 1.3,
+    px: 2,
+  },
+};
+
 const CreateProject: React.FC = () => {
 const theme = useTheme();
 const router = useRouter();
@@ -59,6 +89,11 @@ const [selectedCategory, setSelectedCategory] = useState("");
 const [selectedDuration, setSelectedDuration] = useState("");
 const [profilePhoto, setProfilePhoto] = useState<File | null>(null);
 const [formType, setFormType] = useState("");
+const [uiuxRequirement, setUiuxRequirement] = useState(""); 
+const [postLaunchSupport,setPostLaunchSupport] = useState("");
+const [thirdPartyIntegrations,setThirdPartyIntegrations] = useState("");
+const [targetUser,setTargetUser] = useState("");
+const [techStack,setTechStack] = useState("");
 // api states
 
 const [title, setTitle] = useState("");
@@ -68,7 +103,13 @@ const [budgetRange, setBudgetRange] = useState("");
 const [timeline, setTimeline] = useState("");
 const [timelineNumber,setTimelineNumber] = useState("");
 const [timelineString,setTimeLineString] = useState("");
+const [templateKey, setTemplateKey] = useState<number | null>(null);
 const [skillsRequired, setSkillsRequired] = useState<string[]>([]);
+const { questions, addQuestion } = useTemplateQuestions();
+const [formTypes,setFormTypes]=useState<any>([]);
+// const [formTypes, setFormTypes] = useState([]);
+
+
  const { isArabic, locale } = useContext(LanguageContext);
   const t = useTranslations("CreateProject");
   const uploadFile = async (file: File): Promise<string | null> => {
@@ -110,6 +151,33 @@ useEffect(()=>{
 setTimeline(`${timelineNumber} ${timelineString}`);
 },[timelineString,timelineString]);
 
+const getFormTypes = async()=>{
+  try {
+    const response = await apiClient.get("/template");
+    console.log(response);
+    const dynamic = response.data.map((x: any) => ({
+    id: x.id,
+    type: x.name, // convert "name" → "type"
+  }));
+  setFormTypes(dynamic);
+  } catch (error) {
+    console.log(error)
+  }
+}
+useEffect(()=>{
+getFormTypes()
+},[formType])
+
+// const formTypes = [
+//   { id: 1, type: "MobileApp" },
+//   { id: 2, type: "WebApp" },
+//   { id: 3, type: "ERP" },
+//   { id: 4, type: "AI/ML" },
+//   { id: 5, type: "Digital Marketing" },
+//   { id: 6, type: "UI/UX Design"}
+//   // forms
+  
+// ];
 // const handleSubmit = async (status: "Draft" | "Published") => {
 //   if (!user) return alert("You must be logged in");
 
@@ -172,11 +240,25 @@ const handleSubmit = async (status: "Draft" | "Published") => {
       title,
       outline,
       requirements,
+      thirdPartyIntegrations,
       budgetRange,
       timeline,
+      targetUser,
+      uiuxRequirement,
+      techStack,
+      postLaunchSupport,
+
       status,
-      skillsRequired,
+
+      // skillsRequired,
       attachment: attachmentUrl, // now just string URL
+      templateId:templateKey,
+      templateQuestions: questions.map((e: any) => ({
+      questionText: e.questionText,
+      questionValue: e.questionValue,
+}))
+
+
     };
 
     const res = await apiClient.post(`/projects`, payload, {
@@ -191,7 +273,20 @@ const handleSubmit = async (status: "Draft" | "Published") => {
     alert("❌ Failed to create project: " + (err.response?.data?.message || err.message));
   }
 };
-
+// const renderForm = () => {
+//     switch (formType) {
+//       // case "MobileApp":
+//       //   return <MobileAppForm addQuestion={addQuestion} />;
+//       // case "WebApp":
+//       //   return <WebAppForm addQuestion={addQuestion} />;
+//       case "ERP":
+//         return <ErpSystemDetailsForm addQuestion={addQuestion} />;
+//       case "AI/ML":
+//         return <AiMlDetailsForm addQuestion={addQuestion} />;
+//       default:
+//         return null;
+//     }
+//   };
 return (
 <DashBoardLayout>
   {!user?(
@@ -361,217 +456,370 @@ return (
       px: { xs: 1.5, sm: 2, md: 0 },
     }}
   >
-    {/* Title Field */}
-    <CustomTextField
-      label={`${t("TitleFieldLabel")}`}
-      placeholder={`${t("TitleFieldPlaceholder")}`}
-      fullWidth
-      required
-      maxChar={150}
-      multiline
-      rows={1}
-      value={title}
-      isArabic={isArabic}
-      onChange={(e) => setTitle(e.target.value)}
-    />
+   {/* ================= BASIC PROJECT INFORMATION ================= */}
+<Box sx={{ mb: 0 }}>
+  <Box sx={sectionHeaderSx}>
+    <Typography
+      variant="subtitle1"
+      sx={{ fontWeight: 600, textAlign: isArabic ? "right" : "left" }}
+    >
+      {t("BasicProjectInformationTitle") /* ex: "Basic Project Information" */}
+    </Typography>
+  </Box>
 
-    {/* Outline */}
-    <CustomTextField
-      label={`${t("OutlineLabel")}`}
-      placeholder={`${t("OutlinePlaceholder")}`}
-      fullWidth
-      required
-      multiline
-      rows={4}
-      maxChar={700}
-      value={outline}
-      isArabic={isArabic}
-      onChange={(e) => setOutline(e.target.value)}
-    />
+  {/* Project Title */}
+  <CustomTextField
+    label={t("TitleFieldLabel")}            // ex: "Project Title"
+    placeholder={t("TitleFieldPlaceholder")} // ex: "Enter project title"
+    fullWidth
+    required
+    maxChar={150}
+    multiline
+    rows={1}
+    value={title}
+    isArabic={isArabic}
+    onChange={(e) => setTitle(e.target.value)}
+  />
 
-    {/* Requirements */}
-    <CustomTextField
-      label={`${t("RequirementsLabel")}`}
-      placeholder={`${t("RequirementsPlaceholder")}`}
-      fullWidth
-      multiline
-      rows={5}
-      maxChar={1000}
-      value={requirements}
-      isArabic={isArabic}
-      onChange={(e) => setRequirements(e.target.value)}
-    />
+  {/* Project Description (your "Outline") */}
+  <CustomTextField
+    label={t("OutlineLabel")}            // ex: "Project Description"
+    placeholder={t("OutlinePlaceholder")} // ex: "Describe your project in detail..."
+    fullWidth
+    required
+    multiline
+    rows={4}
+    maxChar={1000}
+    value={outline}
+    isArabic={isArabic}
+    onChange={(e) => setOutline(e.target.value)}
+  />
 
-    {/* Budget */}
-    <BudgetSelect
-      label={`${t("BudgetLabel")}`}
-      value={budgetRange}
-      onChange={setBudgetRange}
-      isArabic={isArabic}
-    />
+  {/* Core Features (your "Requirements") */}
+  <CustomTextField
+    label={t("RequirementsLabel")}            // ex: "Core Features"
+    placeholder={t("RequirementsPlaceholder")} // ex: "List the core features (one per line)..."
+    fullWidth
+    required
+    multiline
+    rows={5}
+    maxChar={1000}
+    value={requirements}
+    isArabic={isArabic}
+    onChange={(e) => setRequirements(e.target.value)}
+  />
 
-    {/* Skills Required */}
-   <Box sx={{ display: "flex", flexDirection: "column" }}>
-  <Typography
-    sx={{
-      fontWeight: "bold",
-      textAlign: isArabic ? "right" : "left",
-      mb: { xs: 1, sm: 0 },
-      fontSize: { xs: "14px", sm: "16px" },
-    }}
-  >
-    {t("SkillsRequired")}
-  </Typography>
+  {/* Third‑Party Integrations (Optional) */}
+  <CustomTextField
+    label={t("ThirdPartyIntegrationsLabel")}            // ex: "Third-Party Integrations (Optional)"
+    placeholder={t("ThirdPartyIntegrationsPlaceholder")} // ex: "e.g., payment gateways, chat systems, SDKs"
+    fullWidth
+    multiline
+    rows={3}
+    maxChar={700}
+    value={thirdPartyIntegrations}
+    isArabic={isArabic}
+    onChange={(e) => setThirdPartyIntegrations(e.target.value)}
+  />
+</Box>
 
+{/* ================= BUDGET & TIMELINE ================= */}
+<Box sx={{ mb: 0 }}>
+  <Box sx={sectionHeaderSx}>
+    <Typography
+      variant="subtitle1"
+      sx={{ fontWeight: 600, textAlign: isArabic ? "right" : "left" }}
+    >
+      {t("BudgetTimelineSectionTitle") /* ex: "Budget & Timeline" */}
+    </Typography>
+  </Box>
+
+  {/* Budget Type + Budget Amount (2‑column on desktop, stacked on mobile) */}
   <Box
     sx={{
       display: "flex",
-      flexDirection: "row",
-      width: "100%",
-      backgroundColor: "lightgrey",
-      justifyContent: "flex-start",
-      borderRadius: 1,
-      gap: 1,
-      height: { xs: "auto", sm: "160px" },
-      overflowX: { xs: "auto", sm: "visible" }, // horizontal scroll only on XS
-      overflowY: "hidden",
-      p: { xs: 1, sm: 2 },
-      scrollbarWidth: "none", // Firefox
-      "&::-webkit-scrollbar": { display: "none" }, // Chrome/Safari
-      scrollSnapType: { xs: "x mandatory", sm: "none" }, // smooth snap scroll for mobile
+      flexDirection: { xs: "column", sm: isArabic ? "row-reverse" : "row" },
+      gap: 2,
+      mb: 0,
     }}
   >
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: { xs: "nowrap", sm: "wrap" },
-        gap: 1,
-        width: { xs: "max-content", sm: "100%" }, // ensures scrollable width on XS
-      }}
-    >
-      {skills.map((skill) => {
-        const isSelected = skillsRequired.includes(skill);
-        return (
-          <Button
-            key={skill}
-            onClick={() =>
-              setSkillsRequired((prev) =>
-                isSelected
-                  ? prev.filter((s) => s !== skill)
-                  : [...prev, skill]
-              )
-            }
-            sx={{
-              flexShrink: 0,
-              borderRadius: 3,
-              backgroundColor: isSelected
-                ? theme.palette.primary.main
-                : "#f1f1f1",
-              color: isSelected ? "white" : theme.palette.primary.main,
-              height: { xs: "32px", sm: "40px" },
-              px: { xs: 1.5, sm: 2 },
-              fontSize: { xs: "11px", sm: "13px" },
-              boxShadow: "none",
-              whiteSpace: "nowrap",
-              textTransform: "none",
-              scrollSnapAlign: { xs: "start", sm: "none" }, // neat snapping while scrolling
-            }}
-          >
-            {skill}
-          </Button>
-        );
-      })}
+    {/* Budget Type (reuses your BudgetSelect) */}
+    <Box sx={{ width: { xs: "100%", sm: "100%" } }}>
+      <BudgetSelect
+        label={t("BudgetAmountLabel")} // ex: "Budget Type"
+        value={budgetRange}
+        onChange={setBudgetRange}
+        isArabic={isArabic}
+      />
     </Box>
+
+    {/* Budget Amount
+    <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
+      <CustomTextField
+        label={t("BudgetAmountLabel")}            // ex: "Budget Amount"
+        placeholder={t("BudgetAmountPlaceholder")} // ex: "Enter amount"
+        fullWidth
+        required
+        isNumbersOnly
+        maxChar={12}
+        // value={budgetAmount}
+        isArabic={isArabic}
+        // onChange={(e) => setBudgetAmount(e.target.value)}
+      />
+    </Box> */}
   </Box>
 
-  <Typography
-    variant="caption"
+  {/* Timeline (keeps your existing responsive logic) */}
+  <Box
     sx={{
-      mt: { xs: 0.5, sm: 1 },
-      color: "gray",
-      textAlign: isArabic ? "right" : "left",
-      fontSize: { xs: "11px", sm: "12px" },
+      display: "flex",
+      flexDirection: { xs: "column", sm: isArabic ? "row-reverse" : "row" },
+      justifyContent: "space-between",
+      width: "100%",
+      gap: { xs: 2, sm: 1 },
     }}
   >
-    {t("SkillAtleastSelection")}
-  </Typography>
-</Box>
+    <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
+      <CustomTextField
+        label={t("Timeline")}         // ex: "Timeline"
+        placeholder={t("TimelinePlaceholder")} // ex: "e.g., 2–3 months"
+        required
+        fullWidth
+        value={timelineNumber}
+        onChange={(e) => setTimelineNumber(e.target.value)}
+        isArabic={isArabic}
+        isNumbersOnly={true}
+      />
+    </Box>
 
-
-    {/* Timeline */}
     <Box
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
-        justifyContent: "space-between",
-        width: "100%",
-        gap: { xs: 2, sm: 1 },
+        width: { xs: "100%", sm: "50%" },
+        mt: { xs: 0, sm: 4.4 },
       }}
     >
-      <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
-        <CustomTextField
-          label={`${t("Timeline")}`}
-          placeholder={`${t("Duration")}`}
-          required
-          fullWidth
-          value={timelineNumber}
-          onChange={(e) => setTimelineNumber(e.target.value)}
-          isArabic={isArabic}
-        />
-      </Box>
-
-      <Box
-        sx={{
-          width: { xs: "100%", sm: "50%" },
-          mt: { xs: 0, sm: 4.4 },
-        }}
-      >
-        <DurationSelect
-          label=""
-          value={timelineString}
-          onChange={setTimeLineString}
-          isArabic={isArabic}
-          
-        />
-      </Box>
-    </Box>
-
-    {/* Attachments */}
-    <Box>
-      <InputFileUpload
-        text={t("UploadButtonLabel")}
-        sx={{ width: "100%" }}
+      {/* if you still want units (Days/Weeks/Months) */}
+      <DurationSelect
+        label=""
+        value={timelineString}
+        onChange={setTimeLineString}
         isArabic={isArabic}
-        onFileSelect={handleUpload}
       />
-      <Typography
-        variant="caption"
-        sx={{
-          color: "gray",
-          textAlign: isArabic ? "right" : "left",
-          fontSize: { xs: "11px", sm: "12px" },
-        }}
-      >
-        {t("DocCheck")}
-      </Typography>
     </Box>
+  </Box>
+</Box>
 
-    {/* Dropdown */}
-      <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel id="form-type-label">Select Form Type</InputLabel>
-        <Select
-          labelId="form-type-label"
-          value={formType}
-          label="Select Form Type"
-          onChange={(e) => setFormType(e.target.value)}
-        >
-          {formTypes.map((item) => (
-            <MenuItem key={item.id} value={item.type}>
-              {item.type}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+{/* ================= ADDITIONAL REQUIREMENTS ================= */}
+<Box sx={{ mb: 0 }}>
+  <Box sx={sectionHeaderSx}>
+    <Typography
+      variant="subtitle1"
+      sx={{ fontWeight: 600, textAlign: isArabic ? "right" : "left" }}
+    >
+      {t("AdditionalRequirementsSectionTitle") /* ex: "Additional Requirements" */}
+    </Typography>
+  </Box>
+
+  {/* Target User / Audience (Optional) */}
+  <CustomTextField
+    label={t("TargetUserLabel")}            // ex: "Target User / Audience (Optional)"
+    placeholder={t("TargetUserPlaceholder")} // ex: "e.g., Young professionals, Businesses"
+    fullWidth
+    multiline
+    rows={2}
+    maxChar={300}
+    value={targetUser}
+    isArabic={isArabic}
+    onChange={(e) => setTargetUser(e.target.value)}
+  />
+
+  {/* UI/UX Requirement (Yes/No) */}
+  <Box sx={{ mb: 2 }}>
+    <Typography
+      sx={{
+        fontWeight: "bold",
+        mb: 0.5,
+        textAlign: isArabic ? "right" : "left",
+        fontSize: { xs: "14px", sm: "16px" },
+      }}
+    >
+      {t("UiUxRequirementLabel")}{" "}
+      <span style={{ color: "red" }}>*</span>
+    </Typography>
+   
+<FormControl fullWidth size="small">
+  <Select
+    value={uiuxRequirement}
+    onChange={(e) => setUiuxRequirement(e.target.value as string)}
+    displayEmpty
+    sx={pillSelectSx}
+    renderValue={(v) =>
+      v !== "" ? v : t("SelectOptionPlaceholder")   // show placeholder
+    }
+  >
+    {/* Disabled Placeholder (shown first, cannot be selected) */}
+    <MenuItem value="" disabled>
+      {t("SelectOptionPlaceholder")}
+    </MenuItem>
+
+    <MenuItem value="yes">Yes</MenuItem>
+    <MenuItem value="no">No</MenuItem>
+  </Select>
+</FormControl>
+
+
+  </Box>
+
+  {/* Preferred Technology Stack (Optional) */}
+  <CustomTextField
+    label={t("PreferredTechStackLabel")}
+    placeholder={t("PreferredTechStackPlaceholder")} // ex: "e.g., Next.js, Node.js, Flutter, React.js"
+    fullWidth
+    multiline
+    rows={2}
+    maxChar={400}
+    value={techStack}
+    isArabic={isArabic}
+    onChange={(e) => setTechStack(e.target.value)}
+  />
+
+  {/* Post‑Launch Support Required? */}
+  <Box sx={{ mt: 1 }}>
+    <Typography
+      sx={{
+        fontWeight: "bold",
+        mb: 0.5,
+        textAlign: isArabic ? "right" : "left",
+        fontSize: { xs: "14px", sm: "16px" },
+      }}
+    >
+      {t("PostLaunchSupportLabel")}{" "}
+      <span style={{ color: "red" }}>*</span>
+    </Typography>
+    <FormControl fullWidth size="small">
+      <Select
+        value={postLaunchSupport}
+        onChange={(e) => setPostLaunchSupport(e.target.value as string)}
+        displayEmpty
+        sx={pillSelectSx}
+        renderValue={(v) =>
+          v !== "" ? (v as string) : t("SelectOptionPlaceholder")
+        }
+      >
+        <MenuItem disabled value="Select Yes or No">
+          {t("SelectOptionPlaceholder")}
+        </MenuItem>
+        <MenuItem value="yes">Yes</MenuItem>
+        <MenuItem value="no">No</MenuItem>
+      </Select>
+    </FormControl>
+  </Box>
+
+  {/* Attachments */}
+  <Box sx={{ mt: 2 }}>
+    <Typography
+      sx={{
+        fontWeight: "bold",
+        mb: 0.5,
+        textAlign: isArabic ? "right" : "left",
+        fontSize: { xs: "14px", sm: "16px" },
+      }}
+    >
+      {t("AttachmentsLabel")}{" "}
+      <Typography component="span" sx={{ color: "gray", ml: 0.5 }}>
+        {/* ({t("Optional")}) */}
+      </Typography>
+    </Typography>
+
+    <InputFileUpload
+      text={t("UploadButtonLabel")}
+      sx={{ width: "100%" }}
+      isArabic={isArabic}
+      onFileSelect={handleUpload}
+    />
+    <Typography
+      variant="caption"
+      sx={{
+        color: "gray",
+        textAlign: isArabic ? "right" : "left",
+        fontSize: { xs: "11px", sm: "12px" },
+      }}
+    >
+      {t("DocCheck") /* ex: "PDF, DOC, JPG, or PNG, maximum 10MB per file" */}
+    </Typography>
+  </Box>
+
+  {/* Skills Required – kept exactly as you wrote it */}
+  <Box sx={{ mt: 3 }}>
+    {/* your whole SkillsRequired block goes here unchanged */}
+    {/* ...existing Skills Required code... */}
+  </Box>
+
+  {/* Project Type (was "Select Form Type") */}
+  <Box sx={{ mb:0 }}>
+    <Typography
+      sx={{
+        fontWeight: "bold",
+        mb: 0.5,
+        textAlign: isArabic ? "right" : "left",
+        fontSize: { xs: "14px", sm: "16px" },
+      }}
+    >
+      {t("ProjectTypeLabel")}{" "}
+      <span style={{ color: "red" }}>*</span>
+    </Typography>
+    <FormControl fullWidth size="small">
+      {/* <Select
+        value={formType}
+        onChange={(e) => setFormType(e.target.value as string)}
+        displayEmpty
+        sx={pillSelectSx}
+        renderValue={(v) =>
+          v !== "" ? (v as string) : t("ProjectTypePlaceholder")
+        }
+      >
+        <MenuItem disabled value="">
+          {t("ProjectTypePlaceholder")}
+        </MenuItem>
+        {formTypes.map((item) => (
+          <MenuItem key={item.id} value={item.type}>
+            {item.type}
+          </MenuItem>
+        ))}
+      </Select> */}
+      <>
+      <Select
+  value={formType}
+  onChange={(e) => {
+    const value = e.target.value as string;
+    setFormType(value);
+
+    // Find ID from lookup array
+    const selected = formTypes.find((x:any) => x.type === value);
+    setTemplateKey(selected?.id ?? null);
+  }}
+  displayEmpty
+  sx={pillSelectSx}
+  renderValue={(v) =>
+    v !== "" ? (v as string) : t("ProjectTypePlaceholder")
+  }
+>
+  {/* Disabled Placeholder */}
+  <MenuItem disabled value="">
+    {t("ProjectTypePlaceholder")}
+  </MenuItem>
+
+  {/* Dynamic Items */}
+  {formTypes.map((item:any) => (
+    <MenuItem key={item.id} value={item.type}>
+      {item.type}
+    </MenuItem>
+  ))}
+</Select>
+</>
+    </FormControl>
+  </Box>
+</Box>
 {/* Blue Divider */}
               <Box>
                 <Divider
@@ -585,9 +833,12 @@ return (
                 />
               </Box>   
 {/* Conditional Rendering of Forms */}
-      {formType === "MobileApp" && <MobileApp />}
-      {formType === "WebApp" && <WebsiteApp />}
-      {/* {formType === "ERP" && <ERPApp />} */}
+      {formType === "MobileApp" && <MobileAppDetailsForm addQuestion={addQuestion} />}
+      {formType === "WebApp" && <WebsiteAppDetailsForm addQuestion={addQuestion} />}
+      {formType === "ERP" && <ErpSystemDetailsForm addQuestion={addQuestion} />}
+      {formType === "AI/ML" && <AiMlDetailsForm addQuestion={addQuestion} />}
+      {formType === "Digital Marketing" && <DigitalMarketingDetailsForm addQuestion={addQuestion} />}
+      {formType === "UI/UX Design" && <UiUxDesignDetailsForm addQuestion={addQuestion} />}
 
     {/* Buttons */}
     <Box

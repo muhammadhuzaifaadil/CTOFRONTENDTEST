@@ -346,16 +346,19 @@ const ManageProjects: React.FC = () => {
         projects.map((project, index) => (
           <Card
             key={index}
+            // onClick={() => router.push(`manageproject/${project.id}`)}
             sx={{
               display: "flex",
               p: 2,
               borderRadius: 3,
               width: { xs: "100%", sm: "95%", md: "1000px" },
-              height: { xs: "auto", sm: "auto", md: "240px" },
+              height: { xs: "auto", sm: "auto", md: "250px" },
               flexShrink: 0,
               boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
               backgroundColor: "white",
               flexDirection: { xs: "column", sm: "column", md: "row" },
+              
+              
             }}
           >
             <CardContent sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
@@ -384,7 +387,7 @@ const ManageProjects: React.FC = () => {
                   : "No outline available."}
               </Typography>
 
-              <Divider sx={{ my: 1 }} />
+              <Divider sx={{ my: 2 }} />
 
               <Box sx={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 2,flexDirection:isArabic?"row-reverse":"row" }}>
                 <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
@@ -401,28 +404,28 @@ const ManageProjects: React.FC = () => {
                   </span>
                 </Typography>
               </Box>
-
-              <Box display={"flex"} justifyContent={"space-between"} sx={{ mt: 1 }}>
-                <Button
+                {/* Buttons for viewing */}
+               <Box display={"flex"} justifyContent={"space-between"} sx={{ mt: 1 }}>
+                {/* <Button
                   
                   variant="contained"
                   sx={{
                     borderRadius: "12px",
                     textTransform: "none",
-                    width:"45%",
+                    width:"100%",
                     py: 1.2,
                   }}
                   onClick={() => handleOpenProjectModal(project.id)}
                 >
                   View Project
-                </Button>
+                </Button> */}
                 <Button
                   
                   variant="contained"
                   sx={{
                     borderRadius: "12px",
                     textTransform: "none",
-                    width:"45%",
+                    width:"100%",
                     py: 1.2,
                   }}
                   onClick={() => handleOpenModal(project.id)}

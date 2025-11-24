@@ -3598,6 +3598,219 @@ mobile responsive buyer dashboard middle cards
 
 
 
+createproject middle secondary
+ {/* Title Field */}
+    <CustomTextField
+      label={`${t("TitleFieldLabel")}`}
+      placeholder={`${t("TitleFieldPlaceholder")}`}
+      fullWidth
+      required
+      maxChar={150}
+      multiline
+      rows={1}
+      value={title}
+      isArabic={isArabic}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+
+    {/* Outline */}
+    <CustomTextField
+      label={`${t("OutlineLabel")}`}
+      placeholder={`${t("OutlinePlaceholder")}`}
+      fullWidth
+      required
+      multiline
+      rows={4}
+      maxChar={700}
+      value={outline}
+      isArabic={isArabic}
+      onChange={(e) => setOutline(e.target.value)}
+    />
+
+    {/* Requirements */}
+    <CustomTextField
+      label={`${t("RequirementsLabel")}`}
+      placeholder={`${t("RequirementsPlaceholder")}`}
+      fullWidth
+      multiline
+      rows={5}
+      maxChar={1000}
+      value={requirements}
+      isArabic={isArabic}
+      onChange={(e) => setRequirements(e.target.value)}
+    />
+
+    {/* Budget */}
+    <BudgetSelect
+      label={`${t("BudgetLabel")}`}
+      value={budgetRange}
+      onChange={setBudgetRange}
+      isArabic={isArabic}
+    />
+
+    {/* Skills Required */}
+   <Box sx={{ display: "flex", flexDirection: "column" }}>
+  <Typography
+    sx={{
+      fontWeight: "bold",
+      textAlign: isArabic ? "right" : "left",
+      mb: { xs: 1, sm: 0 },
+      fontSize: { xs: "14px", sm: "16px" },
+    }}
+  >
+    {t("SkillsRequired")}
+  </Typography>
+
+  <Box
+    sx={{
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      backgroundColor: "lightgrey",
+      justifyContent: "flex-start",
+      borderRadius: 1,
+      gap: 1,
+      height: { xs: "auto", sm: "160px" },
+      overflowX: { xs: "auto", sm: "visible" }, // horizontal scroll only on XS
+      overflowY: "hidden",
+      p: { xs: 1, sm: 2 },
+      scrollbarWidth: "none", // Firefox
+      "&::-webkit-scrollbar": { display: "none" }, // Chrome/Safari
+      scrollSnapType: { xs: "x mandatory", sm: "none" }, // smooth snap scroll for mobile
+    }}
+  >
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: { xs: "nowrap", sm: "wrap" },
+        gap: 1,
+        width: { xs: "max-content", sm: "100%" }, // ensures scrollable width on XS
+      }}
+    >
+      {skills.map((skill) => {
+        const isSelected = skillsRequired.includes(skill);
+        return (
+          <Button
+            key={skill}
+            onClick={() =>
+              setSkillsRequired((prev) =>
+                isSelected
+                  ? prev.filter((s) => s !== skill)
+                  : [...prev, skill]
+              )
+            }
+            sx={{
+              flexShrink: 0,
+              borderRadius: 3,
+              backgroundColor: isSelected
+                ? theme.palette.primary.main
+                : "#f1f1f1",
+              color: isSelected ? "white" : theme.palette.primary.main,
+              height: { xs: "32px", sm: "40px" },
+              px: { xs: 1.5, sm: 2 },
+              fontSize: { xs: "11px", sm: "13px" },
+              boxShadow: "none",
+              whiteSpace: "nowrap",
+              textTransform: "none",
+              scrollSnapAlign: { xs: "start", sm: "none" }, // neat snapping while scrolling
+            }}
+          >
+            {skill}
+          </Button>
+        );
+      })}
+    </Box>
+  </Box>
+
+  <Typography
+    variant="caption"
+    sx={{
+      mt: { xs: 0.5, sm: 1 },
+      color: "gray",
+      textAlign: isArabic ? "right" : "left",
+      fontSize: { xs: "11px", sm: "12px" },
+    }}
+  >
+    {t("SkillAtleastSelection")}
+  </Typography>
+</Box>
+
+
+    {/* Timeline */}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: isArabic?"row-reverse":"row" },
+        justifyContent: "space-between",
+        width: "100%",
+        gap: { xs: 2, sm: 1 },
+      }}
+    >
+      <Box sx={{ width: { xs: "100%", sm: "50%" } }}>
+        <CustomTextField
+          label={`${t("Timeline")}`}
+          placeholder={`${t("Duration")}`}
+          required
+          fullWidth
+          value={timelineNumber}
+          onChange={(e) => setTimelineNumber(e.target.value)}
+          isArabic={isArabic}
+        />
+      </Box>
+
+      <Box
+        sx={{
+          width: { xs: "100%", sm: "50%" },
+          mt: { xs: 0, sm: 4.4 },
+        }}
+      >
+        <DurationSelect
+          label=""
+          value={timelineString}
+          onChange={setTimeLineString}
+          isArabic={isArabic}
+          
+        />
+      </Box>
+    </Box>
+
+    {/* Attachments */}
+    <Box>
+      <InputFileUpload
+        text={t("UploadButtonLabel")}
+        sx={{ width: "100%" }}
+        isArabic={isArabic}
+        onFileSelect={handleUpload}
+      />
+      <Typography
+        variant="caption"
+        sx={{
+          color: "gray",
+          textAlign: isArabic ? "right" : "left",
+          fontSize: { xs: "11px", sm: "12px" },
+        }}
+      >
+        {t("DocCheck")}
+      </Typography>
+    </Box>
+
+    {/* Dropdown */}
+      <FormControl fullWidth sx={{ mb: 2 }}>
+        <InputLabel id="form-type-label">Select Form Type</InputLabel>
+        <Select
+          labelId="form-type-label"
+          value={formType}
+          label="Select Form Type"
+          onChange={(e) => setFormType(e.target.value)}
+        >
+          {formTypes.map((item) => (
+            <MenuItem key={item.id} value={item.type}>
+              {item.type}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
 
 
 
@@ -3611,3 +3824,118 @@ mobile responsive buyer dashboard middle cards
 
 
 
+
+
+<Container
+      maxWidth="sm"
+      sx={{
+        bgcolor: "background.paper",
+        p: 4,
+        mt: 4,
+        boxShadow: 5,
+        borderRadius: 2,
+      }}
+    >
+      <Typography variant="h5" fontWeight={600} gutterBottom>
+        {editMode ? "Edit Project" : "Project Details"}
+      </Typography>
+
+      {/* --- fields (same as modal) --- */}
+      <TextField
+        label="Title"
+        value={form.title || ""}
+        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        fullWidth
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      <TextField
+        label="Outline"
+        value={form.outline || ""}
+        onChange={(e) => setForm({ ...form, outline: e.target.value })}
+        fullWidth
+        multiline
+        minRows={2}
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      <TextField
+        label="Requirements"
+        value={form.requirements || ""}
+        onChange={(e) => setForm({ ...form, requirements: e.target.value })}
+        fullWidth
+        multiline
+        minRows={3}
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      <TextField
+        label="Budget Range"
+        value={form.budgetRange || ""}
+        onChange={(e) => setForm({ ...form, budgetRange: e.target.value })}
+        fullWidth
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      <TextField
+        label="Timeline"
+        value={form.timeline || ""}
+        onChange={(e) => setForm({ ...form, timeline: e.target.value })}
+        fullWidth
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      <TextField
+        label="Skills Required"
+        value={form.skillsRequired?.join(", ") || ""}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            skillsRequired: e.target.value.split(",").map((s) => s.trim()),
+          })
+        }
+        fullWidth
+        sx={{ mb: 2 }}
+        InputProps={{ readOnly: !editMode }}
+      />
+
+      {form.attachment && (
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+          <img
+            src={form.attachment}
+            alt="Project Attachment"
+            style={{
+              maxWidth: "100%",
+              borderRadius: 8,
+            }}
+          />
+        </Box>
+      )}
+
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        <Button variant="contained" onClick={PublishProject}>
+          Publish
+        </Button>
+
+        <Box sx={{ display: "flex", gap: 2 }}>
+          {editMode ? (
+            <Button variant="contained" onClick={handleEdit}>
+              Save Changes
+            </Button>
+          ) : (
+            <Button variant="contained" onClick={() => setEditMode(true)}>
+              Edit
+            </Button>
+          )}
+
+          <Button variant="outlined" color="error" onClick={handleDelete}>
+            Delete
+          </Button>
+        </Box>
+      </Box>
+    </Container>

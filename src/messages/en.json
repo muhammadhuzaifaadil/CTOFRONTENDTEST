@@ -81,7 +81,30 @@
             "Timeline":"Timeline",
             "Duration":"Enter Duration",
             "UploadButtonLabel":"Upload",
-            "ChooseFile":"Choose File"
+            "ChooseFile":"Choose File",
+
+
+            "BasicProjectInformationTitle":"Basic Project Information",
+            "ThirdPartyIntegrationsLabel":"Third-Party Integrations (Optional)",
+            "ThirdPartyIntegrationsPlaceholder":"e.g: Payment Gateways, Chat SDKs etc",
+            "BudgetTimelineSectionTitle":"Budget & Timeline",
+            "BudgetTypeLabel":"Budget Type",
+            "BudgetAmountLabel":"Budget Amount",
+            "BudgetAmountPlaceholder":"Enter Amount",
+            "TimelinePlaceholder":"Enter Number Only",
+            "AdditionalRequirementsSectionTitle":"Additional Requirements",
+            "TargetUserLabel":"Target User / Audience (Optional)",
+            "TargetUserPlaceholder":"e.g Young Professional, Business etc",
+            "UiUxRequirementLabel":"UI/UX Requirement",
+            "SelectOptionPlaceholder":"Select Yes or No",
+            "PreferredTechStackLabel":"Preferred Technology Stack (Optional)",
+            "PreferredTechStackPlaceholder":"e.g., Next.js, Node.js, Flutter, React.js",
+            "PostLaunchSupportLabel":"Post-Launch Support Required?",
+            "AttachmentsLabel":"Attachments (Optional)",
+            "ProjectTypeLabel":"Project Type",
+            "ProjectTypePlaceholder":"Select Project Type"
+
+            
 
         },
         "ManageProject":{
