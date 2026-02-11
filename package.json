@@ -22,7 +22,7 @@
     "google-libphonenumber": "^3.2.43",
     "i18n-iso-countries": "^7.14.0",
     "libphonenumber-js": "^1.12.26",
-    "next": "15.5.4",
+    "next": "15.5.7",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.12",
     "pg": "^8.16.3",
