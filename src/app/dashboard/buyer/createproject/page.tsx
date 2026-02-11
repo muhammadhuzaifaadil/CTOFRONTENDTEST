@@ -106,7 +106,7 @@ const [timelineString,setTimeLineString] = useState("");
 const [templateKey, setTemplateKey] = useState<number | null>(null);
 const [skillsRequired, setSkillsRequired] = useState<string[]>([]);
 const { questions, addQuestion } = useTemplateQuestions();
-const [formTypes,setFormTypes]=useState<any>([]);
+// const [formTypes,setFormTypes]=useState<any>([]);
 // const [formTypes, setFormTypes] = useState([]);
 
 
@@ -151,33 +151,34 @@ useEffect(()=>{
 setTimeline(`${timelineNumber} ${timelineString}`);
 },[timelineString,timelineString]);
 
-const getFormTypes = async()=>{
-  try {
-    const response = await apiClient.get("/template");
-    console.log(response);
-    const dynamic = response.data.map((x: any) => ({
-    id: x.id,
-    type: x.name, // convert "name" → "type"
-  }));
-  setFormTypes(dynamic);
-  } catch (error) {
-    console.log(error)
-  }
-}
-useEffect(()=>{
-getFormTypes()
-},[formType])
+// const getFormTypes = async()=>{
+//   try {
+//     const response = await apiClient.get("/template");
+//     console.log(response);
+//     const dynamic = response.data.map((x: any) => ({
+//     id: x.id,
+//     type: x.name, // convert "name" → "type"
+//   }));
+//   setFormTypes(dynamic);
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+// useEffect(()=>{
+// getFormTypes()
+// },[formType])
 
-// const formTypes = [
-//   { id: 1, type: "MobileApp" },
-//   { id: 2, type: "WebApp" },
-//   { id: 3, type: "ERP" },
-//   { id: 4, type: "AI/ML" },
-//   { id: 5, type: "Digital Marketing" },
-//   { id: 6, type: "UI/UX Design"}
-//   // forms
+const formTypes = [
+  { id: 1, type: "MobileApp" },
+  { id: 2, type: "WebApp" },
+  { id: 3, type: "ERP" },
+  { id: 4, type: "AI/ML" },
+  { id: 5, type: "Digital Marketing" },
+  { id: 6, type: "UI/UX Design"}
   
-// ];
+  
+];
+
 // const handleSubmit = async (status: "Draft" | "Published") => {
 //   if (!user) return alert("You must be logged in");
 
@@ -222,6 +223,8 @@ getFormTypes()
 //     );
 //   }
 // };
+
+
 const handleSubmit = async (status: "Draft" | "Published") => {
   if (!user) return alert("You must be logged in");
 

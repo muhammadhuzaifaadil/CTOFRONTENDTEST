@@ -124,6 +124,24 @@
         "ViewBids":"View Bids"
 
         },
+        "ManageProjectById":
+        {
+            "Back2Project":"Back to Projects",
+            "Created":"Created:",
+            "Updated":"Updated:",
+            "ProjectOutline":"Project Outline",
+            "ProjectRequirements":"Project Requirements",
+            "ProjectBrief":"Project Brief (Q/A)",
+            "NoQuestionDefined":"No questions defined.",
+            "ProjectTimeline":"Project Timeline",
+            "Duration":"Duration:",
+            "Budget":"Budget:",
+            "LastUpdated":"Last Updated:",
+            "BidsReceived":"Bids Received",
+            "SeeBids":"See the bids submitted for this project",
+            "ViewAllBids":"View All Bids"
+
+        },
         "ProfileManagement":{
             "BackButton":"Back to Dashboard",
             "Header1":"Profile Management",
@@ -217,7 +235,10 @@
             "SubmittedOn":"Submitted On:",
             "ProposedBudget":"Your Proposed Budget",
             "ProposedTimeline":"Your Proposed Timeline",
-            "CoverLetter":"Your Cover Letter:"
+            "CoverLetter":"Your Cover Letter:",
+            "ViewDetails":"View Details",
+            "AcceptButton":"Accept",
+            "BackToProjectDetails":"back to view project details"
         },
         "BuyerRegister":{
             "BackButton":"Back To Welcome",

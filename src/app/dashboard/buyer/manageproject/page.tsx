@@ -23,6 +23,7 @@ import { useTranslations } from "next-intl";
 import BidsModal from "@/app/components/BidsModal";
 import { useAuth } from "@/hooks/useAuth";
 import ProjectModal from "@/app/components/ProjectModal";
+import FeedbackModal from "@/app/components/FeedbackModal";
 
 const ManageProjects: React.FC = () => {
   const theme = useTheme();
@@ -37,65 +38,18 @@ const ManageProjects: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
     const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+    const [openProjectFeedback , setOpenProjectFeedback] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [openProjectModal , setOpenProjectModal] = useState(false);
+  // const [openProjectModal , setOpenProjectModal] = useState(false);
   const handleOpenModal = (projectId: number) => {
     setSelectedProjectId(projectId);
     setOpenModal(true);
   };
   const handleOpenProjectModal = (projectId:number) =>{
     setSelectedProjectId(projectId);
-    setOpenProjectModal(true);
+    setOpenProjectFeedback(true);
   }
-  // const recentProjects = [
-  //   {
-  //     Title: "Restaurant Menu and Promotional Materials",
-  //     Outline:
-  //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis fugiat qui quo saepe? Non sit doloribus tempore aliquam, maxime velit deserunt maiores officia similique iste, enim necessitatibus explicabo, assumenda a!",
-  //     StatusColor: "orange",
-  //     Status: "In Progress",
-  //     Budget: "Not Specified",
-  //     Timeline: "3 Weeks",
-  //     Skills: "html,css,db",
-  //   },
-  //   {
-  //     Title: "Project Two",
-  //     Outline: "Another brief outline",
-  //     StatusColor: "green",
-  //     Status: "Completed",
-  //     Budget: "$500",
-  //     Timeline: "2 Weeks",
-  //     Skills: "react,typescript,api",
-  //   },
-  //   {
-  //     Title: "Project Three",
-  //     Outline: "Third project outline",
-  //     StatusColor: "red",
-  //     Status: "Draft",
-  //     Budget: "$200",
-  //     Timeline: "1 Week",
-  //     Skills: "nodejs,express,mongodb",
-  //   },
-  // ];
-
-  // useEffect(() => {
-  //   const filtered = recentProjects.filter((p) => p.Status === selectedStatus);
-  //   setProjects(filtered);
-  // }, [selectedStatus]);
-
-  // const statusFilters = [
-  //   { label: `${t("Status1")}`, color: "red" },
-  //   { label: `${t("Status2")}`, color: "cyan" },
-  //   { label: `${t("Status3")}`, color: "#cb9d33ff" },
-  //   { label: `${t("Status4")}`, color: "green" },
-  // ];
-
-  //   const statusFilters = [
-  //   { label: 'Draft', color: "red" },
-  //   { label: 'Published', color: "cyan" },
-  //   { label: 'In Progress', color: "#cb9d33ff" },
-  //   { label: 'Completed', color: "green" },
-  // ];
+  
   const statusFilters = [
   { label: t("Status1"), value: "Draft", color: "red" },
   { label: t("Status2"), value: "Published", color: "cyan" },
@@ -114,7 +68,7 @@ const ManageProjects: React.FC = () => {
         limit: 12,
       },
     });
-
+    console.log("Response on buyer:",response.data.Data)
     // ✅ Adjust for your actual backend response casing
     const resData = response.data;
 
@@ -346,18 +300,25 @@ const ManageProjects: React.FC = () => {
         projects.map((project, index) => (
           <Card
             key={index}
-            // onClick={() => router.push(`manageproject/${project.id}`)}
+            onClick={() => router.push(`manageproject/${project.id}`)}
+            
             sx={{
               display: "flex",
               p: 2,
               borderRadius: 3,
               width: { xs: "100%", sm: "95%", md: "1000px" },
-              height: { xs: "auto", sm: "auto", md: "250px" },
+              height: { xs: "auto", sm: "auto", md: "180px",lg:"220px" },
               flexShrink: 0,
               boxShadow: "0px 3px 10px rgba(0,0,0,0.05)",
               backgroundColor: "white",
               flexDirection: { xs: "column", sm: "column", md: "row" },
-              
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              "&:hover": {
+      boxShadow: "0px 5px 20px rgba(0,0,0,0.15)",
+      transform: "translateY(-3px)",
+      backgroundColor: "#f9f9f9",
+    },
               
             }}
           >
@@ -382,8 +343,8 @@ const ManageProjects: React.FC = () => {
 
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2, display:"flex",justifyContent:isArabic?"flex-end":"flex-start" }}>
                 {project.outline
-                  ? project.outline.split(" ").slice(0, 50).join(" ") +
-                    (project.outline.split(" ").length > 50 ? "..." : "")
+                  ? project.outline.split(" ").slice(0, 25).join(" ") +
+                    (project.outline.split(" ").length > 25 ? "..." : "")
                   : "No outline available."}
               </Typography>
 
@@ -397,29 +358,38 @@ const ManageProjects: React.FC = () => {
                   <strong>{t("Timeline")}</strong>{" "}
                   <span style={{ color: theme.palette.primary.main }}>{project.timeline}</span>
                 </Typography>
-                <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
+                {/* <Typography variant="body2" display={"flex"} flexDirection={isArabic?"row-reverse":"row"}>
                   <strong>{t("Skills")}</strong>{" "}
                   <span style={{ color: theme.palette.primary.main }}>
                     {(project.skillsRequired || []).join(", ") || "0 required"}
                   </span>
-                </Typography>
+                </Typography> */}
+                
               </Box>
+              
                 {/* Buttons for viewing */}
                <Box display={"flex"} justifyContent={"space-between"} sx={{ mt: 1 }}>
-                {/* <Button
+                {project?.status==="Completed"&&<Button
                   
                   variant="contained"
                   sx={{
                     borderRadius: "12px",
+                    background:"white",
+                    color:theme.palette.primary.main,
+                    border:` 3px solid ${theme.palette.primary.main}`,
                     textTransform: "none",
-                    width:"100%",
+                    width:"20%",
                     py: 1.2,
                   }}
-                  onClick={() => handleOpenProjectModal(project.id)}
+                  onClick={(e) => {
+    e.stopPropagation(); // 🔥 THIS IS THE KEY
+    handleOpenProjectModal(project.id);
+  }}
                 >
-                  View Project
-                </Button> */}
-                <Button
+                  Leave FeedBack
+                </Button>}
+                </Box>
+                {/* <Button
                   
                   variant="contained"
                   sx={{
@@ -431,8 +401,8 @@ const ManageProjects: React.FC = () => {
                   onClick={() => handleOpenModal(project.id)}
                 >
                   {t("ViewBids")}
-                </Button>
-              </Box>
+                </Button> */}
+              {/* </Box> */}
               
             </CardContent>
           </Card>
@@ -461,9 +431,9 @@ const ManageProjects: React.FC = () => {
       </Button>
     </Box>
 
-    <BidsModal open={openModal} onClose={() => setOpenModal(false)} projectId={selectedProjectId} />
-
-    <ProjectModal open={openProjectModal} onClose={()=>setOpenProjectModal(false)} projectId={selectedProjectId}/>
+    {/* <BidsModal open={openModal} onClose={() => setOpenModal(false)} projectId={selectedProjectId} /> */}
+<FeedbackModal open={openProjectFeedback} onClose={()=>setOpenProjectFeedback(false)} projectId={selectedProjectId} role={"buyer"}/>
+    {/* <ProjectModal open={openProjectModal} onClose={()=>setOpenProjectModal(false)} projectId={selectedProjectId}/> */}
   </Container>
 </Box>
           )}

@@ -20,6 +20,7 @@ import apiClient from "@/api/apiClient"; // ✅ your axios instance
 import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import { useAuth } from "@/hooks/useAuth";
+import FeedbackModal from "@/app/components/FeedbackModal";
 
 const ManageBids: React.FC = () => {
   const theme = useTheme();
@@ -29,8 +30,15 @@ const ManageBids: React.FC = () => {
   const t = useTranslations("BidManagement")
   const [bids, setBids] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedStatus, setSelectedStatus] = useState<"Pending" | "Accepted" | "Rejected" | "Withdrawn">("Pending");
+  const [selectedStatus, setSelectedStatus] = useState<"Pending" | "Accepted" | "Rejected" | "Withdrawn" | "Completed">("Pending");
   const [selectedStatusArabic,setSelectedStatusArabic]= useState("")
+ const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
+    const [openProjectFeedback , setOpenProjectFeedback] = useState(false);
+
+    const handleOpenProjectModal = (projectId:number) =>{
+    setSelectedProjectId(projectId);
+    setOpenProjectFeedback(true);
+  }
   useEffect(() => {
     const fetchBids = async () => {
       const token = localStorage.getItem("accessToken");
@@ -39,16 +47,18 @@ const ManageBids: React.FC = () => {
       try {
         const res = await apiClient.get("/bids/paginated/all?page=1&limit=10");
         const bidsData = res.data?.Data?.bids;
-
+        console.log('bid after change:',bidsData);
         if (res.data?.Success && Array.isArray(bidsData)) {
           // 🔁 Map the API data into your frontend display structure
           const mapped = bidsData.map((b: any) => ({
+            id: b.id,
             Title: b.projectInfo?.title || "No Title",
             CoverLetter: b.proposalText || "No proposal provided",
             Status: b.status || "Unknown",
             Budget: b.bidAmount || "N/A",
             Timeline: b.timeline || "N/A",
             SubmittedOn: new Date(b.createdAt).toLocaleString(),
+            projectId:b.projectInfo?.id
           }));
           setBids(mapped);
         } else {
@@ -71,6 +81,7 @@ const ManageBids: React.FC = () => {
   Accepted: isArabic ? t("Status2") : "Accepted",
   Rejected: isArabic ? t("Status3") : "Rejected",
   Withdrawn: isArabic ? t("Status4") : "Withdrawn",
+  Completed: isArabic ? "Completed" : "Completed"
 };
 
   const filteredProjects = bids.filter(
@@ -82,6 +93,7 @@ const ManageBids: React.FC = () => {
     Accepted: bids.filter((p) => p.Status.toLowerCase() === "accepted").length,
     Rejected: bids.filter((p) => p.Status.toLowerCase() === "rejected").length,
     Withdrawn: bids.filter((p) => p.Status.toLowerCase() === "withdrawn").length,
+    Completed: bids.filter((p) => p.Status.toLowerCase() ==="completed").length
   };
 
   const colorMap: Record<string, string> = {
@@ -89,6 +101,7 @@ const ManageBids: React.FC = () => {
     Accepted: "green",
     Rejected: "red",
     Withdrawn: theme.palette.error.main,
+    Completed: "darkgreen"
   };
 
   return (
@@ -189,7 +202,7 @@ const ManageBids: React.FC = () => {
     
   }}
 >
-  {(["Pending", "Accepted", "Rejected", "Withdrawn"] as const).map((status) => (
+  {(["Pending", "Accepted", "Rejected", "Withdrawn","Completed"] as const).map((status) => (
     <Card
       key={status}
       onClick={() => setSelectedStatus(status)}
@@ -255,6 +268,7 @@ const ManageBids: React.FC = () => {
           return (
             <Box
               key={idx}
+              
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -266,6 +280,8 @@ const ManageBids: React.FC = () => {
                 boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
                 p: { xs: 1.5, sm: 2 },
                 borderRadius: 2,
+                
+                
               }}
             >
               {/* Header row */}
@@ -375,11 +391,51 @@ const ManageBids: React.FC = () => {
                   {coverLetterPreview}
                 </Typography>
               </Box>
+              <Box sx={{display:"flex",flexDirection:"row",width:"100%"}}>
+             {project.Status === "Completed" ? (
+  <Button
+    onClick={(e) => {
+      e.stopPropagation(); // 🔥 THIS IS THE KEY
+    handleOpenProjectModal(project.id);
+    }}
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
+      color: "white",
+      bgcolor: theme.palette.primary.main,
+    }}
+  >
+    Leave Feedback
+  </Button>
+) : (
+  <Button
+    onClick={() => {
+      if (project.Status === "Accepted") {
+        router.push(`/dashboard/seller/acceptedbids/${project.projectId}`);
+      } else {
+        router.push(`/dashboard/seller/managebids/${project.projectId}`);
+      }
+    }}
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      width: "100%",
+      color: "white",
+      bgcolor: theme.palette.primary.main,
+    }}
+  >
+    View Bid
+  </Button>
+)}
+              </Box>
             </Box>
           );
         })
       )}
     </Box>
+    <FeedbackModal open={openProjectFeedback} onClose={()=>setOpenProjectFeedback(false)} projectId={selectedProjectId} role={"seller"} />
+    
   </Container>
 </Box>
     )}

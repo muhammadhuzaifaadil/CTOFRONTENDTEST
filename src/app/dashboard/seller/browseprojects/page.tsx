@@ -23,6 +23,7 @@ import { LanguageContext } from "@/app/contexts/LanguageContext";
 import { useTranslations } from "next-intl";
 import ProjectBidModal from "@/app/components/ProjectBidModal";
 import { useAuth } from "@/hooks/useAuth";
+import AddBidPage from "./[projectId]/page";
 
 const BrowseProjects: React.FC = () => {
   const theme = useTheme();
@@ -169,7 +170,7 @@ useEffect(() => {
   return () => clearTimeout(delayDebounce);
 }, [page, searchTerm]);
 
-  const allSkills = [
+  const projectType = [
     "Coding",
     "IT",
     "SQA",
@@ -397,12 +398,12 @@ useEffect(() => {
     />
 
     {/* Skills Filter */}
-    <Box sx={{ width: "100%", mb: 2 }}>
+    {/* <Box sx={{ width: "100%", mb: 2 }}>
       <Typography variant="subtitle2" color="text.secondary" mb={1}>
         Filter by Skills:
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-        {allSkills.map((skill, i) => (
+        {projectType.map((skill, i) => (
           <Chip
             key={i}
             label={skill}
@@ -413,7 +414,7 @@ useEffect(() => {
           />
         ))}
       </Box>
-    </Box>
+    </Box> */}
 
     {/* Budget Range */}
     <Box
@@ -467,7 +468,7 @@ useEffect(() => {
             {project.outline}
           </Typography>
 
-          <Box display="flex" flexWrap="wrap" gap={1} mt={1} justifyContent={isArabic?"flex-end":"flex-start"}>
+          {/* <Box display="flex" flexWrap="wrap" gap={1} mt={1} justifyContent={isArabic?"flex-end":"flex-start"}>
             {project.skillsRequired.map((skill: string, i: number) => (
               <Chip
                 key={i}
@@ -475,7 +476,7 @@ useEffect(() => {
                 sx={{ backgroundColor: "#f4f4f4", fontSize: "0.75rem"}}
               />
             ))}
-          </Box>
+          </Box> */}
 
           <Box
             display="flex"
@@ -516,7 +517,8 @@ useEffect(() => {
               textTransform: "none",
               py: 1.2,
             }}
-            onClick={() => handleOpen(project.id)}
+            onClick={() => router.push(`/dashboard/seller/browseprojects/${project.id}`)}
+
           >
             {t("ViewBidsButton")}
           </Button>
@@ -559,7 +561,7 @@ useEffect(() => {
 export default BrowseProjects;
 
 
- // 🔍 Filter Logic // working search and skill
+ 
   // const filteredProjects = useMemo(() => {
   //   return recentProjects.filter((project) => {
   //     const matchesSearch =

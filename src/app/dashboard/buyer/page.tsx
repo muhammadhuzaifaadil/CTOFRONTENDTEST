@@ -70,6 +70,7 @@ useEffect(() => {
   if (!token) return; // ⛔ Skip if logged out
     try {
       const res = await apiClient.get("/projects");
+      console.log("res",res)
       if (res.data?.Success && Array.isArray(res.data.Data)) {
         setRecentProjects(res.data.Data);
       } else {
@@ -387,13 +388,22 @@ const muiTheme = useTheme();
       {t("MyProjectContent")}
     </Typography>
 </Box>
+<Box sx={{display:"flex",flexDirection:"row",gap:1}}>
     <Button
       variant="outlined"
-      sx={{ fontWeight: 600, borderRadius: 3 }}
+      sx={{ fontWeight: 600, borderRadius: 3,width:"100%" }}
       onClick={() => router.push("/dashboard/buyer/manageproject")}
     >
       {t("MyProjectButton")}
     </Button>
+    <Button
+      variant="outlined"
+      sx={{ fontWeight: 600, borderRadius: 3,width:"100%" }}
+      onClick={() => router.push("/dashboard/buyer/myreviews")}
+    >
+      My Reviews
+    </Button>
+    </Box>
   </Card>
 
   {/* Profile Settings */}

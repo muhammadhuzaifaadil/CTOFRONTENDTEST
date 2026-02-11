@@ -98,6 +98,22 @@
 "ViewBids": "عرض العطاءات"
 
   },
+  "ManageProjectById": {
+    "Back2Project": "العودة إلى المشاريع",
+    "Created": "تاريخ الإنشاء:",
+    "Updated": "تاريخ التحديث:",
+    "ProjectOutline": "ملخص المشروع",
+    "ProjectRequirements": "متطلبات المشروع",
+    "ProjectBrief": "الموجز (سؤال/جواب)",
+    "NoQuestionDefined": "لا توجد أسئلة محددة.",
+    "ProjectTimeline": "الجدول الزمني للمشروع",
+    "Duration": "  :المدة  ",
+    "Budget": " :الميزانية  ",
+    "LastUpdated": "    :آخر تحديث   ",
+    "BidsReceived": "العروض المستلمة",
+    "SeeBids": "عرض العروض المقدمة لهذا المشروع",
+    "ViewAllBids": "عرض جميع العروض"
+  },
   "ProfileManagement": {
     "BackButton": "العودة إلى لوحة التحكم",
     "Header1": "إدارة الملف الشخصي",
@@ -190,7 +206,11 @@
     "SubmittedOn": ":تم الإرسال في ",
 "ProposedBudget": "ميزانيتك المقترحة ",
 "ProposedTimeline": "المدة الزمنية المقترحة ",
-"CoverLetter": ":خطاب التغطية "
+"CoverLetter": ":خطاب التغطية ",
+"ViewDetails": "عرض التفاصيل",
+"AcceptButton": "قبول",
+"BackToProjectDetails": "العودة إلى تفاصيل المشروع"
+
 
   },
   "BuyerRegister": {

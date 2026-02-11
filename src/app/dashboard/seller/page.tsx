@@ -55,7 +55,7 @@ useEffect(() => {
     try {
       const res = await apiClient.get("/bids/paginated/all?page=1&limit=3");
       const bids = res.data?.Data?.bids;
-      console.log(res);
+      console.log("res+",res);
       console.log(bids);
       console.log(recentProjects);
       if (res.data?.Success && Array.isArray(bids)) {
@@ -101,20 +101,7 @@ useEffect(() => {
   fetchSummary();
 }, [user]);
 
-      // if (!user) return <div>Loading...</div>;
-  // Dummy stats (replace later with API data)
-  // const stats = [
-  //   { label: "Active Bids", value: 0 },
-  //   { label: "Projects Won", value: 0 },
-  //   { label: "Completed", value: 0 },
-  //   { label: "Total Earnings", value: "$0" },
-  // ];
-  //  const stats = [
-  //   { label: `${t("Stats_Actives_Bids")}`, value: 0 },
-  //   { label: `${t("Stats_Projects_Won")}`, value: 0 },
-  //   { label: `${t("Stats_Completed")}`, value: 0 },
-  //   { label: `${t("Stats_Total_Earnings")}`, value: "$0" },
-  // ];
+
 
   const stats = [
   { label: t("Stats_Actives_Bids"), value: bidSummary?.["ActiveBids"] || 0 },
@@ -122,36 +109,7 @@ useEffect(() => {
   { label: t("Stats_Completed"), value: bidSummary?.["Completed"] || 0 },
   { label: t("Stats_Total_Earnings"), value: `$${bidSummary?.["TotalEarnings"] || 0}` },
 ];
-// Recent projects array
-  // const recentProjects:any = [
-  //   {
-  //     Title: "Restaurant Menu and Promotional Materials",
-  //     CoverLetter: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis fugiat qui quo saepe? Non sit doloribus tempore aliquam, maxime velit deserunt maiores officia similique iste, enim necessitatibus explicabo, assumenda a!Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis fugiat qui quo saepe? Non sit doloribus tempore aliquam, maxime velit deserunt maiores officia similique iste, enim necessitatibus explicabo, assumenda a!",
-  //     StatusColor:"orange",
-  //     Status: "In Progress",
-  //     Budget: "Not Specified",
-  //     Timeline: "3 weeks",
-  //     SubmittedOn:"October 8, 2025, 03:51 PM"
-  //   },
-  //   {
-  //     Title: "Project Two",
-  //     CoverLetter: "Another brief outline",
-  //     StatusColor:"green",
-  //     Status: "Completed",
-  //     Budget: "$500",
-  //     Timeline: "2 weeks",
-  //     SubmittedOn:"October 8, 2025, 03:51 PM"
-  //   },
-  //   {
-  //     Title: "Project Three",
-  //     CoverLetter: "Third project outline",
-  //     StatusColor:"red",
-  //     Status: "Not Started",
-  //     Budget: "$200",
-  //     Timeline: "1 week",
-  //     SubmittedOn:"October 8, 2025, 03:51 PM"
-  //   },
-  // ];
+
   return (
   
 <DashBoardLayout>
@@ -362,6 +320,7 @@ useEffect(() => {
           {t("MyBidsContent")}
         </Typography>
         </Box>
+        <Box sx={{display:"flex",flexDirection:"row", gap:2}}>
         <Button
           variant="outlined"
           sx={{ fontWeight: 600, borderRadius: 3, width: "100%" }}
@@ -369,6 +328,14 @@ useEffect(() => {
         >
           {t("MyBidsButton")}
         </Button>
+        <Button
+          variant="outlined"
+          sx={{ fontWeight: 600, borderRadius: 3, width: "100%" }}
+          onClick={() => router.push("/dashboard/seller/myreviews")}
+        >
+          My Reviews
+        </Button>
+      </Box>
       </Card>
 
       {/* Profile Settings */}
@@ -558,7 +525,7 @@ useEffect(() => {
                       backgroundColor:
                         bid.status === "Withdrawn"
                           ? theme.palette.error.main
-                          : theme.palette.success.main,
+                          : {},
                     }}
                   />
                 </Box>

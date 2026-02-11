@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode, use } from "react";
 import { useRouter } from "next/navigation";
 import apiClient from "@/api/apiClient";
 import { initFCM } from "../hooks/useFCM";
@@ -92,6 +92,8 @@ if (user?.id) {
     // Redirect by role
     if (user.role === "buyer") router.push("/dashboard/buyer");
     else if (user.role === "seller") router.push("/dashboard/seller");
+    else if (user.role === "qe") router.push("/dashboard/qualityexpert");
+    else if (user.role === "superadmin") router.push("/dashboard/superadmin");
     else router.push("/dashboard/admin");
   };
 
